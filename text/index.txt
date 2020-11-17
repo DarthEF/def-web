@@ -1,0 +1,10 @@
+Contenttype:text/html;charset=UTF-8
+}index
+{Home[
+{BBS[0]Code[00]数学[01]文学[02
+{BBb[1]C[10]cc[11
+{about[
+}content
+{p[1]contentdata[hjgsryufrghberbg
+{p[2]contentdata[<img src="https://127.0.0.1/img/iconSprites.svg"/>
+{p[3]contentdata[<img src="https://127.0.0.1/img/iconSprites.svg"/>

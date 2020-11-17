@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="box">
+        <canvas id="democanvas"></canvas>
+    </div>
+    <script type="text/javascript" src="./Basics.js"></script>
+        <script type="text/javascript">
+        var d=createOlFnc(function(){console.log(123);});
+        d.addOverload([String],function(str){console.log("this is a string: "+str);});
+        d();//123
+        d("abcabcabc");//this is a string: abcabcabc
+        // 函数重载 demo; 
+        var Class1=createOlFnc(function (){
+            // 默认构造函数
+            this.data="def name";
+        });
+        Class1.addOverload([String],function(data){
+            // 构造函数1
+            this.data=data;
+        });
+        Class1.prototype={
+            printf:function(){
+                console.log("this obj's data is : "+this.data);
+            }
+        }
+        var c=new Class1();
+        var d=new Class1("123asd");
+        c.printf(); //  def name
+        d.printf(); //  123asd
+
+    </script>
+</body>
+</html>

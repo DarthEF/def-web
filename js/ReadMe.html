@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>使用/介绍 文档</title>
+        <style>
+            .profiles{
+                margin: 1em auto 1em 2em;
+            }
+            .codesBox{
+                margin: 1em auto 1em 2em;
+                padding:1em 2em;
+                border-top: 2px #000 solid;
+                border-bottom: 2px #000 solid;
+
+            }
+            .explain{
+                margin: 1em auto 1em 2em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>
+            这是一个关于这个文件夹的内容的 使用/介绍 文档。
+        </h1>
+        <p><em>
+            除了 "quote" 文件夹外的所有内容，如无注释注明。都是由 Darth_Eternalfaith 制作编写------2020-10-22
+        </em></p>
+        <main id="mainContent">
+            
+        </main>
+        <template id="ContentItemXML">
+            <div>
+                <ul ctrl-for="this.i=0;this.i<this.data.list.length;++this.i">
+                    <li>
+                        <h3 id="${this.data.list[this.i].title}" class="Title" ctrl-id="title">${this.data.list[this.i].title}</h3>
+                        <button ctrl-id="op_cl" onclick="console.log(this.nextElementSibling);this.nextElementSibling.style.display=this.nextElementSibling.style.display=='none'?'block':'none'">折叠/展开</button>
+                        <div ctrl-id="contentBox">
+                            <div class="profiles" ctrl-id="profiles">${this.data.list[this.i].profiles}</div>
+                            <div class="codesBox">
+                                <code ctrl-id="codes">
+                                    ${this.data.list[this.i].codes}
+                                </code>
+                            </div>
+                            <div class="explain" ctrl-id="explain">
+                                ${this.data.list[this.i].explain}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </template>
+        <script src="./Basics.js"></script>
+        <script src="./ControlLib/ControlLibBase.js"></script>
+        <script>
+            var mainContent=document.getElementById("mainContent");
+
+            var ContentItem=htmlToControl(document.getElementById("ContentItemXML").innerHTML,{});
+            var rmlist=new ContentItem("rmlist");
+            rmlist.data={
+                list:[
+                        {
+                            title:"basicsConst",
+                            profiles:"basics.js 里，有定义某些常量",
+                            codes:"/** 用 rad 表示的 1deg */ <br/> const deg = Math.PI/180;",
+                            explain:"没什么好说的."
+                        },{
+                            title:"arrayEqual(a1,a2)",
+                            profiles:"对比两个列表项是否相同的一个方法",
+                            codes:"/**对比两个列表项是否相同<br/> * @param {Array}   a1       要进行比较的数组<br/> * @param {Array}   a2       要进行比较的数组<br/> * @return {Boolean}    返回是否相同<br/>*/<br/>function arrayEqual(a1,a2)",
+                            explain:"用来判断两个列表的内容是否相同.<br/>注意!<br/>[{a:123}]!=[{a:123}] 因为object是引用类型，而这个函数没有进行更深地遍历;<br/>不区分类型 '1'==1 is true"
+                        },{
+                            title:"arrayCmp(a1,a2)",
+                            profiles:"对比两个列表项是否相同的一个方法",
+                            codes:"/**对比两个列表项是否相同(不区分项的类型和顺序)<br/>"+
+                                    " * @param {Array}   a1       要进行比较的数组<br/>"+
+                                    " * @param {Array}   a2       要进行比较的数组<br/>"+
+                                    " * @return {Boolean}    返回是否相同<br/>"+
+                                    " * 本来是给KeyNotbook用的 <br/>"+
+                                    "*/<br/>"+
+                                    "function arrayCmp(a1,a2)",
+                            explain:"不区分类型 '1'==1 is true;而且不按顺序"
+                        },{
+                            title:"createOlFnc",
+                            profiles:"js写函数重载的一种方式",
+                            codes:
+                            '<br/>/**'+
+                            '<br/> * 创建重载函数'+
+                            '<br/> * @param   {Function} defaultFnc 当没有和实参对应的重载时默认执行的函数'+
+                            '<br/> * @return  {Function} 函数'+
+                            '<br/> * 用 .addOverload 添加重载'+
+                            '<br/> */'+
+                            '<br/> function createOlFnc(defaultFnc)'+
+                            '<br/> /**'+
+                            '<br/> * 添加一个重载'+
+                            '<br/> * @param {Array}       parameterType   形参的类型'+
+                            '<br/> * @param {Function}    fnc             执行的函数'+
+                            '<br/> * @param {String}      codeComments    函数的注释'+
+                            '<br/>*/'+
+                            '<br/>createOlFnc.addOverload=function(parameterType,fnc,codeComments)'+
+                            '<br/>'+
+                            '<br/>// 函数重载 demo1; '+
+                            '<br/>var d=createOlFnc(function(){console.log(123);});'+
+                            '<br/>d.addOverload([String],function(str){console.log("this is a string: "+str);});'+
+                            '<br/>d();//123'+
+                            '<br/>d("abcabcabc");//this is a string: abcabcabc'+
+                            '<br/>'+
+                            '<br/>// 函数重载 demo2; '+
+                            '<br/>var Class1=createOlFnc(function (){'+
+                            '<br/>    // 默认构造函数'+
+                            '<br/>    this.data="def name";'+
+                            '<br/>});'+
+                            '<br/>Class1.addOverload([String],function(data){'+
+                            '<br/>    // 构造函数1'+
+                            '<br/>    this.data=data;'+
+                            '<br/>});'+
+                            '<br/>Class1.prototype={'+
+                            '<br/>    printf:function(){'+
+                            '<br/>        console.log("this obj\'s data is : "+this.data);'+
+                            '<br/>    }'+
+                            '<br/>}'+
+                            '<br/>var c=new Class1();'+
+                            '<br/>var d=new Class1("123asd");'+
+                            '<br/>c.printf(); //  def name'+
+                            '<br/>d.printf(); //  123asd'
+                            ,
+                            explain:"创建一个重载函数并且可以添加很多个重载"
+                        },
+                    ]
+            };
+            rmlist.addend(mainContent);
+        </script>
+    </body>
+</html>

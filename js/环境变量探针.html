@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cgi环境变量测试</title>
+</head>
+<body>
+    <div tabindex="0" id="keycodeP" >keycode</div>
+    注:post请求的Requst payload并不是存在环境变量里的
+    <br/>
+    <input type="text" name="posttext" id="posttext">
+    <input type="button" value="发射post请求" id="postbutton">
+    <br/>
+    <input type="text" name="gettext" id="gettext">
+    <input type="button" value="发射get请求" id="getbutton">
+    <pre style="width: 100%;" id="ajaxReturn"></pre>
+    <script src="./AJAX.js"></script>
+    <script>
+        document.getElementById("keycodeP").onkeydown=function(e){console.log(e.key,e.keyCode)};
+        var ajaxreturn = document.getElementById("ajaxReturn");
+        var envscgi = new AJAXObject(null,"http://127.0.0.1/cgi-bin/env.cgi",true,function(){
+            ajaxreturn.innerHTML=this.xmlhttp.response;
+        });
+        var getbutton=document.getElementById("getbutton");
+        getbutton.onclick=function(){
+            envscgi.method="get"
+            envscgi.realConn();
+        }
+        var postbutton=document.getElementById("postbutton");
+        postbutton.onclick=function(){
+            console.log(this)
+            envscgi.method="post"
+            envscgi.realConn(document.getElementById("posttext").value);
+        }
+    </script>
+</body>
+</html>
