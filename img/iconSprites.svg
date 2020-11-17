@@ -11,7 +11,7 @@
     </defs>
 
     <!-- 每个元素的分隔线 -->
-    <!-- <svg width="1000" height="1000" x="0" y="0"><rect width="1000" height="1000" fill="url(#grid)"></rect></svg> -->
+    <svg width="1000" height="1000" x="0" y="0"><rect width="1000" height="1000" fill="url(#grid)"></rect></svg>
     
     <style>
     *{
@@ -20,7 +20,7 @@
     }
     #root{
         /* background-color:#000; */
-        overflow:hidden;
+        /* overflow:hidden; */
     }
     </style>
     <g>
@@ -93,29 +93,28 @@
             <rect x="75" y="25" width="10" height="50" />
         </symbol>
         <symbol id="add">
-        <!-- 加号(十字)的图标 -->
-            <rect x="40" y="0" width="20" height="100" />
-            <rect x="0" y="40" width="100" height="20" />
+        <!-- +加号(十字)的图标 -->
+            <rect x="40" y="10" width="20" height="80" />
+            <rect x="10" y="40" width="80" height="20" />
         </symbol>
         <symbol id="minuid">
-        <!-- 减号(一字)的图标 -->
+        <!-- -减号(一字)的图标 -->
             <rect x="10" y="40" width="80" height="20" />
         </symbol>
         <symbol id="multiply">
-        <!-- 乘号(叉)的图标 -->
+        <!-- ×乘号(叉)的图标 -->
             <g transform="translate(50 -20)rotate(45)">
-                <rect x="40" y="0" width="20" height="100" />
-                <rect x="0" y="40" width="100" height="20" />
+                <use href="#add"></use>
             </g>
         </symbol>
         <symbol id="divided">
-        <!-- 除号的图标 -->
+        <!-- ÷除号的图标 -->
             <rect x="10" y="40" width="80" height="20" />
             <circle cx="50" cy="20" r="12" stroke-width="0"/>
             <circle cx="50" cy="80" r="12" stroke-width="0"/>
         </symbol>
         <symbol id="percent">
-        <!-- 百分号的图标 -->
+        <!-- %百分号的图标 -->
             <circle cx="28" cy="28" r="16" fill="none" stroke-width="6" ></circle>
             <circle cx="72" cy="72" r="16" fill="none" stroke-width="6" ></circle>
             <line x1="15" y2="15" x2="85" y1="85" stroke-width="12" />
@@ -144,9 +143,9 @@
         <!-- 一只笔的图标 -->
             <mask id="panMask">
                 <path d="M35 10 L65 10 L65 70 L50 90  L35 70 Z" fill="#fff" />
+                <line x1="0" x2="100" y1="70" y2="70" stroke="#000" stroke-width="2"/>
                 <line x1="0" x2="100" y1="20" y2="20" stroke="#000" stroke-width="2"/>
                 <line x1="0" x2="100" y1="25" y2="25" stroke="#000" stroke-width="2"/>
-                <line x1="0" x2="100" y1="70" y2="70" stroke="#000" stroke-width="2"/>
                 <line x1="40" x2="40" y1="25" y2="70" stroke="#000" stroke-width="2"/>
                 <line x1="60" x2="60" y1="25" y2="70" stroke="#000" stroke-width="2"/>
             </mask>
@@ -180,7 +179,7 @@
         <symbol id="volume">
         <!-- 一个喇叭的图标 -->
             <circle cx="15" cy="50" r="12" />
-            <svg fill="#fff" x="-4">
+            <svg x="-4">
             <path d="M35 35 L60 10 L60 90 L35 65 Z" />
             </svg>
             <line x1="65" x2="65" y1="30" y2="70" stroke-width="8" />
@@ -249,7 +248,95 @@
                 <use href="#unFullScrren"></use>
             </svg>
         </symbol>
+        <symbol id="sqrt">
+        <!-- 开平方根(√)符号  也用作勾 -->
+            <path d="M 20 55 L 50 80 L 80 20 L 90 20 L 55 90 L 45 90 L 20 66 L 10 66  L 10 55 Z" />
+        </symbol>
+        <symbol id="openEye">
+        <!-- 张开的 眼睛 -->
+            <mask id="openEye_mask">
+                <circle fill="#fff" cx="50" cy="50" r="15" />
+                <path stroke-width="2" stroke="#000" fill="#0000" d="M10 50 Q25 45 50 45 T90 50" />
+                <path  fill="#fff" d="M10 50 Q25 25 50 25 T90 50 Q75 45 50 45 T10 50z M10 50 Q25 75 50 75 T90 50 Q75 65 50 65 T10 50z" />
+            </mask>
+            <rect x="0" y="0" width="100" height="100" mask="url(#openEye_mask)"/>
+        </symbol>
+        <symbol id="closeEye">
+        <!-- 关闭的 眼睛 -->
+            <mask id="closeEye_mask">
+                <use fill="#fff" href="#openEye"></use>
+                <line stroke-width="10" stroke="#000" x1="10" x2="90" y1="10" y2="90" />
+                <line stroke-width="5" stroke="#fff" x1="10" x2="90" y1="10" y2="90" />
 
+                <!-- <line stroke-width="5" stroke="#000" x1="8" x2="88" y1="10" y2="90" />
+                <line stroke-width="5" stroke="#fff" x1="12" x2="92" y1="10" y2="90" /> -->
+
+            </mask>
+            <rect x="0" y="0" width="100" height="100" mask="url(#closeEye_mask)"/>
+        </symbol>
+        <symbol id="home">
+        <!-- 主页(房子) home 的图标 -->
+            <path fill="#0000" stroke-width="6" stroke-linejoin="round" d="M10 45 L20 45 L20 90 L40 90 L40 60 L60 60 L60 90 L80 90 L80 45 L90 45 L50 10 Z"/>
+        </symbol>
+        <symbol id="user">
+        <!-- 用户 user 的图标 -->
+            <mask id="userMask">
+                <g stroke-width="6">
+                    <circle stroke-linecap="round" cx="50" cy="90" r="40" stroke-dasharray="125.6" stroke-dashoffset="125.6" fill="#000" stroke="#fff" />
+                    <circle stroke-linecap="round" cx="50" cy="40" r="25" fill="#000" stroke="#fff"  />
+                </g>
+            </mask>
+            <rect x="0" y="0" width="100" height="100" mask="url(#userMask)" />
+        </symbol>
+        <symbol id="key">
+        <!-- 一个钥匙 的图标 -->
+            <mask id="keyMask">
+                <g stroke-width="0">
+                    <path fill="#fff" d="M10 10 L 10 25 L 15 30 L 25 30 L 25 40 L 35 40 L 35 50 L 70 85 L 85 70 L 25 10 Z" />
+                    <circle cx="68" cy="68" r="22" fill="#fff" />
+                    <circle cx="75" cy="75" r="6" fill="#000" />
+                </g>
+            </mask>
+            <rect x="0" y="0" width="100" height="100" mask="url(#keyMask)" />
+        </symbol>
+        <symbol id="radarChart" >
+        <!-- 雷达图 的图标 -->
+            <!-- 外圈 -->
+            <circle cx="50" cy="50" r="36" fill="#0000" stroke-width="4"/>
+            <!-- 环 -->
+            <circle cx="50" cy="50" r="24" fill="#0000" stroke-width="2" stroke-dasharray="131"/>
+            <circle cx="50" cy="50" r="12" fill="#0000" stroke-width="2" stroke-dasharray="66" />            
+            <circle cx="50" cy="50" r="3"/>
+            <!-- 扫描线 -->
+            <line x1="50" x2="75" y1="50" y2="25" stroke-width="3" />
+            <g stroke-width="1">
+            <!-- 坐标轴 -->
+                <line x1="50" x2="50" y1="14" y2="86"/>
+                <line x1="14" x2="86" y1="50" y2="50"/>
+            </g>
+            <g>
+                <circle cx="67" cy="67" r="2"/>
+                <circle cx="38" cy="64" r="2"/>
+                <circle cx="33" cy="25" r="2"/>
+            </g>
+        </symbol>
+        <symbol id="pieChart" >
+        <!-- 饼状图 的图标 -->
+            <g fill="#0000" stroke-width="4" stroke-linecap="round">
+                <circle cx="50" cy="50" r="36" stroke-dasharray="166"  stroke-dashoffset="-1.6"/>
+                <circle cx="55" cy="45" r="36" stroke-dasharray="56.5 99999" stroke-dashoffset="-169.2"/>
+                <line x1="55" x2="91" y1="45" y2="45" />
+                <line x1="55" x2="55" y1="9"  y2="45" />
+            </g>
+        </symbol>
+        <symbol id="location" >
+        <!-- 本地(现在地点) 的图标 -->
+            <g fill="#0000" stroke-width="5">
+                <path d="M50 90 Q 60 80 75 40 Q 80 10 50 10 T 25 40 Q40 80 50 90 Z M50 45 Q 60 45 60 35 T 50 25 T 40 35 T 50 45 Z" />
+                <!-- <circle cx="50" cy="36" r="10"/> -->
+            </g>
+        </symbol>
+        
         <!-- 下面是从网上找到的 -->
 
         <symbol id="random">
@@ -281,77 +368,107 @@
             </svg>
         </symbol>
     </g>
-    <g>    
+    <g fill="#f00" stroke="#f00" >    
     <!-- 精灵图像 -->
         <g id="Y0">
+        <!-- 常用ui图标 -->
             <!-- A0 -->
-            <svg x="0" y="0"        viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#logo" ></use></svg>
+            <svg x="000" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#logo" ></use></svg>
             <!-- B0 -->
-            <svg x="100" y="0"      viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#bbs" ></use></svg>
+            <svg x="100" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#bbs" ></use></svg>
             <!-- C0 -->
-            <svg x="200" y="0"      viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#jigsaw"></use></svg>
+            <svg x="200" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#jigsaw"></use></svg>
+            <!-- D0 -->
+            <svg x="300" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#openEye"></use></svg>
+            <!-- E0 -->
+            <svg x="400" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#closeEye"></use></svg>
+            <!-- f0 -->
+            <svg x="500" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#sqrt"></use></svg>
+            <!-- g0 -->
+            <svg x="600" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#key"></use></svg>
+            <!-- i0 -->
+            <svg x="800" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#user"></use></svg>
+            <!-- j0 -->
+            <svg x="900" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#home"></use></svg>
         </g>
         <g id="Y1">
+        <!-- 常用符号 -->
             <!-- A1 -->
-            <svg x="0" y="100"      viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#Query"></use></svg>
+            <svg x="000" y="100" viewBox="0 0 100 100" width="100" height="100"><use href="#Query"></use></svg>
             <!-- B1 -->
-            <svg x="100" y="100"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#reload"></use></svg>
+            <svg x="100" y="100" viewBox="0 0 100 100" width="100" height="100"><use href="#reload"></use></svg>
             <!-- C1 -->
-            <svg x="200" y="110"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#enter"></use></svg>
+            <svg x="200" y="110" viewBox="0 0 100 100" width="100" height="100"><use href="#enter"></use></svg>
             <!-- D1 -->
-            <svg x="300" y="100"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#add"></use></svg>
+            <svg x="300" y="100" viewBox="0 0 100 100" width="100" height="100"><use href="#add"></use></svg>
             <!-- E1 -->
-            <svg x="400" y="100"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#minuid"></use></svg>
+            <svg x="400" y="100" viewBox="0 0 100 100" width="100" height="100"><use href="#minuid"></use></svg>
             <!-- F1 -->
-            <svg x="500" y="100"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#multiply"></use></svg>
+            <svg x="500" y="100" viewBox="0 0 100 100" width="100" height="100"><use href="#multiply"></use></svg>
             <!-- G1 -->
-            <svg x="600" y="100"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#divided"></use></svg>
+            <svg x="600" y="100" viewBox="0 0 100 100" width="100" height="100"><use href="#divided"></use></svg>
             <!-- H1 -->
-            <svg x="700" y="100"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#percent"></use></svg>
+            <svg x="700" y="100" viewBox="0 0 100 100" width="100" height="100"><use href="#percent"></use></svg>
             <!-- I1 -->
-            <svg x="800" y="100"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#v_ddd"></use></svg>
+            <svg x="800" y="100" viewBox="0 0 100 100" width="100" height="100"><use href="#v_ddd"></use></svg>
             <!-- J1 -->
-            <svg x="900" y="100"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#up_down"></use></svg>
+            <svg x="900" y="100" viewBox="0 0 100 100" width="100" height="100"><use href="#up_down"></use></svg>
         </g>
         <g id="Y2">
+        <!-- 播放器 -->
             <!-- A2 -->
-            <svg x="0" y="200"      viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#play"></use></svg>
+            <svg x="000" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#play"></use></svg>
             <!-- B2 -->
-            <svg x="100" y="200"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#pause"></use></svg>
+            <svg x="100" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#pause"></use></svg>
             <!-- C2 -->
-            <svg x="200" y="200"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#last"></use></svg>
+            <svg x="200" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#last"></use></svg>
             <!-- D2 -->
-            <svg x="300" y="200"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#loop"></use></svg>
+            <svg x="300" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#loop"></use></svg>
             <!-- E2 -->
-            <svg x="400" y="200"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#random"></use></svg>
+            <svg x="400" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#random"></use></svg>
             <!-- F2 -->
-            <svg x="500" y="200"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#volume"></use></svg>
+            <svg x="500" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#volume"></use></svg>
             <!-- G2 -->
-            <svg x="600" y="200"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#fullScrren"></use></svg>
+            <svg x="600" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#fullScrren"></use></svg>
             <!-- H2 -->
-            <svg x="700" y="200"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#fullWindow"></use></svg>
+            <svg x="700" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#fullWindow"></use></svg>
             <!-- I2 -->
-            <svg x="800" y="200"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#unFullScrren"></use></svg>
+            <svg x="800" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#unFullScrren"></use></svg>
             <!-- J2 -->
-            <svg x="900" y="200"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#unFullWindow"></use></svg>
+            <svg x="900" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#unFullWindow"></use></svg>
             
         </g>
         <g id="Y3">
+        <!-- 编辑 -->
             <!-- A3 -->
-            <svg x="0" y="300"      viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#pan"></use></svg>
+            <svg x="000" y="300" viewBox="0 0 100 100" width="100" height="100"><use href="#pan"></use></svg>
             <!-- B3 -->
-            <svg x="100" y="300"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#edit"></use></svg>
+            <svg x="100" y="300" viewBox="0 0 100 100" width="100" height="100"><use href="#edit"></use></svg>
             <!-- C3 -->
-            <svg x="200" y="300"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#save"></use></svg>
+            <svg x="200" y="300" viewBox="0 0 100 100" width="100" height="100"><use href="#save"></use></svg>
             <!-- D3 -->
-            <svg x="300" y="300"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#download"></use></svg>
+            <svg x="300" y="300" viewBox="0 0 100 100" width="100" height="100"><use href="#download"></use></svg>
             <!-- E3 -->
-            <svg x="400" y="300"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#copy"></use></svg>
+            <svg x="400" y="300" viewBox="0 0 100 100" width="100" height="100"><use href="#copy"></use></svg>
         </g>
-
-        <!-- A9 -->
-        <svg x="0" y="900"      viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#linux"></use></svg>
-        <!-- B9 -->
-        <svg x="100" y="900"    viewBox="0 0 100 100" width="100" height="100" fill="#fff" stroke="#fff" ><use href="#twitter"></use></svg>
+        <g id="Y4">
+        <!-- 统计图 -->
+            <!-- j4 -->
+            <svg x="900" y="400" viewBox="0 0 100 100" width="100" height="100"><use href="#location"></use></svg>
+            <!-- A4 -->
+            <svg x="000" y="400" viewBox="0 0 100 100" width="100" height="100"><use href="#radarChart"></use></svg>
+            <!-- B4 -->
+            <svg x="100" y="400" viewBox="0 0 100 100" width="100" height="100"><use href="#pieChart"></use></svg>
+        <!-- 符号 -->
+            <!-- j4 -->
+            <svg x="900" y="400" viewBox="0 0 100 100" width="100" height="100"><use href="#location"></use></svg>
+        </g>
+        <g id="Y4">
+        <!-- LOGO -->
+            <!-- A9 -->
+            <svg x="000" y="900" viewBox="0 0 100 100" width="100" height="100" ><use href="#linux"></use></svg>
+            <!-- B9 -->
+            <svg x="100" y="900" viewBox="0 0 100 100" width="100" height="100" ><use href="#twitter"></use></svg>
+        </g>
     </g>
 </svg>
