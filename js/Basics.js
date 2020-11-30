@@ -407,19 +407,22 @@ function arrayCmp(a1,a2){
 function createOlFnc(defaultFnc){
     var OverloadFunction=(function(){
         return function(){
-            var i=arguments.length-1,j;
+            var i=arguments.length-1,j,flag=false;
             for(i=OverloadFunction.ols.length-1;i>=0;--i){
                 if(arguments.length==OverloadFunction.ols[i].parameterType.length){
                     flag=true;
                     for(j=arguments.length-1;flag&&j>=0;--j){
                         flag=(arguments[j].constructor==OverloadFunction.ols[i].parameterType[j]||arguments[j] instanceof OverloadFunction.ols[i].parameterType[j]);
                     }
-                    if(flag){
-                        return OverloadFunction.ols[i].fnc.apply(this,arguments);
-                    }
+                    if(flag)break;
                 }
             }
-            OverloadFunction.defaultFnc.apply(this,arguments);
+            if(flag){
+                return OverloadFunction.ols[i].fnc.apply(this,arguments);
+            }
+            else{
+                return OverloadFunction.defaultFnc.apply(this,arguments);
+            }
         }
     })();
     OverloadFunction.ols=[];
