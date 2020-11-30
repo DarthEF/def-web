@@ -429,7 +429,7 @@ function createOlFnc(defaultFnc){
 }
 /**
  * 添加一个重载
- * @param {Array}parameterType   形参的类型
+ * @param {Array} parameterType   形参的类型
  * @param {Function}    fnc             执行的函数
  * @param {String}      codeComments    函数的注释
 */
