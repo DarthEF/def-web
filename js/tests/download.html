@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载图床的连续数字命名的图片</title>
+    <link rel="stylesheet" href="./css.css">
+</head>
+<body>
+    <div>
+        <input type="hidden" id="bed" value="https://i0.nyacdn.com/galleries/">
+        <input type="text" id="id" value="">
+        <input type="text" id="opNub" value="1">
+        <button onclick="dl()">
+            输入完成后点击下载
+        </button>
+        <a download="1.png" href="./1.png">
+        asdasdsd
+        </a>
+        <script src="../Basics.js" type="text/javascript"></script>
+        <script>
+
+            class ImglistDL{
+                bed;
+                id;
+                tImg;
+                a;
+                constructor(bed,id){
+                    this.bed    =   bed;
+                    this.id     =   id;
+                    this.tImg=[];
+                    this.index=1;
+
+                    this.a=document.createElement("a");
+                    this.a.target="_Blank";
+                    this.tImg.onload=this.createDLF();
+                    this.typesIndex=0;
+                    for(var i=0;i<ImglistDL.fileTypes.length;++i){
+                        this.tImg[i]=new Image();
+                        this.tImg[i].onerror=function(){
+                            // console.error("无法下载"+this.src+"\t");
+                        }
+                        this.tImg[i].onload=this.createDLF(ImglistDL.fileTypes[i]);
+                    }
+                }
+                geturl(nub,filetype){
+                    this.index=nub;
+                    return ""+this.bed   +this.id  +"/"+nub+ "." +filetype;
+                }
+                
+                createDLF(filetype){
+                    var Tthis=this;
+                    return function(){
+                        Tthis.typesIndex=0;
+                        Tthis.a.href=this.src;
+                        Tthis.a.click();
+                        console.log("已呼出下载");
+                        Tthis.dl(Tthis.index+1);
+                    }
+                }
+                dl(index){
+                    for(var i=0;i<ImglistDL.fileTypes.length;++i){
+                        this.tImg[i].src=this.geturl(index,ImglistDL.fileTypes[i])
+
+                    }
+                }
+            }
+            ImglistDL.fileTypes=["png","jpg","jpeg"];
+            function cteateImglistDL(){
+                return new ImglistDL(document.getElementById("bed").value,document.getElementById("id").value);
+            }
+            var il;
+            function dl(){
+                il=cteateImglistDL();
+                il.dl(
+                    parseInt(document.getElementById("opNub").value)
+                );
+            }
+
+        </script>
+    </div>
+
+</body></html>

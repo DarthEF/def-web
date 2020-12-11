@@ -651,7 +651,7 @@ function addKeyEvent(_Element,_keepFlag,_keycode,_event,_type){
 }
 
 /**
- * 移除element上的keyNoTBook的事件
+ * 移除 element 上的 keyNotBook 的事件
  * @param {Document} _Element 
  * @param {Number||Array} _keycode 
  * @param {Function} _event 
@@ -688,4 +688,20 @@ function linkClick(e){
                 break;
             }
         }
+}
+
+function download(url,name){
+    var xhr=new XMLHttpRequest();
+    xhr.open("Get",url);
+    xhr.requestType="blob";
+    xhr.send();
+    xhr.onload=function(){
+        var data=this.response;
+        var tempA=document.createElement("a");
+        var dataurl=URL.createObjectURL(data);
+        console.log(dataurl);
+        tempA.setAttribute("href",dataurl);
+        tempA.setAttribute("download",name===undefined?"":name);
+        tempA.click();
+    }
 }
