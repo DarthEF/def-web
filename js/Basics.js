@@ -1,3 +1,34 @@
+/**
+ * [judgeOs UA & 内核 判断]
+ * @return {[type]} [description]
+ */
+function judgeOs() {
+    var ua = navigator.userAgent,
+        isWindowsPhone = /(?:Windows Phone)/.test(ua),
+        isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,
+        // 平板
+        isFireFox = ua.indexOf("Mozilla") != -1,
+        isTabvar = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox && /(?:Tabvar)/.test(ua)),
+        isPhone = /(?:iPhone)/.test(ua) && !isTabvar,
+        isPc = !isPhone && !isAndroid && !isSymbian,
+        isAndroid = ua.indexOf("Android") != -1,
+        isAndroid = ua.indexOf("Android") != -1,
+        isIE = ua.indexOf("Trident") != -1,
+        isWebkit = ua.indexOf("isWebkit") != -1,
+        isMozilla = ua.indexOf("Mozilla") != -1;
+    return {
+        isTabvar: isTabvar,
+        isPhone: isPhone,
+        isAndroid: isAndroid,
+        isPc: isPc,
+        isFireFox: isFireFox,
+        isWebkit: isWebkit,
+        isIE: isIE
+    };
+}
+/*判断客户端的浏览器UA ed.  资料参考HTML5学堂*/
+
+
 //旧版本浏览器兼容Object.keys函数   form https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 if (!Object.keys) {
     Object.keys = (function () {
@@ -341,6 +372,85 @@ if(Element.prototype.attachEvent){
 
 //功能open
 
+function getCurrAbsPath(){
+    if(document.currentScript){
+        return document.currentScript.src;
+    }
+    else{
+        var a = {}, stack;
+        try{
+            a.b();
+        }
+        catch(e){
+            stack = e.stack || e.sourceURL || e.stacktrace; 
+        }
+        var rExtractUri = /(?:http|https|file):\/\/.*?\/.+?.js/, 
+        absPath = rExtractUri.exec(stack);
+        return absPath[0] || '';
+    }
+}
+
+if(!this.importScripts){
+    if((this.constructor == Window) && (this.document)){
+        window.scriptList=[];
+        // 在 浏览器(window)的环境下
+        /**
+         * @param {String} _fileURL 文件路径
+         */
+        this.importScripts=function(_fileURL){
+            var fileURL,fileURL_Root;
+            if(fileURL_Root=getCurrAbsPath());
+            else{
+                fileURL_Root=this.location.href;
+            }
+            // 当前在 引用的js文件
+            if(_fileURL.indexOf("://")!=-1){
+                // 这个是绝对路径
+                fileURL=_fileURL;
+            }
+            else{
+                // 相对路径
+                var urlspc=1;
+                var i;
+                var tempUrl="";
+                for(i=0;i<_fileURL.length;i+=3){
+                    if(_fileURL[i]=='.'&&_fileURL[i+1]=='.'&&_fileURL[i+2]=='/'){
+                        ++urlspc;
+                    }
+                    else{
+                        for(var j=i;j<_fileURL.length;++j){
+                            if(_fileURL[j]!='/'&&_fileURL[j]!='.'){
+                                tempUrl=_fileURL.slice(j);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                for(i=fileURL_Root.length-1;(i>=0)&&(urlspc);--i){
+                    if(fileURL_Root[i]=='/'){
+                        --urlspc;
+                    }
+                }
+                fileURL=fileURL_Root.slice(0,i+2)+tempUrl;
+            }
+
+            if(window.scriptList.indexOf(fileURL)==-1){
+                window.scriptList.push(fileURL);
+                var tempXML=new XMLHttpRequest();
+                tempXML.open("get",fileURL,0);
+                tempXML.requestType="text";
+                tempXML.async=false;
+                tempXML.send();
+                document.write("<script>"+tempXML.response+"</script>");
+                console.log("improt "+fileURL);
+            }
+            else{
+                console.log(fileURL+" has imported");
+            }
+        }
+    }
+}
 /**对比两个列表项是否相同
  * @param {Array}   a1       要进行比较的数组
  * @param {Array}   a2       要进行比较的数组

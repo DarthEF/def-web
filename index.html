@@ -50,15 +50,16 @@
     </template>
 
     <script type="text/javascript" src="./js/Basics.js"></script>
-    <script type="text/javascript" src="./js/visual.js"></script>
-    <script type="text/javascript" src="./js/AJAX.js"></script>
-    <script type="text/javascript" src="./js/controlLib/ve.js"></script>
-    <script type="text/javascript" src="./js/controlLib/CtrlLib.js"></script>
-    <script type="text/javascript" src="./js/controlLib/HtmlToCtrl.js"></script>
     <script type="text/javascript" src="./js/index.js"></script>
     <script>
+        
+importScripts("./js/controlLib/ve.js");
+importScripts("./js/controlLib/CtrlLib.js");
+importScripts("./js/controlLib/HtmlToCtrl.js");
         console.log(new Date()-opentime,window.performance.getEntries());
-
+        if(getCurrAbsPath()){
+            
+        };
         var leftBox=document.getElementById("Left");
 
         var IndexNav=htmlToCtrl(document.getElementById("indexNavBluePrint").innerHTML,{});
