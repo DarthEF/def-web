@@ -362,7 +362,7 @@ function inputNumber(){
 }
 
 /** 用 rad 表示的 1deg */
-const deg=Math.PI/180;
+var deg=Math.PI/180;
 
 //兼容open
 if(Element.prototype.attachEvent){
