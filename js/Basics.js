@@ -389,67 +389,47 @@ function getCurrAbsPath(){
         return absPath[0] || '';
     }
 }
-
-if(!this.importScripts){
-    if((this.constructor == Window) && (this.document)){
-        window.scriptList=[];
-        // 在 浏览器(window)的环境下
-        /**
-         * @param {String} _fileURL 文件路径
-         */
-        this.importScripts=function(_fileURL){
-            var fileURL,fileURL_Root;
-            if(fileURL_Root=getCurrAbsPath());
-            else{
-                fileURL_Root=this.location.href;
+/**
+ * 把相对地址转换成绝对地址
+ * @param {String} _fileURL 
+ */
+function rltToAbs(_fileURL){
+    var fileURL,fileURL_Root;
+    if(fileURL_Root=getCurrAbsPath());
+    else{
+        fileURL_Root=this.location.href;
+    }
+    if(_fileURL.indexOf("://")!=-1){
+        // 这个是绝对路径
+        fileURL=_fileURL;
+    }
+    else{
+        // 相对路径
+        var urlspc=1;
+        var i;
+        var tempUrl="";
+        for(i=0;i<_fileURL.length;i+=3){
+            if(_fileURL[i]=='.'&&_fileURL[i+1]=='.'&&_fileURL[i+2]=='/'){
+                ++urlspc;
             }
-            // 当前在 引用的js文件
-            if(_fileURL.indexOf("://")!=-1){
-                // 这个是绝对路径
-                fileURL=_fileURL;
-            }
             else{
-                // 相对路径
-                var urlspc=1;
-                var i;
-                var tempUrl="";
-                for(i=0;i<_fileURL.length;i+=3){
-                    if(_fileURL[i]=='.'&&_fileURL[i+1]=='.'&&_fileURL[i+2]=='/'){
-                        ++urlspc;
-                    }
-                    else{
-                        for(var j=i;j<_fileURL.length;++j){
-                            if(_fileURL[j]!='/'&&_fileURL[j]!='.'){
-                                tempUrl=_fileURL.slice(j);
-                                break;
-                            }
-                        }
+                for(var j=i;j<_fileURL.length;++j){
+                    if(_fileURL[j]!='/'&&_fileURL[j]!='.'){
+                        tempUrl=_fileURL.slice(j);
                         break;
                     }
                 }
-                for(i=fileURL_Root.length-1;(i>=0)&&(urlspc);--i){
-                    if(fileURL_Root[i]=='/'){
-                        --urlspc;
-                    }
-                }
-                fileURL=fileURL_Root.slice(0,i+2)+tempUrl;
-            }
-
-            if(window.scriptList.indexOf(fileURL)==-1){
-                window.scriptList.push(fileURL);
-                var tempXML=new XMLHttpRequest();
-                tempXML.open("get",fileURL,0);
-                tempXML.requestType="text";
-                tempXML.async=false;
-                tempXML.send();
-                document.write("<script>"+tempXML.response+"</script>");
-                console.log("improt "+fileURL);
-            }
-            else{
-                console.log(fileURL+" has imported");
+                break;
             }
         }
+        for(i=fileURL_Root.length-1;(i>=0)&&(urlspc);--i){
+            if(fileURL_Root[i]=='/'){
+                --urlspc;
+            }
+        }
+        fileURL=fileURL_Root.slice(0,i+2)+tempUrl;
     }
+    return fileURL;
 }
 /**对比两个列表项是否相同
  * @param {Array}   a1       要进行比较的数组
