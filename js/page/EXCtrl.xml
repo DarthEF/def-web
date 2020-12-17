@@ -26,7 +26,11 @@
 <div class="audioControl" tabindex="0" onkeydown="console.log(1)">
     <audio ctrl-id="audioTag"></audio>
     <div class="audioControl-CtrlBox">
-        <div>
+        <div class="audioControl-visual">
+            <div class="audioControl-spectrumBox"  ctrl-if="">
+                <canvas ctrl-id="spectrum">
+                </canvas>
+            </div>
             <div class="audioControl-playBar">
                 <button></button>
             </div>
