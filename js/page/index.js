@@ -1,5 +1,5 @@
 var IndexNav,AudioControl;
-
+var thisjsUrl=getCurrAbsPath();
 
 var leftBox=document.getElementById("Left");
 
@@ -33,37 +33,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             }
         }
     });
-    var indexnav=new IndexNav("leftIndex");
-    indexnav.data={
-        a:"123",
-        d1List:[
-            {
-                url:"./index",
-                text:"Index",
-                title:"Index",
-                // child:[]
-            },{
-                url:"./blog",
-                text:"blog",
-                title:"Darth's web log",
-                child:[
-                    {
-                        url:"./blog/code",
-                        text:"code",
-                        title:"code notbook"
-                    },{
-                        url:"./blog/food",
-                        text:"food",
-                        title:"eat food"
-                    }
-                ]
-            }
-        ]
-    };
-    indexnav.addend(leftBox);
 
     /**
-     * 左侧的音乐播放器;
+     * 左侧的音乐播放控制器;
      */
     AudioControl=htmlToCtrl(BluePrintXmlList[1],{
         /**
@@ -74,12 +46,16 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.playType=0;
             this.indexMap=[];
             this.mapIndex=0;
+            this.worker=new Worker(rltToAbs("./audioCtrlWorker.js",thisjsUrl));
         },
         /**
          * 控件 初始化完成的回调函数
          */
         callback:function(){
             console.log("cnm");
+            this.canvas=this.elements["spectrum"];
+            var offscreen=this.canvas.transferControlToOffscreen();
+            this.worker.postMessage({ctrl:0, canvas : offscreen},[offscreen]);
         },
         /**
          * 新增一个媒体
@@ -169,6 +145,36 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.setPlayingIndex(this.indexMapStep(1));
         }
     });
+
+
+    var indexnav=new IndexNav("leftIndex");
+    indexnav.data={
+        a:"123",
+        d1List:[
+            {
+                url:"./index",
+                text:"Index",
+                title:"Index",
+                // child:[]
+            },{
+                url:"./blog",
+                text:"blog",
+                title:"Darth's web log",
+                child:[
+                    {
+                        url:"./blog/code",
+                        text:"code",
+                        title:"code notbook"
+                    },{
+                        url:"./blog/food",
+                        text:"food",
+                        title:"eat food"
+                    }
+                ]
+            }
+        ]
+    };
+    indexnav.addend(leftBox);
 
     audioControl=new AudioControl("leftBottom_audioControl");
 

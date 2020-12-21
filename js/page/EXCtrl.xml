@@ -27,7 +27,7 @@
     <audio ctrl-id="audioTag"></audio>
     <div class="audioControl-CtrlBox">
         <div class="audioControl-visual">
-            <div class="audioControl-spectrumBox"  ctrl-if="">
+            <div class="audioControl-spectrumBox">
                 <canvas ctrl-id="spectrum">
                 </canvas>
             </div>
