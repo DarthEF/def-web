@@ -15,5 +15,14 @@ onmessage=function(e){
     console.log(ctx);
     ctx.fillStyle="#f00"
     ctx.fillRect(0,0,100,100);
-    postMessage({callBack:"cnm"});
+    var tp=new Polygon();
+    tp.pushNodes([
+        {x:1,y:2},
+        {x:1,y:2},
+        {x:1,y:2},
+        {x:1,y:2},
+        {x:1,y:2},
+        {x:1,y:2}
+    ])
+    postMessage({p:tp});
 }

@@ -56,6 +56,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.canvas=this.elements["spectrum"];
             var offscreen=this.canvas.transferControlToOffscreen();
             this.worker.postMessage({ctrl:0, canvas : offscreen},[offscreen]);
+            this.worker.onmessage=function(e){
+                console.log(e.data)
+            }
         },
         /**
          * 新增一个媒体
