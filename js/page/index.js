@@ -52,8 +52,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * 控件 初始化完成的回调函数
          */
         callback:function(){
-            console.log("cnm");
             this.canvas=this.elements["spectrum"];
+            this.canvas.width=this.elements["spectrumBox"].offsetWidth;
+            this.canvas.height=this.elements["spectrumBox"].offsetHeight;
             var offscreen=this.canvas.transferControlToOffscreen();
             this.worker.postMessage({ctrl:0, canvas : offscreen},[offscreen]);
             this.worker.onmessage=function(e){

@@ -23,23 +23,24 @@
 
 <ctrl_tab/>
 
-<div class="audioControl" tabindex="0" onkeydown="console.log(1)">
+<div class="audioControl">
     <audio ctrl-id="audioTag"></audio>
     <div class="audioControl-CtrlBox">
         <div class="audioControl-visual">
-            <div class="audioControl-spectrumBox">
+            <div ctrl-id="spectrumBox" class="audioControl-spectrumBox">
                 <canvas ctrl-id="spectrum">
                 </canvas>
             </div>
             <div class="audioControl-playBar">
-                <button></button>
+                <div class="audioControl-playBarLow"></div>
+                <button class="audioControl-playBarBtn"></button>
             </div>
         </div>
         <div class="audioControl-buttons">
-            <button class="audioControl-last" ctrl-id="last">last</button>
-            <button class="audioControl-playPause" ctrl-id="play">play</button>
-            <button class="audioControl-next" ctrl-id="next">next</button>
-            <button class="audioControl-playType" ctrl-id="playType">playType</button>
+            <button class="audioControl-button audioControl-playType" ctrl-id="playType">playType</button>
+            <button class="audioControl-button audioControl-last" ctrl-id="last">last</button>
+            <button class="audioControl-button audioControl-playPause" ctrl-id="play">play</button>
+            <button class="audioControl-button audioControl-next" ctrl-id="next">next</button>
         </div>
     </div>
 </div>
