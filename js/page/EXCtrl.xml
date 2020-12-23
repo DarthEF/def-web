@@ -44,7 +44,7 @@
             <div class="audioControl-button audioControl-callList"  ctrl-id="callList">callList</div>
         </div>
         <div class="audioControl-medioListBox">
-            <ul class="audioControl-medioListBox" ctrl-for="this.i=0;this.i<this.data.medioList.length;this.i++">
+            <ul class="audioControl-medioList" ctrl-for="this.i=0;this.i<this.data.medioList.length;this.i++">
                 <li>
                     <a title="${this.data.medioList[this.i].title}" href="${this.data.medioList[this.i].url}">
                         ${this.data.medioList[this.i].title}

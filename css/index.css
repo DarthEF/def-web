@@ -270,3 +270,15 @@ html,body{
     transform: translate(190%,-50%);
     background-position: 300% 0%;
 }
+
+
+.audioControl-medioListBox{
+    left:100%;
+    position: absolute;
+    bottom:0;
+    height:200%;
+    width:100%;
+    margin-left:2px;
+    overflow-y:scroll;
+    background:#888;
+}
