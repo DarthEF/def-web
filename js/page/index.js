@@ -162,9 +162,15 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             if(this.mapIndex>=l)this.mapIndex=0;
             return this.mapIndex;
         },
+        /**
+         * 播放上一个
+         */
         last:function(){
             this.setPlayingIndex(this.indexMapStep(-1));
         },
+        /**
+         * 播放下一个
+         */
         next:function(){
             this.setPlayingIndex(this.indexMapStep(1));
         }
