@@ -52,14 +52,48 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * 控件 初始化完成的回调函数
          */
         callback:function(){
-            this.canvas=this.elements["spectrum"];
-            this.canvas.width=this.elements["spectrumBox"].offsetWidth;
-            this.canvas.height=this.elements["spectrumBox"].offsetHeight;
+            var that=this;
+            var mes=this.elements;
+
+            this.canvas=mes["spectrum"];
+            this.canvas.width=mes["spectrumBox"].offsetWidth;
+            this.canvas.height=mes["spectrumBox"].offsetHeight;
             var offscreen=this.canvas.transferControlToOffscreen();
             this.worker.postMessage({ctrl:0, canvas : offscreen},[offscreen]);
             this.worker.onmessage=function(e){
                 console.log(e.data)
             }
+
+            if(this.data.medioList&&this.data.medioList.length){
+                mes.audioTag.src=this.data.medioList[0].url;
+                this.medioList=this.data.medioList;
+                this.reIndexMap(this.playType);
+            }
+            
+            mes.next.onclick=function(){
+                that.next();
+            }
+            mes.last.onclick=function(){
+                that.last();
+            }
+            mes.playPause.onclick=function(){
+                that.playPause();
+            }
+            mes["1"].onclick=function(e){
+                if(e.target.tagName=="A"){
+                    stopPE();
+                    that.reIndexMap(that.playType);
+                }
+            }
+        },
+        /**
+         * 改变播放顺序的方式
+         * @param {Number} _type 0: 顺序; 1: 逆序; 2: 乱序;
+         */
+        setPlayType:function(_type){
+            this.playType=_type;
+            this.reIndexMap(this.playType);
+            return this.indexMap;
         },
         /**
          * 新增一个媒体
@@ -129,7 +163,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          */
         setPlayingIndex:function(_index){
             if(this.medioList.length<=0)return;
-            this.setTempPlaySrc(this.indexMap[_index]);
+            this.setTempPlaySrc(this.medioList[this.indexMap[_index]].url);
         },
         /**
          * 步进 mapIndex 获取 indexMap 的值
@@ -140,13 +174,22 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.mapIndex+=_step;
             if(this.mapIndex<0)this.mapIndex=l;
             if(this.mapIndex>=l)this.mapIndex=0;
-            return this.mapIndex;
+            return this.indexMap[this.mapIndex];
         },
         last:function(){
             this.setPlayingIndex(this.indexMapStep(-1));
         },
         next:function(){
             this.setPlayingIndex(this.indexMapStep(1));
+        },
+        playPause:function(){
+            var a=this.elements.audioTag;
+            if(a.paused){
+                a.play();
+            }
+            else{
+                a.pause();
+            }
         }
     });
 
@@ -181,7 +224,26 @@ EXCtrl_BluePrintXml_request.onload=function(e){
     indexnav.addend(leftBox);
 
     audioControl=new AudioControl("leftBottom_audioControl");
-
+    audioControl.data={
+        medioList:[
+            {
+                title:"Blue sky",
+                url:rltToAbs("../../medio/audio/Blue sky.ogg",thisjsUrl)
+            },
+            {
+                title:"dededon",
+                url:rltToAbs("../../medio/video/dededon.mp4",thisjsUrl)
+            },
+            {
+                title:"大势至菩萨心咒",
+                url:rltToAbs("../../medio/audio/般禅梵唱妙音组 - 大势至菩萨心咒.mp3",thisjsUrl)
+            },
+            {
+                title:"银影侠ost",
+                url:rltToAbs("../../medio/audio/银影侠ost.mp3",thisjsUrl)
+            }
+        ]
+    }
     audioControl.addend(leftBox);
 }
 

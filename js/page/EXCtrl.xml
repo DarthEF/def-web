@@ -33,14 +33,24 @@
             </div>
             <div class="audioControl-playBar">
                 <div class="audioControl-playBarLow"></div>
-                <button class="audioControl-playBarBtn"></button>
+                <div class="audioControl-playBarBtn"></div>
             </div>
         </div>
         <div class="audioControl-buttons">
-            <button class="audioControl-button audioControl-playType" ctrl-id="playType">playType</button>
-            <button class="audioControl-button audioControl-last" ctrl-id="last">last</button>
-            <button class="audioControl-button audioControl-playPause" ctrl-id="play">play</button>
-            <button class="audioControl-button audioControl-next" ctrl-id="next">next</button>
+            <div class="audioControl-button audioControl-playType"  ctrl-id="playType">playType</div>
+            <div class="audioControl-button audioControl-last"      ctrl-id="last">last</div>
+            <div class="audioControl-button audioControl-playPause" ctrl-id="playPause">play or pause</div>
+            <div class="audioControl-button audioControl-next"      ctrl-id="next">next</div>
+            <div class="audioControl-button audioControl-callList"  ctrl-id="callList">callList</div>
+        </div>
+        <div class="audioControl-medioListBox">
+            <ul class="audioControl-medioListBox" ctrl-for="this.i=0;this.i<this.data.medioList.length;this.i++">
+                <li>
+                    <a title="${this.data.medioList[this.i].title}" href="${this.data.medioList[this.i].url}">
+                        ${this.data.medioList[this.i].title}
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
