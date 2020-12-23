@@ -1,5 +1,5 @@
 var IndexNav,AudioControl;
-
+var thisjsUrl=getCurrAbsPath();
 
 var leftBox=document.getElementById("Left");
 
@@ -33,37 +33,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             }
         }
     });
-    var indexnav=new IndexNav("leftIndex");
-    indexnav.data={
-        a:"123",
-        d1List:[
-            {
-                url:"./index",
-                text:"Index",
-                title:"Index",
-                // child:[]
-            },{
-                url:"./blog",
-                text:"blog",
-                title:"Darth's web log",
-                child:[
-                    {
-                        url:"./blog/code",
-                        text:"code",
-                        title:"code notbook"
-                    },{
-                        url:"./blog/food",
-                        text:"food",
-                        title:"eat food"
-                    }
-                ]
-            }
-        ]
-    };
-    indexnav.addend(leftBox);
 
     /**
-     * 左侧的音乐播放器;
+     * 左侧的音乐播放控制器;
      */
     AudioControl=htmlToCtrl(BluePrintXmlList[1],{
         /**
@@ -74,12 +46,54 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.playType=0;
             this.indexMap=[];
             this.mapIndex=0;
+            this.worker=new Worker(rltToAbs("./audioCtrlWorker.js",thisjsUrl));
         },
         /**
          * 控件 初始化完成的回调函数
          */
         callback:function(){
-            console.log("cnm");
+            var that=this;
+            var mes=this.elements;
+
+            this.canvas=mes["spectrum"];
+            this.canvas.width=mes["spectrumBox"].offsetWidth;
+            this.canvas.height=mes["spectrumBox"].offsetHeight;
+            var offscreen=this.canvas.transferControlToOffscreen();
+            this.worker.postMessage({ctrl:0, canvas : offscreen},[offscreen]);
+            this.worker.onmessage=function(e){
+                console.log(e.data)
+            }
+
+            if(this.data.medioList&&this.data.medioList.length){
+                mes.audioTag.src=this.data.medioList[0].url;
+                this.medioList=this.data.medioList;
+                this.reIndexMap(this.playType);
+            }
+            
+            mes.next.onclick=function(){
+                that.next();
+            }
+            mes.last.onclick=function(){
+                that.last();
+            }
+            mes.playPause.onclick=function(){
+                that.playPause();
+            }
+            mes["1"].onclick=function(e){
+                if(e.target.tagName=="A"){
+                    stopPE();
+                    that.reIndexMap(that.playType);
+                }
+            }
+        },
+        /**
+         * 改变播放顺序的方式
+         * @param {Number} _type 0: 顺序; 1: 逆序; 2: 乱序;
+         */
+        setPlayType:function(_type){
+            this.playType=_type;
+            this.reIndexMap(this.playType);
+            return this.indexMap;
         },
         /**
          * 新增一个媒体
@@ -149,7 +163,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          */
         setPlayingIndex:function(_index){
             if(this.medioList.length<=0)return;
-            this.setTempPlaySrc(this.indexMap[_index]);
+            this.setTempPlaySrc(this.medioList[this.indexMap[_index]].url);
         },
         /**
          * 步进 mapIndex 获取 indexMap 的值
@@ -160,7 +174,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.mapIndex+=_step;
             if(this.mapIndex<0)this.mapIndex=l;
             if(this.mapIndex>=l)this.mapIndex=0;
-            return this.mapIndex;
+            return this.indexMap[this.mapIndex];
         },
         /**
          * 播放上一个
@@ -173,11 +187,69 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          */
         next:function(){
             this.setPlayingIndex(this.indexMapStep(1));
+        },
+        playPause:function(){
+            var a=this.elements.audioTag;
+            if(a.paused){
+                a.play();
+            }
+            else{
+                a.pause();
+            }
         }
     });
 
-    audioControl=new AudioControl("leftBottom_audioControl");
 
+    var indexnav=new IndexNav("leftIndex");
+    indexnav.data={
+        a:"123",
+        d1List:[
+            {
+                url:"./index",
+                text:"Index",
+                title:"Index",
+                // child:[]
+            },{
+                url:"./blog",
+                text:"blog",
+                title:"Darth's web log",
+                child:[
+                    {
+                        url:"./blog/code",
+                        text:"code",
+                        title:"code notbook"
+                    },{
+                        url:"./blog/food",
+                        text:"food",
+                        title:"eat food"
+                    }
+                ]
+            }
+        ]
+    };
+    indexnav.addend(leftBox);
+
+    audioControl=new AudioControl("leftBottom_audioControl");
+    audioControl.data={
+        medioList:[
+            {
+                title:"Blue sky",
+                url:rltToAbs("../../medio/audio/Blue sky.ogg",thisjsUrl)
+            },
+            {
+                title:"dededon",
+                url:rltToAbs("../../medio/video/dededon.mp4",thisjsUrl)
+            },
+            {
+                title:"大势至菩萨心咒",
+                url:rltToAbs("../../medio/audio/般禅梵唱妙音组 - 大势至菩萨心咒.mp3",thisjsUrl)
+            },
+            {
+                title:"银影侠ost",
+                url:rltToAbs("../../medio/audio/银影侠ost.mp3",thisjsUrl)
+            }
+        ]
+    }
     audioControl.addend(leftBox);
 }
 

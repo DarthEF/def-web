@@ -5,10 +5,12 @@ html,body{
 }
 *{
     box-sizing: border-box;
+    position: relative;
     padding: 0;
     margin: 0;
     list-style: none;
     text-decoration: none;
+    outline: none;
 }
 /* -----Header----- */
 #Header{
@@ -101,7 +103,7 @@ html,body{
 }
 .indexNav-D1Item:hover .indexNav-D1Link{
     transition-delay: 0s;
-    color: #f00;
+    color: #f0f;
 }
 .indexNav-D2ListBox{
     position: absolute;
@@ -165,7 +167,7 @@ html,body{
     transition: color 0.1s linear;
 }
 .indexNav-D2Item:hover .indexNav-D2Link{
-    color: #f00;
+    color: #f0f;
 }
 .indexNav-D2Link::before{
     content: "";
@@ -174,4 +176,97 @@ html,body{
     height: 90%;
     width: 1.5em;   
     vertical-align: text-bottom;
+}
+
+
+.audioControl{
+    position: absolute;
+    bottom: 36px;
+    left: 0;
+    height: 200px;
+    width: 100%;
+    background-color: #000;
+    box-sizing: border-box;
+    border: #666 2px solid;
+}
+.audioControl-CtrlBox{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.audioControl-visual{
+    position: absolute;
+    top: 0;
+    height: 80%;
+    width: 100%;
+}
+.audioControl-playBar{
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+    height: 4px;
+    left: 46%;
+    transform: translateX(-50%);
+    background-color: #0f0;
+}
+.audioControl-playBarBtn{
+    position: absolute;
+    top: 50%;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background-color: #f0f;
+    border: none;
+    transform: translateY(-50%);
+}
+.audioControl-playBarLow{
+    position: absolute;
+    height: 100%;
+    background-color: #f00;
+}
+.audioControl-buttons{
+    position: absolute;
+    bottom: 0;
+    height: 18%;
+    width: 100%;
+}
+.audioControl-button{
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    /* background-color: #f00; */
+    background-image: url("../img/iconSprites.svg");
+    background-size : 1000% 1000%;  
+    left: 50%;
+    font-size: 0;
+    color:#0000;
+    top: 50%;
+    filter:hue-rotate(120deg) brightness(2);
+    transition: filter 0.2s linear;
+}
+.audioControl-button:hover{
+    filter:hue-rotate(0) brightness(1) drop-shadow(0px 0px 6px);
+}
+
+.audioControl-playType{
+    transform: translate(-290%,-50%);
+    background-position: -300% -200%;
+}
+.audioControl-last{
+    transform: translate(-170%,-50%) scaleX(-1);
+    background-position: -200% -200%;
+}
+.audioControl-playPause{
+    transform: translate(-50%,-50%);
+    background-position: -100% -200%;
+}
+.audioControl-next{
+    transform: translate(70%,-50%);
+    background-position: -200% -200%;
+}
+.audioControl-callList{
+    transform: translate(190%,-50%);
+    background-position: 300% 0%;
 }

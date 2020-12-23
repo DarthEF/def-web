@@ -23,23 +23,34 @@
 
 <ctrl_tab/>
 
-<div class="audioControl" tabindex="0" onkeydown="console.log(1)">
+<div class="audioControl">
     <audio ctrl-id="audioTag"></audio>
     <div class="audioControl-CtrlBox">
         <div class="audioControl-visual">
-            <div class="audioControl-spectrumBox"  ctrl-if="">
+            <div ctrl-id="spectrumBox" class="audioControl-spectrumBox">
                 <canvas ctrl-id="spectrum">
                 </canvas>
             </div>
             <div class="audioControl-playBar">
-                <button></button>
+                <div class="audioControl-playBarLow"></div>
+                <div class="audioControl-playBarBtn"></div>
             </div>
         </div>
         <div class="audioControl-buttons">
-            <button class="audioControl-last" ctrl-id="last">last</button>
-            <button class="audioControl-playPause" ctrl-id="play">play</button>
-            <button class="audioControl-next" ctrl-id="next">next</button>
-            <button class="audioControl-playType" ctrl-id="playType">playType</button>
+            <div class="audioControl-button audioControl-playType"  ctrl-id="playType">playType</div>
+            <div class="audioControl-button audioControl-last"      ctrl-id="last">last</div>
+            <div class="audioControl-button audioControl-playPause" ctrl-id="playPause">play or pause</div>
+            <div class="audioControl-button audioControl-next"      ctrl-id="next">next</div>
+            <div class="audioControl-button audioControl-callList"  ctrl-id="callList">callList</div>
+        </div>
+        <div class="audioControl-medioListBox">
+            <ul class="audioControl-medioListBox" ctrl-for="this.i=0;this.i<this.data.medioList.length;this.i++">
+                <li>
+                    <a title="${this.data.medioList[this.i].title}" href="${this.data.medioList[this.i].url}">
+                        ${this.data.medioList[this.i].title}
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

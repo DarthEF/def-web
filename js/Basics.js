@@ -365,7 +365,7 @@ function inputNumber(){
 var deg=Math.PI/180;
 
 //兼容open
-if(Element.prototype.attachEvent){
+if(this.Element&&Element.prototype.attachEvent){
     Element.prototype.addEventListener=Element.prototype.attachEvent;
 }
 //兼容end
@@ -393,9 +393,12 @@ function getCurrAbsPath(){
  * 把相对地址转换成绝对地址
  * @param {String} _fileURL 
  */
-function rltToAbs(_fileURL){
+function rltToAbs(_fileURL,rootURL){
     var fileURL,fileURL_Root;
-    if(fileURL_Root=getCurrAbsPath());
+    if(rootURL){
+        fileURL_Root=rootURL; 
+    }
+    else if(fileURL_Root=getCurrAbsPath());
     else{
         fileURL_Root=this.location.href;
     }
@@ -604,6 +607,7 @@ function htmlToCode(str){
 }
 
 /**获取所有后代元素*/
+if(this.Element)
 Element.prototype.getChildElement=function(){
     var chE=[];
     var _chE=this.children;

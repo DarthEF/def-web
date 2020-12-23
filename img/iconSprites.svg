@@ -274,6 +274,15 @@
             </mask>
             <rect x="0" y="0" width="100" height="100" mask="url(#closeEye_mask)"/>
         </symbol>
+        <symbol id="list">
+        <!-- 列表 list 的图标 -->
+            <circle cx="15" cy="25" r="10" />
+            <circle cx="15" cy="50" r="10" />
+            <circle cx="15" cy="75" r="10" />
+            <rect x="30" y="20" width="60" height="10" />
+            <rect x="30" y="45" width="60" height="10" />
+            <rect x="30" y="70" width="60" height="10" />
+        </symbol>
         <symbol id="home">
         <!-- 主页(房子) home 的图标 -->
             <path fill="#0000" stroke-width="6" stroke-linejoin="round" d="M10 45 L20 45 L20 90 L40 90 L40 60 L60 60 L60 90 L80 90 L80 45 L90 45 L50 10 Z"/>
@@ -372,23 +381,25 @@
     <!-- 精灵图像 -->
         <g id="Y0">
         <!-- 常用ui图标 -->
-            <!-- A0 -->
+            <!-- A0 Logo -->
             <svg x="000" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#logo" ></use></svg>
-            <!-- B0 -->
+            <!-- B0 BBS -->
             <svg x="100" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#bbs" ></use></svg>
-            <!-- C0 -->
+            <!-- C0 Mod -->
             <svg x="200" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#jigsaw"></use></svg>
-            <!-- D0 -->
+            <!-- D0 Eye -->
             <svg x="300" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#openEye"></use></svg>
-            <!-- E0 -->
+            <!-- E0 Eye(close) -->
             <svg x="400" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#closeEye"></use></svg>
-            <!-- f0 -->
+            <!-- f0 Yes(sqrt) -->
             <svg x="500" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#sqrt"></use></svg>
-            <!-- g0 -->
+            <!-- g0 Key -->
             <svg x="600" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#key"></use></svg>
-            <!-- i0 -->
+            <!-- h0 List -->
+            <svg x="700" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#list"></use></svg>
+            <!-- i0 User -->
             <svg x="800" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#user"></use></svg>
-            <!-- j0 -->
+            <!-- j0 Home -->
             <svg x="900" y="000" viewBox="0 0 100 100" width="100" height="100"><use href="#home"></use></svg>
         </g>
         <g id="Y1">
