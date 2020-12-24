@@ -1,3 +1,8 @@
+/*!
+ * Basics.js 应该在所有脚本之前载入
+ */
+
+
 /**
  * [judgeOs UA & 内核 判断]
  * @return {[type]} [description]
@@ -371,7 +376,9 @@ if(this.Element&&Element.prototype.attachEvent){
 //兼容end
 
 //功能open
-
+/**
+ * 获取当前运行脚本的地址
+ */
 function getCurrAbsPath(){
     if(document.currentScript){
         return document.currentScript.src;
@@ -763,7 +770,9 @@ function removeKeyEvent(_Element,_keycode,_event,_type){
     }
 }
 
-/**点击站内链接调用的函数*/
+/**
+ * 点击站内链接调用的函数, 另链接不跳转而是成为锚点链接
+ */
 function linkClick(e){
     var _event=e||event;
     if(this.host==window.location.host){

@@ -13,7 +13,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
     /**
      * 左侧的索引栏 
      */
-    IndexNav=htmlToCtrl(BluePrintXmlList[0],{
+    IndexNav=xmlToCtrl(BluePrintXmlList[0],{
         callback:function(){
             // console.log(this);
             this.elements[this.bluePrint.ves[0].ctrlID].onclick=function(e){
@@ -37,7 +37,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
     /**
      * 左侧的音乐播放控制器;
      */
-    AudioControl=htmlToCtrl(BluePrintXmlList[1],{
+    AudioControl=xmlToCtrl(BluePrintXmlList[1],{
         /**
          * 控件 初始化函数
          */
