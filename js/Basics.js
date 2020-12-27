@@ -612,6 +612,50 @@ function htmlToCode(str){
     }
     return enStr;
 }
+/**
+ * @param {String} _str  字符串
+ * @param {Object} _data 数据
+ * @returns {Object} {str:{String},hit:{Array<String>}}
+ */
+function templateStringRender(str,data){
+    
+    if(Object.keys(data).length){
+        var temp=[],tempstr="",hit=[];
+        var q,p;// q是左
+        var headFlag=0,footFlag=0;
+        for(p=0,q=0;str[p];++p){
+            for(var i=0;i<templateStringRender.templateKeyStr.op.length;++i){
+                if(!(headFlag=str[p+i]==templateStringRender.templateKeyStr.op[i])){break;}
+            }
+            
+            if(headFlag){ // 检测到头
+                temp.push(str.slice(q,p));
+                q=p+2;
+                while(1){
+                    ++p;
+                    for(var i=0;i<templateStringRender.templateKeyStr.ed.length;++i){
+                        if(!(footFlag=str[p+i]==templateStringRender.templateKeyStr.ed[i])){break;}
+                    }
+                    if(footFlag){
+                        tempstr=str.slice(q,p);
+                        oldL=temp.join("").length;
+                        temp.push((new Function("return "+tempstr)).call(data));
+                        hit.push({expression:tempstr,value:temp[temp.length-1]});
+                        q=p+1;
+                        break;
+                    }
+                }
+            }
+        }
+        temp.push(str.slice(q,p));
+        return {str:temp.join(""),hit:hit};
+    }
+}
+
+templateStringRender.templateKeyStr={op:"${",ed:"}"};
+
+// 强化 对 dom 操作
+
 
 /**获取所有后代元素*/
 if(this.Element)

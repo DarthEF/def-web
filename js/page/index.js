@@ -1,5 +1,6 @@
 var IndexNav,AudioControl;
 var thisjsUrl=getCurrAbsPath();
+var indexnav;
 
 var leftBox=document.getElementById("Left");
 
@@ -199,8 +200,8 @@ EXCtrl_BluePrintXml_request.onload=function(e){
         }
     });
 
-
-    var indexnav=new IndexNav("leftIndex");
+    // var indexnav;
+    indexnav=new IndexNav("leftIndex");
     indexnav.data={
         a:"123",
         d1List:[
