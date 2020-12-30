@@ -69,7 +69,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             if(this.data.medioList&&this.data.medioList.length){
                 mes.audioTag.src=this.data.medioList[0].url;
                 this.medioList=this.data.medioList;
-                this.reIndexMap(this.playType);
+                this.reIndexMap(this.playTypes[this.playType]);
             }
         },
         playTypes:[
@@ -103,7 +103,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 }
             }
             this.indexMap.splice(this.mapIndex+1,0,tgtIndex);
-            if(_step)this.setPlayingIndex(this.indexMapStep(_step));
+            if(_step)this.setMapIndex(this.indexMapStep(_step));
             return tgtIndex;
         },
         /**
@@ -157,14 +157,14 @@ EXCtrl_BluePrintXml_request.onload=function(e){
         setMapIndex:function(_index){
             if(this.medioList.length<=0)return;
             this.mapIndex=_index;
-            this.setTempPlaySrc(this.medioList[this.indexMap[_index]].url);
+            this.setPlayingIndex(this.indexMap[_index]);
 
         },
         setPlayingIndex:function(_index){
             if(this.medioList.length<=0)return;
-            this.elements["medioItem-EX-for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem";
+            this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem";
             this.playingIndex=parseInt(_index);
-            this.elements["medioItem-EX-for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem playing";
+            this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem playing";
             this.setTempPlaySrc(this.medioList[_index].url);
         },
         /**
@@ -182,13 +182,13 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * 播放上一个
          */
         last:function(){
-            this.setPlayingIndex(this.indexMapStep(-1));
+            this.setMapIndex(this.indexMapStep(-1));
         },
         /**
          * 播放下一个
          */
         next:function(){
-            this.setPlayingIndex(this.indexMapStep(1));
+            this.setMapIndex(this.indexMapStep(1));
         },
         playPause:function(){
             var a=this.elements.audioTag,
