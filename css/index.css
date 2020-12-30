@@ -254,12 +254,35 @@ html,body{
     transform: translate(-290%,-50%);
     background-position: -300% -200%;
 }
+.audioControl-playType.order::before,.audioControl-playType.reverse::before{
+    content:"";
+    position:absolute;
+    width:50%;
+    height:50%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background-image:url("../img/iconSprites.svg");
+    background-size:1000% 1000%;
+    background-position:-300% -300%;
+}
+.audioControl-playType.reverse::before{
+    transform:translate(-50%,-50%) scaleY(-1);
+}
+.audioControl-playType.out-of-order{
+    background-position: -400% -200%;
+}
 .audioControl-last{
     transform: translate(-170%,-50%) scaleX(-1);
     background-position: -200% -200%;
 }
 .audioControl-playPause{
     transform: translate(-50%,-50%);
+}
+.audioControl-playPause.play{
+    background-position: 0% -200%;
+}
+.audioControl-playPause.pause{
     background-position: -100% -200%;
 }
 .audioControl-next{
@@ -270,8 +293,6 @@ html,body{
     transform: translate(190%,-50%);
     background-position: 300% 0%;
 }
-
-
 .audioControl-medioListBox{
     left:100%;
     position: absolute;
@@ -281,4 +302,9 @@ html,body{
     margin-left:2px;
     overflow-y:scroll;
     background:#888;
+}
+.audioControl-medioItem{
+    position:relative;
+    height:24px;
+    width:100%;
 }

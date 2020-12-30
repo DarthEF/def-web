@@ -37,16 +37,16 @@
             </div>
         </div>
         <div class="audioControl-buttons">
-            <div class="audioControl-button audioControl-playType"  ctrl-id="playType">playType</div>
-            <div class="audioControl-button audioControl-last"      ctrl-id="last">last</div>
-            <div class="audioControl-button audioControl-playPause" ctrl-id="playPause">play or pause</div>
-            <div class="audioControl-button audioControl-next"      ctrl-id="next">next</div>
-            <div class="audioControl-button audioControl-callList"  ctrl-id="callList">callList</div>
+            <div class="audioControl-button audioControl-playType order"  pa-click="this.setPlayType(this.playType+1);" ctrl-id="playType" title="order">playType</div>
+            <div class="audioControl-button audioControl-last"      pa-click="this.last()" ctrl-id="last">last</div>
+            <div class="audioControl-button audioControl-playPause play" pa-click="this.playPause()" ctrl-id="playPause">play or pause</div>
+            <div class="audioControl-button audioControl-next"      pa-click="this.next();" ctrl-id="next">next</div>
+            <div class="audioControl-button audioControl-callList"  pa-click="this." ctrl-id="callList">callList</div>
         </div>
         <div class="audioControl-medioListBox">
-            <ul class="audioControl-medioList" ctrl-for="this.i=0;this.i<this.data.medioList.length;this.i++">
-                <li>
-                    <a title="${this.data.medioList[this.i].title}" href="${this.data.medioList[this.i].url}">
+            <ul ctrl-id="medioList" class="audioControl-medioList" ctrl-for="this.i=0;this.i<this.data.medioList.length;this.i++">
+                <li ctrl-id="medioItem" class="audioControl-medioItem">
+                    <a pa-click="stopPE(e);this.setPlayingIndex(tgt.getAttribute('index'));" index="${this.i}" title="${this.data.medioList[this.i].title}" href="${this.data.medioList[this.i].url}">
                         ${this.data.medioList[this.i].title}
                     </a>
                 </li>

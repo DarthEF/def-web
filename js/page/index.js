@@ -47,6 +47,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.playType=0;
             this.indexMap=[];
             this.mapIndex=0;
+            this.playingIndex=0;
             this.worker=new Worker(rltToAbs("./audioCtrlWorker.js",thisjsUrl));
         },
         /**
@@ -70,30 +71,21 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 this.medioList=this.data.medioList;
                 this.reIndexMap(this.playType);
             }
-            
-            mes.next.onclick=function(){
-                that.next();
-            }
-            mes.last.onclick=function(){
-                that.last();
-            }
-            mes.playPause.onclick=function(){
-                that.playPause();
-            }
-            mes["1"].onclick=function(e){
-                if(e.target.tagName=="A"){
-                    stopPE();
-                    that.reIndexMap(that.playType);
-                }
-            }
         },
+        playTypes:[
+            "order",
+            "reverse",
+            "out-of-order"
+        ],
         /**
          * 改变播放顺序的方式
          * @param {Number} _type 0: 顺序; 1: 逆序; 2: 乱序;
          */
         setPlayType:function(_type){
-            this.playType=_type;
-            this.reIndexMap(this.playType);
+            this.playType=_type%this.playTypes.length;
+            this.elements.playType.setAttribute("title",this.playTypes[this.playType]);
+            this.elements.playType.className="audioControl-button audioControl-playType "+this.playTypes[this.playType];
+            this.reIndexMap(this.playTypes[this.playType]);
             return this.indexMap;
         },
         /**
@@ -123,19 +115,19 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             }
             switch(type){
                 // 正向
-                case 0:
+                case this.playTypes[0]:
                     for(var i=this.medioList.length-1;i>=0;--i){
                         this.indexMap[i]=i;
                     }
                 break;
                 // 逆向
-                case 1:
+                case this.playTypes[1]:
                     for(var i=this.medioList.length-1,j=0;i>=0;--i,++j){
                         this.indexMap[i]=j;
                     }
                 break;
                 // 乱序
-                case 2:
+                case this.playTypes[2]:
                     if(this.indexMap[1]==undefined);
                     for(var i=this.medioList.length-1;i>=0;--i){
                         this.indexMap[i]=i;
@@ -156,15 +148,24 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          */
         setTempPlaySrc:function(_src){
             this.elements["audioTag"].src=_src;
-            this.elements["audioTag"].play();
+            // this.elements["audioTag"].play();
         },
         /**
          * 控件 切换当前播放列表的下标并渲染
          * @param {Number} _index 
          */
+        setMapIndex:function(_index){
+            if(this.medioList.length<=0)return;
+            this.mapIndex=_index;
+            this.setTempPlaySrc(this.medioList[this.indexMap[_index]].url);
+
+        },
         setPlayingIndex:function(_index){
             if(this.medioList.length<=0)return;
-            this.setTempPlaySrc(this.medioList[this.indexMap[_index]].url);
+            this.elements["medioItem-EX-for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem";
+            this.playingIndex=parseInt(_index);
+            this.elements["medioItem-EX-for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem playing";
+            this.setTempPlaySrc(this.medioList[_index].url);
         },
         /**
          * 步进 mapIndex 获取 indexMap 的值
@@ -190,12 +191,18 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.setPlayingIndex(this.indexMapStep(1));
         },
         playPause:function(){
-            var a=this.elements.audioTag;
+            var a=this.elements.audioTag,
+                b=this.elements.playPause;
+
             if(a.paused){
                 a.play();
+                b.classList.add("pause");
+                b.classList.remove("play");
             }
             else{
                 a.pause();
+                b.classList.add("play");
+                b.classList.remove("pause");
             }
         }
     });
