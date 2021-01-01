@@ -71,6 +71,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 this.medioList=this.data.medioList;
                 this.reIndexMap(this.playTypes[this.playType]);
             }
+            this.setMapIndex(0);
         },
         playTypes:[
             "order",
@@ -204,6 +205,12 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 b.classList.add("play");
                 b.classList.remove("pause");
             }
+        },
+        /**
+         * 打开/关闭 列表
+         */
+        callList:function(){
+            this.elements[""]
         }
     });
 
