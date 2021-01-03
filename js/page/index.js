@@ -139,17 +139,19 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                         this.indexMap[0]=this.indexMap[ti];
                         this.indexMap[ti]=temp;
                     }
-                break;
-
-            }
+                    break;
+                    
+                }
+                this.mapIndex=this.indexMap.indexOf(this.playingIndex);
         },
         /**
          * 设置当前的播放媒体的地址, 不影响 medioList
          * @param {String} _src 媒体的地址
          */
         setTempPlaySrc:function(_src){
+            var temp=this.elements["audioTag"].paused;
             this.elements["audioTag"].src=_src;
-            // this.elements["audioTag"].play();
+            if(!temp)this.elements["audioTag"].play();
         },
         /**
          * 控件 切换当前播放列表的下标并渲染
@@ -167,17 +169,18 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.playingIndex=parseInt(_index);
             this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem playing";
             this.setTempPlaySrc(this.medioList[_index].url);
+            this.mapIndex=this.indexMap.indexOf(_index);
         },
         /**
          * 步进 mapIndex 获取 indexMap 的值
          * @param {Number} _step 前进 步数
          */
         indexMapStep:function(_step){
-            var l=this.indexMap.length;
-            this.mapIndex+=_step;
-            if(this.mapIndex<0)this.mapIndex=l;
-            if(this.mapIndex>=l)this.mapIndex=0;
-            return this.indexMap[this.mapIndex];
+            var l=this.indexMap.length,
+            newindex=this.mapIndex+_step;
+            if(newindex<0)newindex=l-1;
+            else if(newindex>=l)newindex=0;
+            return newindex;
         },
         /**
          * 播放上一个
@@ -191,6 +194,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
         next:function(){
             this.setMapIndex(this.indexMapStep(1));
         },
+        /**
+         * 切换播放暂停
+         */
         playPause:function(){
             var a=this.elements.audioTag,
                 b=this.elements.playPause;
@@ -210,7 +216,22 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * 打开/关闭 列表
          */
         callList:function(){
-            this.elements[""]
+            this.medioListBoxVis=!this.medioListBoxVis;
+            // console.log(this.medioListBoxVis,this.elements["medioListBox"])
+            this.renderString();
+        },
+        removeItem:function(_index){
+            this.medioList.splice(_index,1);
+            this.indexMap.splice(this.indexMap.indexOf(_index),1);
+            this.medioList.splice(_index,1);
+            var elementkeys=Object.keys(this.elements);
+            for(var i=elementkeys.length-1;i>=0;--i){
+                if(elementkeys[i].indexOf("EX_for-medioList-C"+(_index+1))!=-1){
+                    // 删除元素
+                    this.elements[elementkeys[i]].remove();
+                    delete this.elements[elementkeys[i]];
+                }
+            }
         }
     });
 
@@ -245,6 +266,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
     indexnav.addend(leftBox);
 
     audioControl=new AudioControl("leftBottom_audioControl");
+    // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Audio_codecs
     audioControl.data={
         medioList:[
             {
@@ -262,6 +284,10 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             {
                 title:"银影侠ost",
                 url:rltToAbs("../../medio/audio/银影侠ost.mp3",thisjsUrl)
+            },
+            {
+                title:"REDLINE Title.flac",
+                url:rltToAbs("../../medio/audio/03 - REDLINE Title.flac",thisjsUrl)
             }
         ]
     }
