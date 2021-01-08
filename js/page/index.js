@@ -60,12 +60,15 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.canvas=mes["spectrum"];
             this.canvas.width=mes["spectrumBox"].offsetWidth;
             this.canvas.height=mes["spectrumBox"].offsetHeight;
-            var offscreen=this.canvas.transferControlToOffscreen();
-            this.worker.postMessage({ctrl:0, canvas : offscreen},[offscreen]);
-            this.worker.onmessage=function(e){
-                console.log(e.data)
+            
+            if(this.canvas.transferControlToOffscreen){
+                var offscreen=this.canvas.transferControlToOffscreen();
+                this.worker.postMessage({ctrl:0, canvas : offscreen},[offscreen]);
+                this.worker.onmessage=function(e){
+                    console.log(e.data)
+                }
             }
-
+            this.worker.postMessage("asjdhfgusdf");
             if(this.data.medioList&&this.data.medioList.length){
                 mes.audioTag.src=this.data.medioList[0].url;
                 this.medioList=this.data.medioList;

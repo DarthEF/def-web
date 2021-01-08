@@ -2,7 +2,7 @@ importScripts("../Basics.js");
 importScripts("../visual/Matrix2x2_Mod.js");
 importScripts("../visual/Vector2.js");
 importScripts("../visual/Polygon.js");
-importScripts("../visual/Sprites.js");
+// importScripts("../visual/Sprites.js");
 importScripts("../visual/canvasTGT.js");
 
 var canvas,ctx;
