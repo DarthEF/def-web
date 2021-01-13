@@ -852,3 +852,26 @@ function download(url,name){
         tempA.click();
     }
 }
+
+function DEF_Album(){
+    this.performer="";
+    this.title="";
+    this.rem=[];
+    this.track=[];
+}
+function DEF_AlbumTrack(){
+    this.performer="";
+    this.title="";
+    this.rem=[];
+    this.trackIndex;
+    this.op;
+    this.ed;
+}
+function loadCue(str){
+    var p=0,q=0;
+    for(;p<str.length;++p){
+        if(str[p]!=' '){
+            for
+        }
+    }
+}

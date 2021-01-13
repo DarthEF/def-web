@@ -48,7 +48,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.indexMap=[];
             this.mapIndex=0;
             this.playingIndex=0;
-            this.worker=new Worker(rltToAbs("./audioCtrlWorker.js",thisjsUrl));
+
+            this.p_OP = 0;
+            this.p_ED = 0;
         },
         /**
          * 控件 初始化完成的回调函数
@@ -56,19 +58,6 @@ EXCtrl_BluePrintXml_request.onload=function(e){
         callback:function(){
             var that=this;
             var mes=this.elements;
-
-            this.canvas=mes["spectrum"];
-            this.canvas.width=mes["spectrumBox"].offsetWidth;
-            this.canvas.height=mes["spectrumBox"].offsetHeight;
-            
-            if(this.canvas.transferControlToOffscreen){
-                var offscreen=this.canvas.transferControlToOffscreen();
-                this.worker.postMessage({ctrl:0, canvas : offscreen},[offscreen]);
-                this.worker.onmessage=function(e){
-                    console.log(e.data)
-                }
-            }
-            this.worker.postMessage("asjdhfgusdf");
             if(this.data.medioList&&this.data.medioList.length){
                 mes.audioTag.src=this.data.medioList[0].url;
                 this.medioList=this.data.medioList;
@@ -98,7 +87,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * @param {Number} _step    步进 用于切换当前播放的内容
          * @returns {Number} 返回插入的目的地的下标
          */
-        setPlaySrc:function(_src,_step){
+        addItem:function(_src,_step){
             var tgtIndex=(this.indexMap[this.mapIndex]==undefined?-1:this.indexMap[this.mapIndex])+1;
             this.medioList.splice(tgtIndex,0,_src);
             for(var i=this.indexMap.length-1;i>=0;--i){
@@ -111,7 +100,25 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             return tgtIndex;
         },
         /**
+         * 剔除一个列表项
+         * @param {Number} _index 列表项的下标
+         */
+        removeItem:function(_index){
+            this.medioList.splice(_index,1);
+            this.indexMap.splice(this.indexMap.indexOf(_index),1);
+            this.medioList.splice(_index,1);
+            var elementkeys=Object.keys(this.elements);
+            for(var i=elementkeys.length-1;i>=0;--i){
+                if(elementkeys[i].indexOf("EX_for-medioList-C"+(_index+1))!=-1){
+                    // 删除元素
+                    this.elements[elementkeys[i]].remove();
+                    delete this.elements[elementkeys[i]];
+                }
+            }
+        },
+        /**
          * 刷新 indexMap
+         * @param {Number} type 0:正向; 1逆向 2乱序
          */
         reIndexMap:function(type){
             if(this.medioList.length!=this.indexMap.length){
@@ -166,6 +173,10 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.setPlayingIndex(this.indexMap[_index]);
 
         },
+        /** 
+         * 跳转到一个播放列表项
+         * @param {Number} _index 列表项的下标
+         */
         setPlayingIndex:function(_index){
             if(this.medioList.length<=0)return;
             this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem";
@@ -223,17 +234,22 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             // console.log(this.medioListBoxVis,this.elements["medioListBox"])
             this.renderString();
         },
-        removeItem:function(_index){
-            this.medioList.splice(_index,1);
-            this.indexMap.splice(this.indexMap.indexOf(_index),1);
-            this.medioList.splice(_index,1);
-            var elementkeys=Object.keys(this.elements);
-            for(var i=elementkeys.length-1;i>=0;--i){
-                if(elementkeys[i].indexOf("EX_for-medioList-C"+(_index+1))!=-1){
-                    // 删除元素
-                    this.elements[elementkeys[i]].remove();
-                    delete this.elements[elementkeys[i]];
-                }
+        currentTimeRender:function(){
+
+        },
+        // 渲染音量大小 onvolumechange
+        volumeRender:function(){
+            var audio=this.elements.audioTag;
+            var volume=audio.volume;
+            if(audio.muted||audio.volume<=0){
+                this.elements.root.classList.add("ismuted");
+                this.elements.volumeBarBtn.style.bottom="0";
+                this.elements.volumeBarPower.style.height="0";
+            }
+            else{
+                this.elements["root"].classList.remove("ismuted");
+                this.elements.volumeBarBtn.style.bottom=(volume*100)+"%";
+                this.elements.volumeBarPower.style.height=(volume*100)+"%";
             }
         }
     });

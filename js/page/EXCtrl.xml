@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='UTF-8' ?>
 <nav class="indexNav">
     <ul class="indexNav-D1List" ctrl-for="this.i=0;this.i<this.data.d1List.length;++this.i">
         <li class="indexNav-D1Item hiddenChile">
@@ -23,21 +24,20 @@
 
 <ctrl_tab/>
 
-<div class="audioControl">
-    <audio ctrl-id="audioTag"></audio>
+<div class="audioControl" ctrl-id="root">
+    <audio ctrl="audioControl-audioTag" ctrl-id="audioTag"></audio>
     <div class="audioControl-CtrlBox">
         <div class="audioControl-visual">
             <div ctrl-id="spectrumBox" class="audioControl-spectrumBox">
-                <canvas ctrl-id="spectrum">
-                </canvas>
+                <img ctrl="image" class="audioControl-image" />
             </div>
             <div class="audioControl-playBar">
-                <div class="audioControl-playBarLow"></div>
-                <div class="audioControl-playBarBtn"></div>
+                <div class="audioControl-playBarLow" ctrlid="playBarLow" ></div>
+                <div class="audioControl-playBarBtn" ctrlid="playBarBtn" pa-mousedown="this.radeyChangCurrentTime()"></div>
             </div>
             <div class="audioControl-volumeBar">
-                <div class="audioControl-volumeBarPower"></div>
-                <div class="audioControl-volumeBarBtn"></div>
+                <div class="audioControl-volumeBarPower"    ctrl-id="volumeBarPower"></div>
+                <div class="audioControl-volumeBarBtn"      ctrl-id="volumeBarBtn"  pa-mousedown="this.radeyChangVolume()"></div>
             </div>
         </div>
         <div class="audioControl-buttons">

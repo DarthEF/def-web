@@ -349,3 +349,56 @@ html,body{
 .audioControl-medioItemButton:hover{
     filter: contrast(0) brightness(2.5);
 }
+
+.audioControl-image{
+    position:absolute;
+    display:block;
+    width:144px;
+    height:144px;
+}
+
+.audioControl-volumeBar{
+    position: absolute;
+    top: 5%;
+    right: 0;
+    width: 3%;
+    height: 70%;
+    background: #444;
+}
+.audioControl-volumeBar::before,.audioControl-volumeBar::after {
+    content: "";
+    z-index:1;
+    display: block;
+    position: absolute;
+    top: 100%;
+    width: 24px;
+    right: 0;
+    height: 24px;
+}
+.audioControl-volumeBar::before{
+    background-color: #0f0;
+}
+.audioControl-volumeBar::after {
+    background-image: url(../img/iconSprites.svg);
+    background-size:1000% 1000%;
+    background-position:-500% -200%;
+}
+.ismuted .audioControl-volumeBar::after {
+    clip-path: polygon(0% 0%,0% 100% , 58% 100%, 58% 0%);
+}
+.audioControl-volumeBarPower{
+    position:absolute;
+    width:100%;
+    height:100%;
+    bottom:0;
+    left:0;
+    background:#f00;
+}
+.audioControl-volumeBarBtn{
+    position:absolute;
+    background:#fff;
+    right:0;
+    width:16px;
+    height:12px;
+    clip-path: polygon(100% 0%, 100% 100%, 30% 100%, 0% 50%, 30% 0%);
+}
