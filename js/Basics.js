@@ -837,6 +837,54 @@ function linkClick(e){
         }
 }
 
+/**
+ * @param {Number} max 步进器的最大值
+ * @param {Number} min 步进器的最小值
+ * @param {Number} now 步进器的当前值
+ */
+function Stepper(max,min,now){
+    this.max=max===undefined?Infinity:max;
+    this.min=(min===undefined)?(0>this.max?this.max-1:0):(min);
+    this.i=now||0;
+}
+
+Stepper.prototype={
+    toString:function(){
+        return this.i;
+    },
+    set:function(_i){
+        this.i=_i;
+        this.overflowHanding();
+    },
+    next:function(_l){
+        var temp,l=_l===undefined?1:_l;
+        this.i+=l;
+        
+        this.overflowHanding();
+
+        return this.i;
+    },
+    overflowHanding:function(){
+        if(this.max==this.min) return this.i;
+        var temp;
+        if(this.i<this.min){
+            do{
+                temp=this.i-this.min;
+                this.i=this.max;
+                this.i+=temp;
+            }while(this.i<this.min);
+        }
+        else if(this.i>this.max){
+            do{
+                temp=this.i-this.max;
+                this.i=this.min;
+                this.i+=temp;
+            }while(this.i>this.max);
+        }
+        return this.i;
+    }
+}
+
 function download(url,name){
     var xhr=new XMLHttpRequest();
     xhr.open("Get",url);
@@ -853,25 +901,148 @@ function download(url,name){
     }
 }
 
-function DEF_Album(){
+
+function DEF_CUEOBJ(){
     this.performer="";
+    this.songwriter="";
     this.title="";
+    this.file="";
+    this.fileType="";
     this.rem=[];
     this.track=[];
 }
-function DEF_AlbumTrack(){
-    this.performer="";
-    this.title="";
-    this.rem=[];
-    this.trackIndex;
-    this.op;
-    this.ed;
-}
-function loadCue(str){
-    var p=0,q=0;
-    for(;p<str.length;++p){
-        if(str[p]!=' '){
-            for
+DEF_CUEOBJ.prototype={
+    setCommand:{
+        /**
+         * @param {Array<String>} _cl 指令的字符串数组
+         */
+        rem:function(_cl){
+            this.rem.push(_cl);
+        },
+        file:function(_cl){
+            this.file=_cl[1];
+            this.fileType=_cl[2];
+        },
+        title:function(_cl){
+            this.title=_cl[1];
+        },
+        performer:function(_cl){
+            this.performer=_cl[1];
+        },
+        songwriter:function(){
+            this.songwriter=_cl[1];
         }
     }
+}
+function DEF_CUEOBJTrack(file,root,trackIndex){
+    this.performer="";
+    this.songwriter="";
+    this.title="";
+    this.ListIndex;
+    this.rem=[];
+    this.trackIndex=trackIndex;
+    this.root=root;
+    this.file=file;
+    this.op;    //秒
+    this.ed;
+    this.indexList=[];
+}
+inheritClass(DEF_CUEOBJ,DEF_CUEOBJTrack);
+var DEF_CUEOBJTrack_prototype_setCommand={
+    index:function(_cl){
+        var indexNub=parseInt(_cl[1]);
+        var time=cue_timeToSecond(_cl[2]);
+        var lastTrack;
+        if(this.root.track.length-2>=0){
+            lastTrack=this.root.track[this.root.track.length-2];
+        }
+        switch(indexNub){
+            case 1:
+                this.op=time;
+                if(lastTrack&&(lastTrack.ed==undefined)){
+                    lastTrack.ed=time;
+                }
+            break;
+            case 0:
+                lastTrack.ed=time;
+            break;
+            default:
+                this.indexList.push(time);
+            break;
+        }
+    }
+}
+for(var i in DEF_CUEOBJTrack_prototype_setCommand){
+    DEF_CUEOBJTrack.prototype.setCommand[i]=DEF_CUEOBJTrack_prototype_setCommand[i];
+}
+DEF_CUEOBJTrack.prototype.getDuration=function(){
+    return this.ed-this.op;
+}
+
+/**
+ * 把cue的表示时间的格式转换成秒
+ * @param {String} timeStr mm:ss:ff
+ * @returns {Number}
+ */
+function cue_timeToSecond(timeStr){
+    var temp=timeStr.split(':');
+    
+    return parseInt(temp[0])*60+parseInt(temp[1])+parseInt(temp[2])/75;
+}
+
+function loadCue(str){
+    var p=0,q=0,isQuotes=false;
+    var tempStr;
+    var rtn=new DEF_CUEOBJ();
+    var then=rtn;
+    var CommandList=[];
+    for(;p<str.length;++p){
+        if(str[p]!=' '){
+            for(q=p;(p<str.length);++p){
+                if(str[p]=='\"'){
+                    isQuotes=!isQuotes;
+                    if(isQuotes){
+                        q=p+1;
+                    }
+                }
+                if((str[p]==' ')&&(!isQuotes)){
+                    // 记录指令
+                    if(str[p-1]=='\"'){
+                        tempStr=str.slice(q,p-1);
+                    }else{
+                        tempStr=str.slice(q,p);
+                    }
+                    CommandList.push(tempStr);
+                    q=p+1;
+                }
+                else if((str[p]=="\n")||(str[p]=="\r")){
+                    // 换行 进入下一条指令
+                    if(str[p-1]=='\"'){
+                        tempStr=str.slice(q,p-1);
+                    }else{
+                        tempStr=str.slice(q,p);
+                    }
+                    CommandList.push(tempStr);
+
+                    if(CommandList[0].toLowerCase()=="track"){
+                        then=new DEF_CUEOBJTrack(rtn.file,rtn,rtn.track.length);
+                        rtn.track.push(then);
+                    }
+                    else{
+                        if(then.setCommand[CommandList[0].toLowerCase()]){
+                            then.setCommand[CommandList[0].toLowerCase()].call(then,CommandList);
+                        }
+                        else{
+                            // 不支持这个指令
+                        }
+                    }
+
+                    do{ ++p; } while((str[p+1]=="\n")||(str[p+1]=="\r"));
+                    CommandList=[];
+                    break;
+                }
+            }
+        }
+    }
+    return rtn;
 }
