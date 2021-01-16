@@ -931,6 +931,32 @@ DEF_CUEOBJ.prototype={
         },
         songwriter:function(){
             this.songwriter=_cl[1];
+        },
+
+        // track
+        // 因为js的继承反射内容是复制这个对象的引用，所以即使是在子类追加也会追加到基类上，非常拉跨。   所以我把子类的反射的内容写在基类上了...
+        
+        index:function(_cl){
+            var indexNub=parseInt(_cl[1]);
+            var time=cue_timeToSecond(_cl[2]);
+            var lastTrack;
+            if(this.root.track.length-2>=0){
+                lastTrack=this.root.track[this.root.track.length-2];
+            }
+            switch(indexNub){
+                case 1:
+                    this.op=time;
+                    if(lastTrack&&(lastTrack.ed==undefined)){
+                        lastTrack.ed=time;
+                    }
+                break;
+                case 0:
+                    lastTrack.ed=time;
+                break;
+                default:
+                    this.indexList.push(time);
+                break;
+            }
         }
     }
 }
@@ -948,33 +974,7 @@ function DEF_CUEOBJTrack(file,root,trackIndex){
     this.indexList=[];
 }
 inheritClass(DEF_CUEOBJ,DEF_CUEOBJTrack);
-var DEF_CUEOBJTrack_prototype_setCommand={
-    index:function(_cl){
-        var indexNub=parseInt(_cl[1]);
-        var time=cue_timeToSecond(_cl[2]);
-        var lastTrack;
-        if(this.root.track.length-2>=0){
-            lastTrack=this.root.track[this.root.track.length-2];
-        }
-        switch(indexNub){
-            case 1:
-                this.op=time;
-                if(lastTrack&&(lastTrack.ed==undefined)){
-                    lastTrack.ed=time;
-                }
-            break;
-            case 0:
-                lastTrack.ed=time;
-            break;
-            default:
-                this.indexList.push(time);
-            break;
-        }
-    }
-}
-for(var i in DEF_CUEOBJTrack_prototype_setCommand){
-    DEF_CUEOBJTrack.prototype.setCommand[i]=DEF_CUEOBJTrack_prototype_setCommand[i];
-}
+
 DEF_CUEOBJTrack.prototype.getDuration=function(){
     return this.ed-this.op;
 }
