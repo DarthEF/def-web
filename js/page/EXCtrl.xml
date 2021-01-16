@@ -32,8 +32,8 @@
                 <img ctrl="image" class="audioControl-image" />
             </div>
             <div class="audioControl-playBar">
-                <div class="audioControl-playBarLow" ctrlid="playBarLow" ></div>
-                <div class="audioControl-playBarBtn" ctrlid="playBarBtn" pa-mousedown="this.radeyChangCurrentTime()"></div>
+                <div class="audioControl-playBarLow" ctrl-id="playBarLow" ></div>
+                <div class="audioControl-playBarBtn" ctrl-id="playBarBtn" pa-mousedown="this.radeyChangCurrentTime()"></div>
             </div>
             <div class="audioControl-volumeBar">
                 <div class="audioControl-volumeBarPower"    ctrl-id="volumeBarPower"></div>

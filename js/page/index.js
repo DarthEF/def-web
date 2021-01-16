@@ -48,6 +48,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.indexMap=[];
             this.mapIndex=0;
             this.playingIndex=0;
+            this.duration=0;
 
             this.p_OP = 0;
             this.p_ED = 0;
@@ -59,7 +60,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             var that=this;
             var mes=this.elements;
             if(this.data.medioList&&this.data.medioList.length){
-                mes.audioTag.src=this.data.medioList[0].url;
+                this.setPlayingIndex(0);
                 this.medioList=this.data.medioList;
                 this.reIndexMap(this.playTypes[this.playType]);
             }
@@ -97,6 +98,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             }
             this.indexMap.splice(this.mapIndex+1,0,tgtIndex);
             if(_step)this.setMapIndex(this.indexMapStep(_step));
+            this.setPlayType(this.playType);
             return tgtIndex;
         },
         /**
@@ -115,6 +117,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                     delete this.elements[elementkeys[i]];
                 }
             }
+            this.setPlayType(this.playType);
         },
         /**
          * 刷新 indexMap
@@ -159,9 +162,16 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * @param {String} _src 媒体的地址
          */
         setTempPlaySrc:function(_src){
-            var temp=this.elements["audioTag"].paused;
-            this.elements["audioTag"].src=_src;
-            if(!temp)this.elements["audioTag"].play();
+            var temp=this.elements["audioTag"].paused,then=this;
+            // this.elements["audioTag"].src="";
+            this.elements["audioTag"].innerHTML="<source src=\""+_src+"\"/>";
+            function setDuration(e){
+                then.duration=this.duration;
+                console.log(this.duration);
+                this.removeEventListener("canplay",setDuration);
+                if(!temp)this.play();
+            }
+            this.elements["audioTag"].addEventListener("canplay",setDuration);
         },
         /**
          * 控件 切换当前播放列表的下标并渲染
@@ -179,10 +189,16 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          */
         setPlayingIndex:function(_index){
             if(this.medioList.length<=0)return;
-            this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem";
+            if(this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)]
+                )this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem";
             this.playingIndex=parseInt(_index);
             this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem playing";
-            this.setTempPlaySrc(this.medioList[_index].url);
+            
+            // this.elements["audioTag"].src=this.medioList[_index].url;
+            // this.elements["audioTag"].src="";
+            var tempHTML=[];
+            tempHTML.push("<source src=\""+this.medioList[_index].urlList+"\"/>")
+            this.elements["audioTag"].innerHTML=tempHTML.join("");
             this.mapIndex=this.indexMap.indexOf(_index);
         },
         /**
@@ -234,10 +250,22 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             // console.log(this.medioListBoxVis,this.elements["medioListBox"])
             this.renderString();
         },
+        
+        /**
+         * 渲染当前位置
+         */
         currentTimeRender:function(){
-
+            var progress=parseInt(this.elements["audioTag"].currentTime/this.duration*2);
+            progress*=0.5;
+            if(this.playProgress!=progress){
+                this.playBarBtn.style.left=progress+"%";
+                this.playBarLow.style.width=progress+"%";
+                this.playProgress=progress;
+            }
         },
-        // 渲染音量大小 onvolumechange
+        /** 
+         * 渲染音量大小 onvolumechange
+         */
         volumeRender:function(){
             var audio=this.elements.audioTag;
             var volume=audio.volume;
@@ -290,23 +318,33 @@ EXCtrl_BluePrintXml_request.onload=function(e){
         medioList:[
             {
                 title:"Blue sky",
-                url:rltToAbs("../../medio/audio/Blue sky.ogg",thisjsUrl)
+                urlList:[
+                    rltToAbs("../../medio/audio/Blue sky.ogg",thisjsUrl)
+                ]
             },
             {
                 title:"dededon",
-                url:rltToAbs("../../medio/video/dededon.mp4",thisjsUrl)
+                urlList:[
+                    rltToAbs("../../medio/video/dededon.mp4",thisjsUrl)
+                ]
             },
             {
                 title:"大势至菩萨心咒",
-                url:rltToAbs("../../medio/audio/般禅梵唱妙音组 - 大势至菩萨心咒.mp3",thisjsUrl)
+                urlList:[
+                    rltToAbs("../../medio/audio/般禅梵唱妙音组 - 大势至菩萨心咒.mp3",thisjsUrl)
+                ]
             },
             {
                 title:"银影侠ost",
-                url:rltToAbs("../../medio/audio/银影侠ost.mp3",thisjsUrl)
+                urlList:[
+                    rltToAbs("../../medio/audio/银影侠ost.mp3",thisjsUrl)
+                ]
             },
             {
                 title:"REDLINE Title.flac",
-                url:rltToAbs("../../medio/audio/03 - REDLINE Title.flac",thisjsUrl)
+                urlList:[
+                    rltToAbs("../../medio/audio/03 - REDLINE Title.flac",thisjsUrl)
+                ]
             }
         ]
     }
@@ -314,4 +352,3 @@ EXCtrl_BluePrintXml_request.onload=function(e){
 }
 
 EXCtrl_BluePrintXml_request.send();
-
