@@ -378,6 +378,7 @@ if(this.Element&&Element.prototype.attachEvent){
 //功能open
 /**
  * 获取当前运行脚本的地址
+ * @returns {String}
  */
 function getCurrAbsPath(){
     if(document.currentScript){
@@ -911,6 +912,20 @@ function DEF_CUEOBJ(){
     this.track=[];
 }
 DEF_CUEOBJ.prototype={
+    /**
+     * 查找rem指令
+     * @param {String} rem1 rem 的 第一个指令
+     * @returns {Array<Array<String>>}
+     */
+    selectRem:function(rem1){
+        var rtn=[];
+        for(var i=this.rem.length-1;i>=0;--i){
+            if(this.rem[i][1]&& this.rem[i][1]==rem1){
+                rtn.push(this.rem[i]);
+            }
+        }
+        return rtn;
+    },
     setCommand:{
         /**
          * @param {Array<String>} _cl 指令的字符串数组
@@ -1045,3 +1060,48 @@ function loadCue(str){
     }
     return rtn;
 }
+
+/** 
+ * 查找图片文件
+ * @param {String} _rootUrl 根目录
+ * @param {Array<String>} _nameList 文件名列表
+ * @param {Array<String>} _afertList 后缀名列表
+ * @param {Function} callBack 搜索完成的回调函数 callBack({Array<String>}); 参数是搜索到的所有文件路径的列表
+ */
+function selectImg(_rootUrl,_nameList,_afertList,callBack){
+    var temp=new Array(_afertList.length);
+    var c=0,ctgt=_afertList.length*_nameList.length;
+    var rtn=[];
+    for(var i=temp.length-1;i>=0;--i){
+        temp[i]=new Image();
+        temp[i].onload=function(){
+            rtn.push(this.src);
+            c++;
+            if(c>=ctgt){
+                callBack(rtn);
+            }
+            else{
+                if(this.n_index>=_nameList.length)return;
+                this.n_index+=1;
+                this.src=_rootUrl+_nameList[this.n_index]+this.n_afert;
+            }
+        }
+        temp[i].onerror=function(e){
+            c++;
+            if(c>=ctgt){
+                callBack(rtn);
+            }
+            else{
+                if(this.n_index>=_nameList.length)return;
+                this.n_index+=1;
+                this.src=_rootUrl+_nameList[this.n_index]+this.n_afert;
+            }
+        }
+        temp[i].n_index=0;
+        temp[i].n_afert=_afertList[i];
+        temp[i].src=_rootUrl+_nameList[temp[i].n_index]+temp[i].n_afert;
+    }
+    // callBack(rtn);
+}
+
+// selectImg("./img/",["1","2","3","4","5"],[".jpg",".jpeg",".png",".gif"],function(e){console.log(e)});

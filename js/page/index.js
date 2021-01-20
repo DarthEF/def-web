@@ -43,7 +43,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * 控件 初始化函数
          */
         initialize:function(){
-            this.medioList=[];
+            this.mediaList=[];
             this.playType=0;
             this.indexMap=[];
             this.mapIndex=0;
@@ -59,9 +59,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
         callback:function(){
             var that=this;
             var mes=this.elements;
-            if(this.data.medioList&&this.data.medioList.length){
+            if(this.data.mediaList&&this.data.mediaList.length){
                 this.setPlayingIndex(0);
-                this.medioList=this.data.medioList;
+                this.mediaList=this.data.mediaList;
                 this.reIndexMap(this.playTypes[this.playType]);
             }
             this.setMapIndex(0);
@@ -84,13 +84,13 @@ EXCtrl_BluePrintXml_request.onload=function(e){
         },
         /**
          * 新增一个媒体
-         * @param {String} _src     媒体地址
+         * @param {String} _src     媒体对象
          * @param {Number} _step    步进 用于切换当前播放的内容
          * @returns {Number} 返回插入的目的地的下标
          */
-        addItem:function(_src,_step){
+        addItem:function(media,_step){
             var tgtIndex=(this.indexMap[this.mapIndex]==undefined?-1:this.indexMap[this.mapIndex])+1;
-            this.medioList.splice(tgtIndex,0,_src);
+            this.mediaList.splice(tgtIndex,0,_src);
             for(var i=this.indexMap.length-1;i>=0;--i){
                 if(this.indexMap[i]>=tgtIndex){
                     this.indexMap[i]+=1;
@@ -106,48 +106,50 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * @param {Number} _index 列表项的下标
          */
         removeItem:function(_index){
-            this.medioList.splice(_index,1);
+            this.mediaList.splice(_index,1);
             this.indexMap.splice(this.indexMap.indexOf(_index),1);
             var elementkeys=Object.keys(this.elements);
-            for(var i=elementkeys.length-1;i>=0;--i){
-                if(elementkeys[i].indexOf("EX_for-medioList-C"+(_index+1))!=-1){
-                    // 删除元素
-                    this.elements[elementkeys[i]].remove();
-                    delete this.elements[elementkeys[i]];
-                }
-            }
+            this.reRender();
             this.setPlayType(this.playType);
+            
+            if(this.playingIndex>_index){
+                this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex)].classList.add("playing");
+                this.playingIndex-=1;
+            }
+            else if(this.playingIndex<_index){
+                this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].classList.add("playing");
+            }
         },
         /**
          * 刷新 indexMap
          * @param {Number} type 0:正向; 1逆向 2乱序
          */
         reIndexMap:function(type){
-            if(this.medioList.length!=this.indexMap.length){
-                this.indexMap=new Array(this.medioList.length);
+            if(this.mediaList.length!=this.indexMap.length){
+                this.indexMap=new Array(this.mediaList.length);
             }
             switch(type){
                 // 正向
                 case this.playTypes[0]:
-                    for(var i=this.medioList.length-1;i>=0;--i){
+                    for(var i=this.mediaList.length-1;i>=0;--i){
                         this.indexMap[i]=i;
                     }
                 break;
                 // 逆向
                 case this.playTypes[1]:
-                    for(var i=this.medioList.length-1,j=0;i>=0;--i,++j){
+                    for(var i=this.mediaList.length-1,j=0;i>=0;--i,++j){
                         this.indexMap[i]=j;
                     }
                 break;
                 // 乱序
                 case this.playTypes[2]:
                     if(this.indexMap[1]==undefined);
-                    for(var i=this.medioList.length-1;i>=0;--i){
+                    for(var i=this.mediaList.length-1;i>=0;--i){
                         this.indexMap[i]=i;
                     }
                     
-                    for(var i=this.medioList.length-1;i>=0;--i){
-                        var ti=parseInt(Math.random()*this.medioList.length),temp=this.indexMap[0];
+                    for(var i=this.mediaList.length-1;i>=0;--i){
+                        var ti=parseInt(Math.random()*this.mediaList.length),temp=this.indexMap[0];
                         this.indexMap[0]=this.indexMap[ti];
                         this.indexMap[ti]=temp;
                     }
@@ -157,7 +159,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 this.mapIndex=this.indexMap.indexOf(this.playingIndex);
         },
         /**
-         * 设置当前的播放媒体的地址, 不影响 medioList
+         * 设置当前的播放媒体的地址, 不影响 mediaList
          * @param {String} _src 媒体的地址
          */
         setTempPlaySrc:function(_src){
@@ -179,7 +181,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * @param {Number} _index 
          */
         setMapIndex:function(_index){
-            if(this.medioList.length<=0)return;
+            if(this.mediaList.length<=0)return;
             this.mapIndex=_index;
             this.setPlayingIndex(this.indexMap[_index]);
 
@@ -189,21 +191,25 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * @param {Number} _index 列表项的下标
          */
         setPlayingIndex:function(_index){
-            if(this.medioList.length<=0)return;
-            if(this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)]
-                )this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem";
-            this.playingIndex=parseInt(_index);
-            this.elements["medioItem-EX_for-medioList-C"+(this.playingIndex+1)].className="audioControl-medioItem playing";
+            if(this.mediaList.length<=0)return;
             
-            // this.elements["audioTag"].src=this.medioList[_index].url;
+            // this.elements["audioTag"].src=this.mediaList[_index].url;
             // this.elements["audioTag"].src="";
-            var tempHTML=[],temp=this.elements["audioTag"].paused
-            tempHTML.push("<source src=\""+this.medioList[_index].urlList+"\"/>")
-            this.elements["audioTag"].innerHTML=tempHTML.join("");
-            this.elements["audioTag"].addEventListener("load",function(){console.log("1")});
-            this.elements["audioTag"].load();
-            if(!temp)this.elements["audioTag"].play();
-            this.mapIndex=this.indexMap.indexOf(_index);
+            var tempHTML=[],temp=this.elements["audioTag"].paused;
+            if(this.mediaList[_index].urlList!=this.mediaList[this.playingIndex].urlList){
+                tempHTML.push("<source src=\""+this.mediaList[_index].urlList+"\"/>")
+                this.elements["audioTag"].innerHTML=tempHTML.join("");
+                this.elements["audioTag"].addEventListener("load",function(){console.log("1")});
+                this.elements["audioTag"].load();
+                if(!temp)this.elements["audioTag"].play();
+                this.mapIndex=this.indexMap.indexOf(_index);
+            }
+
+            if(this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)]){
+                this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].className="audioControl-mediaItem";
+            }
+            this.playingIndex=parseInt(_index);
+            this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].className="audioControl-mediaItem playing";
         },
         /**
          * 步进 mapIndex 获取 indexMap 的值
@@ -250,8 +256,8 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * 打开/关闭 列表
          */
         callList:function(){
-            this.medioListBoxVis=!this.medioListBoxVis;
-            // console.log(this.medioListBoxVis,this.elements["medioListBox"])
+            this.mediaListBoxVis=!this.mediaListBoxVis;
+            // console.log(this.mediaListBoxVis,this.elements["mediaListBox"])
             this.renderString();
         },
         
@@ -319,35 +325,35 @@ EXCtrl_BluePrintXml_request.onload=function(e){
     audioControl=new AudioControl("leftBottom_audioControl");
     // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Audio_codecs
     audioControl.data={
-        medioList:[
+        mediaList:[
             {
                 title:"Blue sky",
                 urlList:[
-                    rltToAbs("../../medio/audio/Blue sky.ogg",thisjsUrl)
+                    rltToAbs("../../media/audio/Blue sky.ogg",thisjsUrl)
                 ]
             },
             {
                 title:"dededon",
                 urlList:[
-                    rltToAbs("../../medio/video/dededon.mp4",thisjsUrl)
+                    rltToAbs("../../media/video/dededon.mp4",thisjsUrl)
                 ]
             },
             {
                 title:"大势至菩萨心咒",
                 urlList:[
-                    rltToAbs("../../medio/audio/般禅梵唱妙音组 - 大势至菩萨心咒.mp3",thisjsUrl)
+                    rltToAbs("../../media/audio/般禅梵唱妙音组 - 大势至菩萨心咒.mp3",thisjsUrl)
                 ]
             },
             {
                 title:"银影侠ost",
                 urlList:[
-                    rltToAbs("../../medio/audio/银影侠ost.mp3",thisjsUrl)
+                    rltToAbs("../../media/audio/银影侠ost.mp3",thisjsUrl)
                 ]
             },
             {
                 title:"REDLINE Title.flac",
                 urlList:[
-                    rltToAbs("../../medio/audio/03 - REDLINE Title.flac",thisjsUrl)
+                    rltToAbs("../../media/audio/03 - REDLINE Title.flac",thisjsUrl)
                 ]
             }
         ]
@@ -356,3 +362,58 @@ EXCtrl_BluePrintXml_request.onload=function(e){
 }
 
 EXCtrl_BluePrintXml_request.send();
+
+/** 
+ * 给我的 audio 控制器 用的数据对象
+ */
+class DEF_MediaOBJ{
+    constructor(){
+        this.title="";
+        this.cover=[];
+        this.songwriter="";
+        this.performer="";
+        this.album="";
+
+        this.op=0;
+        this.ed=0;
+        this.mark=[];
+        this.duration=0;
+
+        this.urlList=[];
+    }
+    /**
+     * 获取 "Artist" 编曲者 and 演唱者
+     */
+    getArtist(){
+        return this.performer + "/" + this.songwriter;
+    }
+}
+
+/**
+ * @param {DEF_CUEOBJ} _cueobj
+ * @param {String} _url 为了找到轨道文件, 需要提供 cue 的路径
+ * @return {Array<DEF_MediaOBJ>} 返回 DEF_MediaOBJ 数组
+ */
+function cueObjToMediaObj(_cueobj,_url){
+    var rtn=[],urlList=[rltToAbs(_cueobj.file,_url)];
+    var tempObj;
+    var cover=[];
+    for(var i=0;i<_cueobj.track.length;++i){
+        tempObj=new DEF_MedioObj();
+        tempObj.urlList=urlList;
+        tempObj.title=_cueobj.track.title;
+        tempObj.album=_cueobj.title;
+        tempObj.songwriter=_cueobj.track.songwriter||_cueobj.songwriter;
+        tempObj.performer=_cueobj.track.performer||_cueobj.performer;
+        tempObj.cover=cover;
+
+        rtn.push(tempObj);
+    }
+    selectImg(_url,["cover","front"],[".jpg",".jpeg",".png",".gif"],function(imgList){
+        cover.push(...imgList);
+    })
+    return rtn;
+}
+
+
+// todo: 音量控制; 进度条(当前播放时刻)控制; cue_obj to DEF_MediaOBJ

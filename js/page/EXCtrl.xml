@@ -47,15 +47,15 @@
             <div class="audioControl-button audioControl-next"      pa-click="this.next();" ctrl-id="next">next</div>
             <div class="audioControl-button audioControl-callList"  pa-click="this.callList();" ctrl-id="callList">callList</div>
         </div>
-        <div class="audioControl-medioListBox" ctrl-id="medioListBox" style="visibility:${this.medioListBoxVis?'visible':'hidden'}; display:${this.medioListBoxVis?'block':'none'};">
+        <div class="audioControl-mediaListBox" ctrl-id="mediaListBox" style="visibility:${this.mediaListBoxVis?'visible':'hidden'}; display:${this.mediaListBoxVis?'block':'none'};">
 
-            <ul ctrl-id="medioList" class="audioControl-medioList" ctrl-for="this.i=0;this.i<this.data.medioList.length;this.i++">
-                <li ctrl-id="medioItem" class="audioControl-medioItem">
-                    <i class="audioControl-medioItemIndex">${this.i}</i>&nbsp;&nbsp;
-                    <a class="audioControl-medioItemLink" pa-click="stopPE(e);this.setPlayingIndex(${this.i});" title="${this.data.medioList[this.i].title}" href="#">
-                        ${this.data.medioList[this.i].title}
+            <ul ctrl-id="mediaList" class="audioControl-mediaList" ctrl-for="this.i=0;this.i<this.data.mediaList.length;this.i++">
+                <li ctrl-id="mediaItem" class="audioControl-mediaItem">
+                    <i class="audioControl-mediaItemIndex">${this.i}</i>&nbsp;&nbsp;
+                    <a class="audioControl-mediaItemLink" pa-click="stopPE(e);this.setPlayingIndex(${this.i});" title="${this.data.mediaList[this.i].title}" href="#">
+                        ${this.data.mediaList[this.i].title}
                     </a>
-                    <button class="audioControl-medioItemButton hidderText" pa-click="this.removeItem(${this.i})">remove</button>
+                    <button class="audioControl-mediaItemButton hidderText" pa-click="this.removeItem(${this.i})">remove</button>
                 </li>
             </ul>
         </div>
