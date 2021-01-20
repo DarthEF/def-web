@@ -52,7 +52,7 @@
             <ul ctrl-id="medioList" class="audioControl-medioList" ctrl-for="this.i=0;this.i<this.data.medioList.length;this.i++">
                 <li ctrl-id="medioItem" class="audioControl-medioItem">
                     <i class="audioControl-medioItemIndex">${this.i}</i>&nbsp;&nbsp;
-                    <a class="audioControl-medioItemLink" pa-click="stopPE(e);this.setPlayingIndex(${this.i});" title="${this.data.medioList[this.i].title}" href="${this.data.medioList[this.i].url}">
+                    <a class="audioControl-medioItemLink" pa-click="stopPE(e);this.setPlayingIndex(${this.i});" title="${this.data.medioList[this.i].title}" href="#">
                         ${this.data.medioList[this.i].title}
                     </a>
                     <button class="audioControl-medioItemButton hidderText" pa-click="this.removeItem(${this.i})">remove</button>
