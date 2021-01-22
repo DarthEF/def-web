@@ -902,6 +902,10 @@ function download(url,name){
     }
 }
 
+/**
+ * 存储 cue 格式为js的obj格式
+ * 参考资料来自: https://tieba.baidu.com/p/6160083867
+ */
 function DEF_CUEOBJ(){
     this.performer="";
     this.songwriter="";
@@ -927,6 +931,8 @@ DEF_CUEOBJ.prototype={
         return rtn;
     },
     setCommand:{
+        // 在此处添加对cue格式的指令的处理
+        // 由于我只需要处理音乐文件的 所以省略了很多指令
         /**
          * @param {Array<String>} _cl 指令的字符串数组
          */

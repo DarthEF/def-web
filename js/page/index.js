@@ -197,7 +197,10 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             // this.elements["audioTag"].src="";
             var tempHTML=[],temp=this.elements["audioTag"].paused;
             if(this.mediaList[_index].urlList!=this.mediaList[this.playingIndex].urlList){
-                tempHTML.push("<source src=\""+this.mediaList[_index].urlList+"\"/>")
+                for(var i=this.mediaList[_index].urlList.length-1;i>=0;--i){
+                    tempHTML.push("<source src=\""+this.mediaList[_index].urlList[i]+"\"/>")
+                }
+
                 this.elements["audioTag"].innerHTML=tempHTML.join("");
                 this.elements["audioTag"].addEventListener("load",function(){console.log("1")});
                 this.elements["audioTag"].load();
@@ -366,7 +369,7 @@ EXCtrl_BluePrintXml_request.send();
 /** 
  * 给我的 audio 控制器 用的数据对象
  */
-class DEF_MediaOBJ{
+class DEF_MediaObj{
     constructor(){
         this.title="";
         this.cover=[];
@@ -387,33 +390,73 @@ class DEF_MediaOBJ{
     getArtist(){
         return this.performer + "/" + this.songwriter;
     }
+    /**
+     * 获取当前轨道的长度
+     * @param {Function} _callback _callback({Number}Duration) 某些情况无法直接知道当前的长度，所以需要传入回调函数接收值
+     */
+    getDuration(_callback){
+        if(!this.ed){
+            var tempAudio=new Audio(),tempHTML=[];
+            for(var i=this.urlList.length;i>=0;--i){
+                tempHTML.push("<source src=\""+this.urlList[i]+"\"/>");
+            }
+            tempAudio.innerHTML=tempHTML;
+            if(!this.op){
+                tempAudio.onload=function(e){
+                    var d=this.duration;
+                    _callBack(d);
+                }
+            }else{
+                tempAudio.onload=function(e){
+                    var d=this.duration-this.op;
+                    _callBack(d);
+                }
+            }
+            tempAudio.load();
+        }else{
+            var d=this.ed-this.op;
+            _callback(d);
+            return d;
+        }
+    }
 }
 
 /**
  * @param {DEF_CUEOBJ} _cueobj
  * @param {String} _url 为了找到轨道文件, 需要提供 cue 的路径
- * @return {Array<DEF_MediaOBJ>} 返回 DEF_MediaOBJ 数组
+ * @return {Array<DEF_MediaObj>} 返回 DEF_MediaObj 数组
  */
 function cueObjToMediaObj(_cueobj,_url){
     var rtn=[],urlList=[rltToAbs(_cueobj.file,_url)];
     var tempObj;
     var cover=[];
+    selectImg(_url,["cover","front"],[".jpg",".jpeg",".png",".gif"],function(imgList){
+        cover.push(...imgList);
+    });
     for(var i=0;i<_cueobj.track.length;++i){
-        tempObj=new DEF_MedioObj();
+        tempObj=new DEF_MediaObj();
         tempObj.urlList=urlList;
-        tempObj.title=_cueobj.track.title;
+        tempObj.title=_cueobj.track[i].title;
         tempObj.album=_cueobj.title;
-        tempObj.songwriter=_cueobj.track.songwriter||_cueobj.songwriter;
-        tempObj.performer=_cueobj.track.performer||_cueobj.performer;
+        tempObj.songwriter=_cueobj.track[i].songwriter||_cueobj.songwriter;
+        tempObj.performer=_cueobj.track[i].performer||_cueobj.performer;
         tempObj.cover=cover;
+        tempObj.op=_cueobj.track[i].op;
+        tempObj.ed=_cueobj.track[i].ed;
 
         rtn.push(tempObj);
     }
-    selectImg(_url,["cover","front"],[".jpg",".jpeg",".png",".gif"],function(imgList){
-        cover.push(...imgList);
-    })
     return rtn;
 }
 
+// var eee,dd, d=new XMLHttpRequest();
+// d.open("get","./media/audio/pft.cue");
+// d.send();
+// d.onload=function(){
+//     eee=loadCue(d.responseText);
+//     console.log(eee);
+//     dd=cueObjToMediaObj(eee,"./media/audio/pft.cue");
+// }
 
-// todo: 音量控制; 进度条(当前播放时刻)控制; cue_obj to DEF_MediaOBJ
+
+// todo: 音量控制; 进度条(当前播放时刻)控制; cue_obj to DEF_MediaObj
