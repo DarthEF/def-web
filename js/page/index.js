@@ -43,13 +43,15 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * 控件 初始化函数
          */
         initialize:function(){
-            this.mediaList=[];
+            this.data.mediaList=[];
             this.playType=0;
             this.indexMap=[];
             this.mapIndex=0;
-            this.playingIndex=0;
+            this.playingIndex=-1;
             this.duration=0;
-
+            if(!this.data.mediaList){
+                this.data.mediaList=[];
+            }
             this.p_OP = 0;
             this.p_ED = 0;
         },
@@ -61,7 +63,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             var mes=this.elements;
             if(this.data.mediaList&&this.data.mediaList.length){
                 this.setPlayingIndex(0);
-                this.mediaList=this.data.mediaList;
+                this.data.mediaList=this.data.mediaList;
                 this.reIndexMap(this.playTypes[this.playType]);
             }
             this.setMapIndex(0);
@@ -90,7 +92,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          */
         addItem:function(media,_step){
             var tgtIndex=(this.indexMap[this.mapIndex]==undefined?-1:this.indexMap[this.mapIndex])+1;
-            this.mediaList.splice(tgtIndex,0,_src);
+            this.data.mediaList.splice(tgtIndex,0,_src);
             for(var i=this.indexMap.length-1;i>=0;--i){
                 if(this.indexMap[i]>=tgtIndex){
                     this.indexMap[i]+=1;
@@ -106,7 +108,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * @param {Number} _index 列表项的下标
          */
         removeItem:function(_index){
-            this.mediaList.splice(_index,1);
+            this.data.mediaList.splice(_index,1);
             this.indexMap.splice(this.indexMap.indexOf(_index),1);
             var elementkeys=Object.keys(this.elements);
             this.reRender();
@@ -125,31 +127,31 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * @param {Number} type 0:正向; 1逆向 2乱序
          */
         reIndexMap:function(type){
-            if(this.mediaList.length!=this.indexMap.length){
-                this.indexMap=new Array(this.mediaList.length);
+            if(this.data.mediaList.length!=this.indexMap.length){
+                this.indexMap=new Array(this.data.mediaList.length);
             }
             switch(type){
                 // 正向
                 case this.playTypes[0]:
-                    for(var i=this.mediaList.length-1;i>=0;--i){
+                    for(var i=this.data.mediaList.length-1;i>=0;--i){
                         this.indexMap[i]=i;
                     }
                 break;
                 // 逆向
                 case this.playTypes[1]:
-                    for(var i=this.mediaList.length-1,j=0;i>=0;--i,++j){
+                    for(var i=this.data.mediaList.length-1,j=0;i>=0;--i,++j){
                         this.indexMap[i]=j;
                     }
                 break;
                 // 乱序
                 case this.playTypes[2]:
                     if(this.indexMap[1]==undefined);
-                    for(var i=this.mediaList.length-1;i>=0;--i){
+                    for(var i=this.data.mediaList.length-1;i>=0;--i){
                         this.indexMap[i]=i;
                     }
                     
-                    for(var i=this.mediaList.length-1;i>=0;--i){
-                        var ti=parseInt(Math.random()*this.mediaList.length),temp=this.indexMap[0];
+                    for(var i=this.data.mediaList.length-1;i>=0;--i){
+                        var ti=parseInt(Math.random()*this.data.mediaList.length),temp=this.indexMap[0];
                         this.indexMap[0]=this.indexMap[ti];
                         this.indexMap[ti]=temp;
                     }
@@ -169,11 +171,11 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             function setDuration(e){
                 then.duration=this.duration;
                 console.log(this.duration);
-                this.removeEventListener("canplay",setDuration);
+                this.removeEventListener("load",setDuration);
                 if(!temp)this.play();
             }
             this.elements["audioTag"].load();
-            if(!temp)this.play();
+            // if(!temp)this.play();
             this.elements["audioTag"].addEventListener("load",setDuration);
         },
         /**
@@ -181,7 +183,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * @param {Number} _index 
          */
         setMapIndex:function(_index){
-            if(this.mediaList.length<=0)return;
+            if(this.data.mediaList.length<=0)return;
             this.mapIndex=_index;
             this.setPlayingIndex(this.indexMap[_index]);
 
@@ -191,21 +193,23 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * @param {Number} _index 列表项的下标
          */
         setPlayingIndex:function(_index){
-            if(this.mediaList.length<=0)return;
+            if(this.data.mediaList.length<=0) return;
+            if(this.data.mediaList.length<=_index) return;
             
-            // this.elements["audioTag"].src=this.mediaList[_index].url;
+            // this.elements["audioTag"].src=this.data.mediaList[_index].url;
             // this.elements["audioTag"].src="";
-            var tempHTML=[],temp=this.elements["audioTag"].paused;
-            if(this.mediaList[_index].urlList!=this.mediaList[this.playingIndex].urlList){
-                for(var i=this.mediaList[_index].urlList.length-1;i>=0;--i){
-                    tempHTML.push("<source src=\""+this.mediaList[_index].urlList[i]+"\"/>")
+            var tempHTML=[],temp=this.elements["audioTag"].paused,then=this;
+            if((!this.data.mediaList[this.playingIndex])||(this.data.mediaList[_index].urlList!=this.data.mediaList[this.playingIndex].urlList)){
+                for(var i=this.data.mediaList[_index].urlList.length-1;i>=0;--i){
+                    tempHTML.push("<source src=\""+this.data.mediaList[_index].urlList[i]+"\"/>")
                 }
-
                 this.elements["audioTag"].innerHTML=tempHTML.join("");
-                this.elements["audioTag"].addEventListener("load",function(){console.log("1")});
-                this.elements["audioTag"].load();
-                if(!temp)this.elements["audioTag"].play();
                 this.mapIndex=this.indexMap.indexOf(_index);
+                this.elements["audioTag"].load();
+                this.elements["audioTag"].currentTime=then.data.mediaList[_index].op;
+                if(!temp)this.play();
+            }else{
+                this.elements.audioTag.currentTime=this.data.mediaList[_index].op;
             }
 
             if(this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)]){
@@ -259,8 +263,8 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * 打开/关闭 列表
          */
         callList:function(){
-            this.mediaListBoxVis=!this.mediaListBoxVis;
-            // console.log(this.mediaListBoxVis,this.elements["mediaListBox"])
+            this.data.mediaListBoxVis=!this.data.mediaListBoxVis;
+            // console.log(this.data.mediaListBoxVis,this.elements["mediaListBox"])
             this.renderString();
         },
         
@@ -292,13 +296,35 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 this.elements.volumeBarBtn.style.bottom=(volume*100)+"%";
                 this.elements.volumeBarPower.style.height=(volume*100)+"%";
             }
+        },
+        /**
+         * @param {Array<String>} urlList
+         */
+        loadFile:function(urlList){
+            
+        },
+        /**
+         * @param {String} url
+         */
+        loadCue:function(url){
+            var eee,dd, d=new XMLHttpRequest();
+            var then=this;
+            d.open("get",url);
+            d.send();
+            d.onload=function(){
+                eee=loadCue(d.responseText);
+                // console.log(eee);
+                dd=cueObjToMediaObj(eee,url);
+                then.data.mediaList=then.data.mediaList.concat(dd);
+                then.reRender();
+                then.reIndexMap(then.playTypes[then.playType]);
+            }
         }
     });
 
     // var indexnav;
     indexnav=new IndexNav("leftIndex");
     indexnav.data={
-        a:"123",
         d1List:[
             {
                 url:"./index",
@@ -326,42 +352,8 @@ EXCtrl_BluePrintXml_request.onload=function(e){
     indexnav.addend(leftBox);
 
     audioControl=new AudioControl("leftBottom_audioControl");
-    // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Audio_codecs
-    audioControl.data={
-        mediaList:[
-            {
-                title:"Blue sky",
-                urlList:[
-                    rltToAbs("../../media/audio/Blue sky.ogg",thisjsUrl)
-                ]
-            },
-            {
-                title:"dededon",
-                urlList:[
-                    rltToAbs("../../media/video/dededon.mp4",thisjsUrl)
-                ]
-            },
-            {
-                title:"大势至菩萨心咒",
-                urlList:[
-                    rltToAbs("../../media/audio/般禅梵唱妙音组 - 大势至菩萨心咒.mp3",thisjsUrl)
-                ]
-            },
-            {
-                title:"银影侠ost",
-                urlList:[
-                    rltToAbs("../../media/audio/银影侠ost.mp3",thisjsUrl)
-                ]
-            },
-            {
-                title:"REDLINE Title.flac",
-                urlList:[
-                    rltToAbs("../../media/audio/03 - REDLINE Title.flac",thisjsUrl)
-                ]
-            }
-        ]
-    }
     audioControl.addend(leftBox);
+    // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Audio_codecs
 }
 
 EXCtrl_BluePrintXml_request.send();
@@ -395,6 +387,7 @@ class DEF_MediaObj{
      * @param {Function} _callback _callback({Number}Duration) 某些情况无法直接知道当前的长度，所以需要传入回调函数接收值
      */
     getDuration(_callback){
+        var then=this;
         if(!this.ed){
             var tempAudio=new Audio(),tempHTML=[];
             for(var i=this.urlList.length;i>=0;--i){
@@ -421,6 +414,13 @@ class DEF_MediaObj{
     }
 }
 
+class DEF_MediaObjMack{
+    constructor(command,time){
+        this.command=command;
+        this.time=time;
+    }
+}
+
 /**
  * @param {DEF_CUEOBJ} _cueobj
  * @param {String} _url 为了找到轨道文件, 需要提供 cue 的路径
@@ -431,7 +431,15 @@ function cueObjToMediaObj(_cueobj,_url){
     var tempObj;
     var cover=[];
     selectImg(_url,["cover","front"],[".jpg",".jpeg",".png",".gif"],function(imgList){
-        cover.push(...imgList);
+        if(imgList.length>=0){
+            cover.push(...imgList);
+        }else{
+            var afertL=urlList[0].length,
+                afert=urlList[0][afertL-3]+urlList[0][afertL-2]+urlList[0][afertL-1];
+            if(afert=="mp3"){
+
+            }
+        }
     });
     for(var i=0;i<_cueobj.track.length;++i){
         tempObj=new DEF_MediaObj();
@@ -449,14 +457,6 @@ function cueObjToMediaObj(_cueobj,_url){
     return rtn;
 }
 
-// var eee,dd, d=new XMLHttpRequest();
-// d.open("get","./media/audio/pft.cue");
-// d.send();
-// d.onload=function(){
-//     eee=loadCue(d.responseText);
-//     console.log(eee);
-//     dd=cueObjToMediaObj(eee,"./media/audio/pft.cue");
-// }
-
 
 // todo: 音量控制; 进度条(当前播放时刻)控制; cue_obj to DEF_MediaObj
+

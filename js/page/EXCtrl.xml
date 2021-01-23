@@ -47,7 +47,7 @@
             <div class="audioControl-button audioControl-next"      pa-click="this.next();" ctrl-id="next">next</div>
             <div class="audioControl-button audioControl-callList"  pa-click="this.callList();" ctrl-id="callList">callList</div>
         </div>
-        <div class="audioControl-mediaListBox" ctrl-id="mediaListBox" style="visibility:${this.mediaListBoxVis?'visible':'hidden'}; display:${this.mediaListBoxVis?'block':'none'};">
+        <div class="audioControl-mediaListBox" ctrl-id="mediaListBox" style="visibility:${this.data.mediaListBoxVis?'visible':'hidden'}; display:${this.data.mediaListBoxVis?'block':'none'};">
 
             <ul ctrl-id="mediaList" class="audioControl-mediaList" ctrl-for="this.i=0;this.i<this.data.mediaList.length;this.i++">
                 <li ctrl-id="mediaItem" class="audioControl-mediaItem">
