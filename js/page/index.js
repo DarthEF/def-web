@@ -39,11 +39,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
      * 左侧的音乐播放控制器;
      */
     AudioControl=xmlToCtrl(BluePrintXmlList[1],{
-        /**
-         * 控件 初始化函数
-         */
         initialize:function(){
-            this.data.mediaList=[];
             this.playType=0;
             this.indexMap=[];
             this.mapIndex=0;
@@ -55,18 +51,19 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.p_OP = 0;
             this.p_ED = 0;
         },
-        /**
-         * 控件 初始化完成的回调函数
-         */
         callback:function(){
             var that=this;
             var mes=this.elements;
             if(this.data.mediaList&&this.data.mediaList.length){
                 this.setPlayingIndex(0);
                 this.data.mediaList=this.data.mediaList;
-                this.reIndexMap(this.playTypes[this.playType]);
+                this.reIndexMap();
             }
             this.setMapIndex(0);
+        },
+        reRender_callback:function(){
+            if(this.playingIndex>=0)
+                this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].classList.add("playing");
         },
         playTypes:[
             "order",
@@ -81,7 +78,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.playType=_type%this.playTypes.length;
             this.elements.playType.setAttribute("title",this.playTypes[this.playType]);
             this.elements.playType.className="audioControl-button audioControl-playType "+this.playTypes[this.playType];
-            this.reIndexMap(this.playTypes[this.playType]);
+            this.reIndexMap();
             return this.indexMap;
         },
         /**
@@ -92,15 +89,15 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          */
         addItem:function(media,_step){
             var tgtIndex=(this.indexMap[this.mapIndex]==undefined?-1:this.indexMap[this.mapIndex])+1;
-            this.data.mediaList.splice(tgtIndex,0,_src);
-            for(var i=this.indexMap.length-1;i>=0;--i){
-                if(this.indexMap[i]>=tgtIndex){
-                    this.indexMap[i]+=1;
-                }
-            }
+            this.data.mediaList.splice(tgtIndex,0,media);
+            this.reIndexMap();
             this.indexMap.splice(this.mapIndex+1,0,tgtIndex);
             if(_step)this.setMapIndex(this.indexMapStep(_step));
             this.setPlayType(this.playType);
+            if(this.playingIndex==-1){
+                this.setPlayingIndex(tgtIndex);
+            }
+            this.reRender();
             return tgtIndex;
         },
         /**
@@ -110,23 +107,15 @@ EXCtrl_BluePrintXml_request.onload=function(e){
         removeItem:function(_index){
             this.data.mediaList.splice(_index,1);
             this.indexMap.splice(this.indexMap.indexOf(_index),1);
-            var elementkeys=Object.keys(this.elements);
             this.reRender();
             this.setPlayType(this.playType);
-            
-            if(this.playingIndex>_index){
-                this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex)].classList.add("playing");
-                this.playingIndex-=1;
-            }
-            else if(this.playingIndex<_index){
-                this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].classList.add("playing");
-            }
         },
         /**
          * 刷新 indexMap
          * @param {Number} type 0:正向; 1逆向 2乱序
          */
         reIndexMap:function(type){
+            var type=type||this.playTypes[this.playType];
             if(this.data.mediaList.length!=this.indexMap.length){
                 this.indexMap=new Array(this.data.mediaList.length);
             }
@@ -156,7 +145,6 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                         this.indexMap[ti]=temp;
                     }
                     break;
-                    
                 }
                 this.mapIndex=this.indexMap.indexOf(this.playingIndex);
         },
@@ -216,7 +204,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].className="audioControl-mediaItem";
             }
             this.playingIndex=parseInt(_index);
-            this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].className="audioControl-mediaItem playing";
+            if(this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)]){
+                this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].className="audioControl-mediaItem playing";
+            }
         },
         /**
          * 步进 mapIndex 获取 indexMap 的值
@@ -280,29 +270,6 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 this.playProgress=progress;
             }
         },
-        /** 
-         * 渲染音量大小 onvolumechange
-         */
-        volumeRender:function(){
-            var audio=this.elements.audioTag;
-            var volume=audio.volume;
-            if(audio.muted||audio.volume<=0){
-                this.elements.root.classList.add("ismuted");
-                this.elements.volumeBarBtn.style.bottom="0";
-                this.elements.volumeBarPower.style.height="0";
-            }
-            else{
-                this.elements["root"].classList.remove("ismuted");
-                this.elements.volumeBarBtn.style.bottom=(volume*100)+"%";
-                this.elements.volumeBarPower.style.height=(volume*100)+"%";
-            }
-        },
-        /**
-         * @param {Array<String>} urlList
-         */
-        loadFile:function(urlList){
-            
-        },
         /**
          * @param {String} url
          */
@@ -318,6 +285,32 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 then.data.mediaList=then.data.mediaList.concat(dd);
                 then.reRender();
                 then.reIndexMap(then.playTypes[then.playType]);
+            }
+        },
+        changVolume:function(e,tgt){
+            if(e===undefined)return -1;
+            if(e.buttons){
+                this.setVolume(Math.ceil(100-(e.layerY/tgt.offsetHeight)*100)*0.01);
+            }
+        },
+        /**
+         * @param {Number} val
+         */
+        setVolume:function(_val){
+            var audio=this.elements.audioTag,val=_val;
+            if(val==audio.volume)return;
+            if(val>1)val=1;
+            else if(val<0)val=0;
+            audio.volume=val;
+            if(audio.muted||audio.volume<=0){
+                this.elements.root.classList.add("ismuted");
+                this.elements.volumeBarBtn.style.top=(94-val*94)+"%";
+                this.elements.volumeBarPower.style.height="0";
+            }
+            else{
+                this.elements["root"].classList.remove("ismuted");
+                this.elements.volumeBarPower.style.height=(audio.volume*100)+"%";
+                this.elements.volumeBarBtn.style.top=(94-val*94)+"%";
             }
         }
     });
@@ -352,7 +345,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
     indexnav.addend(leftBox);
 
     audioControl=new AudioControl("leftBottom_audioControl");
+    
     audioControl.addend(leftBox);
+    audioControl.addItem(new DEF_MediaObj(rltToAbs("../../media/audio/03 - REDLINE Title.flac",thisjsUrl),"REDLINE TITLE"));
     // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Audio_codecs
 }
 
@@ -362,7 +357,7 @@ EXCtrl_BluePrintXml_request.send();
  * 给我的 audio 控制器 用的数据对象
  */
 class DEF_MediaObj{
-    constructor(){
+    constructor(src,title){
         this.title="";
         this.cover=[];
         this.songwriter="";
@@ -375,6 +370,13 @@ class DEF_MediaObj{
         this.duration=0;
 
         this.urlList=[];
+        if(src){
+            this.title=src;
+            this.urlList.push(src);
+        }
+        if(title){
+            this.title=title;
+        }
     }
     /**
      * 获取 "Artist" 编曲者 and 演唱者

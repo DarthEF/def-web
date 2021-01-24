@@ -402,3 +402,10 @@ html,body{
     height:12px;
     clip-path: polygon(100% 0%, 100% 100%, 30% 100%, 0% 50%, 30% 0%);
 }
+.audioControl-volumeBarCtrl{
+    position:absolute;
+    top:-8px;
+    width:16px;
+    height:120%;
+    right:0;
+}

@@ -35,9 +35,10 @@
                 <div class="audioControl-playBarLow" ctrl-id="playBarLow" ></div>
                 <div class="audioControl-playBarBtn" ctrl-id="playBarBtn" pa-mousedown="this.radeyChangCurrentTime()"></div>
             </div>
-            <div class="audioControl-volumeBar">
+            <div class="audioControl-volumeBar" pa-mousedown="stopPE(e);this.changVolume(e,tgt)" pa-mousemove="this.changVolume(e,tgt)">
                 <div class="audioControl-volumeBarPower"    ctrl-id="volumeBarPower"></div>
-                <div class="audioControl-volumeBarBtn"      ctrl-id="volumeBarBtn"  pa-mousedown="this.radeyChangVolume()"></div>
+                <div class="audioControl-volumeBarBtn"      ctrl-id="volumeBarBtn" ></div>
+                <div class="audioControl-volumeBarCtrl"></div>
             </div>
         </div>
         <div class="audioControl-buttons">
