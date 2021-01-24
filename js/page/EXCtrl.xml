@@ -25,7 +25,7 @@
 <ctrl_tab/>
 
 <div class="audioControl" ctrl-id="root">
-    <audio ctrl="audioControl-audioTag" ctrl-id="audioTag"></audio>
+    <audio ctrl="audioControl-audioTag" ctrl-id="audioTag"  pa-volumechange="this.setVolume(tgt.volume)"></audio>
     <div class="audioControl-CtrlBox">
         <div class="audioControl-visual">
             <div ctrl-id="spectrumBox" class="audioControl-spectrumBox">
