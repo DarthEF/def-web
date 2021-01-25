@@ -45,15 +45,13 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.mapIndex=0;
             this.playingIndex=-1;
             this.duration=0;
+            this.paused=true;
             if(!this.data.mediaList){
                 this.data.mediaList=[];
             }
-            this.p_OP = 0;
-            this.p_ED = 0;
+            this.op = 0;
         },
         callback:function(){
-            var that=this;
-            var mes=this.elements;
             if(this.data.mediaList&&this.data.mediaList.length){
                 this.setPlayingIndex(0);
                 this.data.mediaList=this.data.mediaList;
@@ -70,6 +68,28 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             "reverse",
             "out-of-order"
         ],
+        /**
+         * 读取媒体后 渲染轨道长度
+         * @param {Number} _index 当前播放的媒体的 index
+         */
+        renderDuration:function(_index){
+            var audio=this.elements.audioTag,
+                index=_index==undefined?this.playingIndex:_index;
+            var mediaItem=this.data.mediaList[index];
+            if(this.playingIndex>=0){
+                this.duration=mediaItem.getDuration(audio);
+                this.op=mediaItem.op;
+            }
+            else{
+                this.duration=this.elements.audioTag;
+                this.op=0;
+            }
+            audio.currentTime=this.op;
+            if(!this.paused){
+                audio.play();
+            }
+            this.renderString();
+        },
         /**
          * 改变播放顺序的方式
          * @param {Number} _type 0: 顺序; 1: 逆序; 2: 乱序;
@@ -96,6 +116,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.setPlayType(this.playType);
             if(this.playingIndex==-1){
                 this.setPlayingIndex(tgtIndex);
+                this.renderDuration()
             }
             this.reRender();
             return tgtIndex;
@@ -153,18 +174,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
          * @param {String} _src 媒体的地址
          */
         setTempPlaySrc:function(_src){
-            var temp=this.elements["audioTag"].paused,then=this;
-            // this.elements["audioTag"].src="";
             this.elements["audioTag"].innerHTML="<source src=\""+_src+"\"/>";
-            function setDuration(e){
-                then.duration=this.duration;
-                console.log(this.duration);
-                this.removeEventListener("load",setDuration);
-                if(!temp)this.play();
-            }
             this.elements["audioTag"].load();
-            // if(!temp)this.play();
-            this.elements["audioTag"].addEventListener("load",setDuration);
+            this.playingIndex=-2;
         },
         /**
          * 控件 切换当前播放列表的下标并渲染
@@ -174,19 +186,18 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             if(this.data.mediaList.length<=0)return;
             this.mapIndex=_index;
             this.setPlayingIndex(this.indexMap[_index]);
-
         },
         /** 
          * 跳转到一个播放列表项
          * @param {Number} _index 列表项的下标
          */
         setPlayingIndex:function(_index){
+            this.paused=this.elements["audioTag"].paused
             if(this.data.mediaList.length<=0) return;
             if(this.data.mediaList.length<=_index) return;
-            
             // this.elements["audioTag"].src=this.data.mediaList[_index].url;
             // this.elements["audioTag"].src="";
-            var tempHTML=[],temp=this.elements["audioTag"].paused,then=this;
+            var tempHTML=[],then=this;
             if((!this.data.mediaList[this.playingIndex])||(this.data.mediaList[_index].urlList!=this.data.mediaList[this.playingIndex].urlList)){
                 for(var i=this.data.mediaList[_index].urlList.length-1;i>=0;--i){
                     tempHTML.push("<source src=\""+this.data.mediaList[_index].urlList[i]+"\"/>")
@@ -194,10 +205,9 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 this.elements["audioTag"].innerHTML=tempHTML.join("");
                 this.mapIndex=this.indexMap.indexOf(_index);
                 this.elements["audioTag"].load();
-                this.elements["audioTag"].currentTime=then.data.mediaList[_index].op;
-                if(!temp)this.play();
             }else{
                 this.elements.audioTag.currentTime=this.data.mediaList[_index].op;
+                this.renderDuration(_index);
             }
 
             if(this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)]){
@@ -232,13 +242,16 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.setMapIndex(this.indexMapStep(1));
         },
         /**
+         * 
+         */
+        /**
          * 切换播放暂停
          */
         playPause:function(){
             var a=this.elements.audioTag,
                 b=this.elements.playPause;
-
-            if(a.paused){
+            this.paused=!this.paused;
+            if(!this.paused){
                 a.play();
                 b.classList.add("pause");
                 b.classList.remove("play");
@@ -271,6 +284,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             }
         },
         /**
+         * 加载 cue 文件
          * @param {String} url
          */
         loadCue:function(url){
@@ -287,21 +301,24 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 then.reIndexMap(then.playTypes[then.playType]);
             }
         },
-        changVolume:function(e,tgt){
-            if(e===undefined)return -1;
+
+        volumeHand:function(e,tgt){
             if(e.buttons){
-                this.setVolume(Math.ceil(100-(e.layerY/tgt.offsetHeight)*100)*0.01);
+                var val=(Math.ceil(100-(e.layerY/tgt.offsetHeight)*100)*0.01);
+                if(val>1)       val=1;
+                else if(val<0)  val=0;
+                this.elements.audioTag.volume=val;
             }
         },
         /**
-         * @param {Number} val
+         * @param {Number} val volume 的值, 取值范围 0~1
          */
-        setVolume:function(_val){
+        changVolume:function(_val){
             var audio=this.elements.audioTag,val=_val;
-            if(val==audio.volume)return;
-            if(val>1)val=1;
-            else if(val<0)val=0;
-            audio.volume=val;
+            if(val>1)       val=1;
+            else if(val<0)  val=0;
+            if(val!=audio.volume)audio.volume=val;
+            
             if(audio.muted||audio.volume<=0){
                 this.elements.root.classList.add("ismuted");
                 this.elements.volumeBarBtn.style.top=(94-val*94)+"%";
@@ -311,6 +328,20 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 this.elements["root"].classList.remove("ismuted");
                 this.elements.volumeBarPower.style.height=(audio.volume*100)+"%";
                 this.elements.volumeBarBtn.style.top=(94-val*94)+"%";
+            }
+        },
+        wheelHand:function(e){
+            if(e.deltaY>0){
+                this.changVolume(this.elements.audioTag.volume-0.05);
+            }
+            else if(e.deltaY<0){
+                this.changVolume(this.elements.audioTag.volume+0.05);
+            }
+        },
+        currentTimeHand:function(e,tgt){
+            if(e.buttons){
+                var d=e.layerX/tgt.offsetWidth;
+                // this.duration
             }
         }
     });
@@ -348,6 +379,7 @@ EXCtrl_BluePrintXml_request.onload=function(e){
     
     audioControl.addend(leftBox);
     audioControl.addItem(new DEF_MediaObj(rltToAbs("../../media/audio/03 - REDLINE Title.flac",thisjsUrl),"REDLINE TITLE"));
+    audioControl.loadCue(rltToAbs("../../media/audio/银影侠ost.cue",thisjsUrl));
     // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Audio_codecs
 }
 
@@ -384,11 +416,17 @@ class DEF_MediaObj{
     getArtist(){
         return this.performer + "/" + this.songwriter;
     }
-    /**
-     * 获取当前轨道的长度
-     * @param {Function} _callback _callback({Number}Duration) 某些情况无法直接知道当前的长度，所以需要传入回调函数接收值
-     */
-    getDuration(_callback){
+}
+/**
+ * 获取当前轨道的长度
+ * @param {Audio} audio 当前正在播放这个文件的 Audio 元素
+ * @param {Function} _callback _callback({Number}Duration) 某些情况无法直接获取当前的长度，所以需要传入回调函数接收值
+ * 2个重载 fnc(audio) 和 fnc(callback); 用 audio 的重载可以返回长度, 可以不用 callback
+ */
+DEF_MediaObj.prototype.getDuration=createOlFnc();
+DEF_MediaObj.prototype.getDuration.addOverload(
+    [Function],
+    function(_callback){
         var then=this;
         if(!this.ed){
             var tempAudio=new Audio(),tempHTML=[];
@@ -397,13 +435,13 @@ class DEF_MediaObj{
             }
             tempAudio.innerHTML=tempHTML;
             if(!this.op){
-                tempAudio.onload=function(e){
+                tempAudio.abort=function(e){
                     var d=this.duration;
                     _callBack(d);
                 }
             }else{
-                tempAudio.onload=function(e){
-                    var d=this.duration-this.op;
+                tempAudio.abort=function(e){
+                    var d=this.duration-then.op;
                     _callBack(d);
                 }
             }
@@ -414,7 +452,31 @@ class DEF_MediaObj{
             return d;
         }
     }
-}
+);
+DEF_MediaObj.prototype.getDuration.addOverload(
+    [Audio],
+    function(audio){
+        if(!this.ed){
+            var d;
+            if(!this.op){
+                d=audio.duration;
+            }else{
+                d=audio.duration-this.op;
+            }
+        }else{
+            var d=this.ed-this.op;
+        }
+        return d;
+    }
+);
+DEF_MediaObj.prototype.getDuration.addOverload(
+    [Audio,Function],
+    function(audio,_callback){
+        var d=this.getDuration(audio);
+        _callback(d);
+        return d;
+    }
+);
 
 class DEF_MediaObjMack{
     constructor(command,time){
@@ -432,7 +494,7 @@ function cueObjToMediaObj(_cueobj,_url){
     var rtn=[],urlList=[rltToAbs(_cueobj.file,_url)];
     var tempObj;
     var cover=[];
-    selectImg(_url,["cover","front"],[".jpg",".jpeg",".png",".gif"],function(imgList){
+    selectImg(_url.slice(0,_url.lastIndexOf('/')+1),["cover","front"],[".jpg",".jpeg",".png",".gif"],function(imgList){
         if(imgList.length>=0){
             cover.push(...imgList);
         }else{
@@ -460,5 +522,5 @@ function cueObjToMediaObj(_cueobj,_url){
 }
 
 
-// todo: 音量控制; 进度条(当前播放时刻)控制; cue_obj to DEF_MediaObj
+// todo: 进度条(当前播放时刻)控制;
 

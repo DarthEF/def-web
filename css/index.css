@@ -209,9 +209,9 @@ html,body{
 .audioControl-playBar{
     position: absolute;
     bottom: 0;
-    width: 90%;
+    width: 95%;
     height: 4px;
-    left: 46%;
+    left: 50%;
     transform: translateX(-50%);
     background-color: #0f0;
 }
@@ -223,7 +223,7 @@ html,body{
     border-radius: 50%;
     background-color: #f0f;
     border: none;
-    transform: translateY(-50%);
+    transform: translate(-50%,-50%);
 }
 .audioControl-playBarLow{
     position: absolute;
@@ -327,6 +327,12 @@ html,body{
     color:#f00;
 }
 .audioControl-mediaItemLink{
+    height:100%;
+    position: absolute;
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
     color:#eee;
 }
 .playing .audioControl-mediaItemLink{
@@ -408,4 +414,9 @@ html,body{
     width:16px;
     height:120%;
     right:0;
+}
+.audioControl-ctrlTimeBox{
+    position:absolute;
+    bottom:250%;
+    background:#000;
 }

@@ -1018,7 +1018,7 @@ function loadCue(str){
     var CommandList=[];
     for(;p<str.length;++p){
         if(str[p]!=' '){
-            for(q=p;(p<str.length);++p){
+            for(q=p;(p<=str.length);++p){
                 if(str[p]=='\"'){
                     isQuotes=!isQuotes;
                     if(isQuotes){
@@ -1035,7 +1035,7 @@ function loadCue(str){
                     CommandList.push(tempStr);
                     q=p+1;
                 }
-                else if((str[p]=="\n")||(str[p]=="\r")){
+                else if((str[p]=="\n")||(str[p]=="\r")||(str.length==p)){
                     // 换行 进入下一条指令
                     if(str[p-1]=='\"'){
                         tempStr=str.slice(q,p-1);
@@ -1087,8 +1087,8 @@ function selectImg(_rootUrl,_nameList,_afertList,callBack){
                 callBack(rtn);
             }
             else{
-                if(this.n_index>=_nameList.length)return;
                 this.n_index+=1;
+                if(this.n_index>=_nameList.length)return;
                 this.src=_rootUrl+_nameList[this.n_index]+this.n_afert;
             }
         }
@@ -1098,8 +1098,8 @@ function selectImg(_rootUrl,_nameList,_afertList,callBack){
                 callBack(rtn);
             }
             else{
-                if(this.n_index>=_nameList.length)return;
                 this.n_index+=1;
+                if(this.n_index>=_nameList.length)return;
                 this.src=_rootUrl+_nameList[this.n_index]+this.n_afert;
             }
         }
