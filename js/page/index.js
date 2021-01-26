@@ -242,9 +242,6 @@ EXCtrl_BluePrintXml_request.onload=function(e){
             this.setMapIndex(this.indexMapStep(1));
         },
         /**
-         * 
-         */
-        /**
          * 切换播放暂停
          */
         playPause:function(){
@@ -338,11 +335,43 @@ EXCtrl_BluePrintXml_request.onload=function(e){
                 this.changVolume(this.elements.audioTag.volume+0.05);
             }
         },
+        /**
+         * 进度条上的控制
+         */
         currentTimeHand:function(e,tgt){
-            if(e.buttons){
-                var d=e.layerX/tgt.offsetWidth;
-                // this.duration
+            var tgtTimeP=(e.layerX-6)/(tgt.offsetWidth-12),tgtTime;
+            if(tgtTimeP>1)tgtTimeP=1;
+            else if(tgtTimeP<0)tgtTimeP=0;
+            tgtTime=this.duration*(tgtTimeP);
+            // console.log(tgtTime+","+e.layerX+","+tgt.offsetWidth)
+            this.elements.targetTimeMM.innerHTML=parseInt(tgtTime/60);
+            this.elements.targetTimeSS.innerHTML=parseInt(tgtTime%60);
+            this.elements.ctrlTimeBox.style.left=(tgtTimeP*100)+"%";
+            if(e.type=="mouseup"){
+                this.elements.audioTag.currentTime=tgtTime;
             }
+        },
+        /**渲染 */
+        renderCurrentTime:function(){
+            var tgtTime=this.getCurrentTime();
+            this.elements.currentTimeMM.innerHTML=parseInt(tgtTime/60);
+            this.elements.currentTimeSS.innerHTML=parseInt(tgtTime%60);
+            var tp=tgtTime/this.duration*100
+            
+            this.elements.playBarBtn.style.left=tp+"%";
+            this.elements.playBarLow.style.width=tp+"%";
+        },
+        /**
+         * 获取当前播放进度
+         */
+        getCurrentTime:function(){
+            return this.elements.audioTag.currentTime-this.op;
+        },
+        /**
+         * 修改播放进度
+         */
+        setCurrentTime:function(val){
+            this.elements.audioTag.currentTime=val+this.op;
         }
     });
 

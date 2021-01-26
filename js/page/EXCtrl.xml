@@ -25,23 +25,26 @@
 <ctrl_tab/>
 
 <div class="audioControl" ctrl-id="root" pa-wheel="this.wheelHand(e)">
-    <audio ctrl="audioControl-audioTag" ctrl-id="audioTag" pa-loadeddata="this.renderDuration()" pa-volumechange="this.changVolume(tgt.volume)"></audio>
+    <audio ctrl="audioControl-audioTag" ctrl-id="audioTag" pa-timeupdate="this.renderCurrentTime()" pa-loadeddata="this.renderDuration()" pa-volumechange="this.changVolume(tgt.volume)"></audio>
     <div class="audioControl-CtrlBox">
         <div class="audioControl-visual">
             <div ctrl-id="spectrumBox" class="audioControl-spectrumBox">
                 <img ctrl="image" class="audioControl-image" />
             </div>
-            <div class="audioControl-playBar"  pa-mousedown="stopPE(e);this.currentTimeHand(e,tgt)" pa-mousemove="this.currentTimeHand(e,tgt)">
-                <div class="audioControl-ctrlTimeBox" ctrl-id="ctrlTimeBox">
-                    <span ctrl-id="currentTimeMM">00</span>:<span ctrl-id="currentTimeSS">00</span>
-                    <br>
-                    <span ctrl-id="targetTimeMM">00</span>:<span ctrl-id="targetTimeSS">00</span>
-                    <br>
-                    <span ctrl-id="endTimeMM">${parseInt(this.duration/60)}</span>:<span ctrl-id="endTimeSS">${parseInt(this.duration%60)}</span>
-                </div>
+            <div class="audioControl-playBar" pa-mouseup="this.currentTimeHand(e,tgt)" pa-mousedown="stopPE(e);" pa-mousemove="this.currentTimeHand(e,tgt)">
                 <div class="audioControl-playBarLow" ctrl-id="playBarLow"></div>
                 <div class="audioControl-playBarBtn" ctrl-id="playBarBtn"></div>
                 <div class="audioControl-playBarCtrl"></div>
+            </div>
+            <div class="audioControl-ctrlTimeBox" ctrl-id="ctrlTimeBox">
+                <span class="audioControl-currentTime mm" ctrl-id="currentTimeMM">00</span>
+                <span class="audioControl-currentTime ss" ctrl-id="currentTimeSS">00</span>
+                <br>
+                <span class="audioControl-targetTime mm" ctrl-id="targetTimeMM">00</span>
+                <span class="audioControl-targetTime ss" ctrl-id="targetTimeSS">00</span>
+                <br>
+                <span class="audioControl-endTime mm" ctrl-id="endTimeMM">${parseInt(this.duration/60)}</span>
+                <span class="audioControl-endTime ss" ctrl-id="endTimeSS">${parseInt(this.duration%60)}</span>
             </div>
             <div class="audioControl-volumeBar" pa-dblclick="this.changVolume(0)" pa-mousedown="stopPE(e);this.volumeHand(e,tgt)" pa-mousemove="this.volumeHand(e,tgt)">
                 <div class="audioControl-volumeBarPower"    ctrl-id="volumeBarPower"></div>
