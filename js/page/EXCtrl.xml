@@ -29,7 +29,7 @@
     <div class="audioControl-CtrlBox">
         <div class="audioControl-visual">
             <div ctrl-id="spectrumBox" class="audioControl-spectrumBox">
-                <img ctrl="image" class="audioControl-image" />
+                <img ctrl-id="image" class="audioControl-image" src="${this.data.mediaList[this.playingIndex]?this.data.mediaList[this.playingIndex].cover[0]:''}" />
             </div>
             <div class="audioControl-playBar" pa-mouseup="this.currentTimeHand(e,tgt)" pa-mousedown="stopPE(e);" pa-mousemove="this.currentTimeHand(e,tgt)">
                 <div class="audioControl-playBarLow" ctrl-id="playBarLow"></div>
