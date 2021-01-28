@@ -1,4 +1,4 @@
-var thisjsUrl=getCurrAbsPath();
+var indexjsUrl=getCurrAbsPath();
 var leftBox=document.getElementById("Left");
 
 var indexnav;
@@ -37,6 +37,8 @@ getExCtrl(function(exCtrl){
     
     audioControl=new AudioControl("leftBottom_audioControl");
     audioControl.addend(leftBox);
-    audioControl.addItem(new DEF_MediaObj(rltToAbs("../../media/audio/03 - REDLINE Title.flac",thisjsUrl),"REDLINE TITLE"));
-    audioControl.loadCue(rltToAbs("../../media/audio/银影侠ost.cue",thisjsUrl));
-})
+    audioControl.addItem(new DEF_MediaObj(rltToAbs("../media/audio/03 - REDLINE Title.flac",indexjsUrl),"REDLINE TITLE"));
+    audioControl.loadCue(rltToAbs("../media/audio/银影侠ost.cue",indexjsUrl));
+
+    
+});

@@ -1,0 +1,426 @@
+
+.indexNav{
+    position:relative;
+    width:100%;
+    font-weight: bold;
+}
+.indexNav-D1List{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    height: auto;
+    width: 100%;
+    list-style: none;
+}
+.indexNav-D1Item{
+    position: relative;
+    top: 0;
+    margin: 0;
+    left: 0;
+    width: 100%;
+    height: 42px;
+    list-style: none;
+    border-bottom: #666 1px solid;
+}
+.indexNav-D1Content{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /* text-align: center; */
+}
+.indexNav-D1Content::before{
+    content: "";
+    width: 0;
+    height: 100%;
+    background-color: #0f0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    transition:width 0.1s linear;
+    transition-delay: 0.1s;
+}
+.indexNav-D1Link{
+    color: #0f0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition:color 0.1s linear;
+}
+.indexNav-D1Link::before{
+    content: "";
+    width: 2em;
+    height: 80%;
+    display:inline-block;
+    vertical-align: text-bottom;
+}
+
+.indexNav-D1Item:hover .indexNav-D1Content::before{
+    width: 100%;
+    transition-delay: 0s;
+}
+.indexNav-D1Item:hover .indexNav-D1Link{
+    transition-delay: 0s;
+    color: #f0f;
+}
+.indexNav-D2ListBox{
+    position: absolute;
+    left: 100%;
+    width: 0;
+    height: auto;
+    top: 0;
+    background-color: #0f0;
+    overflow: hidden;
+    transition: padding,width 0.1s linear;
+    transition-delay: 0.1s;
+}
+.indexNav-D1Item:hover .indexNav-D2ListBox{
+    width: 80%;
+    padding-left:5%;
+    transition-delay: 0.1s;
+}
+.indexNav-D2List{
+    position: relative;
+    left: 0;
+    width: 100%;
+    top: 0;
+    padding: 0;
+}
+.indexNav-D2Item{
+    position: relative;
+    word-wrap: none;
+    width: 100%;
+    height: 32px;
+    border-bottom: #666 1px solid;
+    background-color: #444;
+}
+.indexNav-D2Item:last-child{
+    border-bottom: none;
+}
+.indexNav-D2Content{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.indexNav-D2Item::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background-color: #0f0;
+    transition: width 0.1s linear;
+}
+.indexNav-D2Item:hover::before{
+    width: 100%;
+}
+.indexNav-D2Link{
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    color: #0f0;
+    transition: color 0.1s linear;
+}
+.indexNav-D2Item:hover .indexNav-D2Link{
+    color: #f0f;
+}
+.indexNav-D2Link::before{
+    content: "";
+    display: inline-block;
+    position: relative;
+    height: 90%;
+    width: 1.5em;   
+    vertical-align: text-bottom;
+}
+
+.audioControl{
+    position: absolute;
+    bottom: 36px;
+    left: 0;
+    height: 200px;
+    width: 100%;
+    background-color: #000;
+    box-sizing: border-box;
+    border: #666 2px solid;
+}
+.audioControl-CtrlBox{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.audioControl-visual{
+    position: absolute;
+    top: 0;
+    height: 80%;
+    width: 100%;
+}
+.audioControl-playBar{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    left: 0;
+    border-left: 6px #000 solid;
+    border-right: 6px #000 solid;
+    background-color: #0f0;
+    z-index:10;
+}
+.audioControl-playBarBtn{
+    position: absolute;
+    top: 50%;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background-color: #f0f;
+    border: none;
+    transform: translate(-50%,-50%);
+}
+.audioControl-playBarLow{
+    position: absolute;
+    height: 100%;
+    background-color: #f00;
+}
+.audioControl-playBarCtrl{
+    position: absolute;
+    height: 12px;
+    width:106.53%;
+    left:-6px;
+    top:50%;
+    transform: translateY(-50%);
+}
+.audioControl-buttons{
+    position: absolute;
+    bottom: 0;
+    height: 18%;
+    width: 100%;
+}
+.audioControl-button{
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    /* background-color: #f00; */
+    background-image: url("../img/iconSprites.svg");
+    background-size : 1000% 1000%;  
+    left: 50%;
+    font-size: 0;
+    color:#0000;
+    top: 50%;
+    filter:hue-rotate(120deg) brightness(2);
+    transition: filter 0.2s linear;
+}
+.audioControl-button:hover{
+    filter:hue-rotate(0) brightness(1) drop-shadow(0px 0px 6px);
+}
+
+.audioControl-playType{
+    transform: translate(-290%,-50%);
+    background-position: -300% -200%;
+}
+.audioControl-playType.order::before,.audioControl-playType.reverse::before{
+    content:"";
+    position:absolute;
+    width:50%;
+    height:50%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background-image:url("../img/iconSprites.svg");
+    background-size:1000% 1000%;
+    background-position:-300% -300%;
+}
+.audioControl-playType.reverse::before{
+    transform:translate(-50%,-50%) scaleY(-1);
+}
+.audioControl-playType.out-of-order{
+    background-position: -400% -200%;
+}
+.audioControl-last{
+    transform: translate(-170%,-50%) scaleX(-1);
+    background-position: -200% -200%;
+}
+.audioControl-playPause{
+    transform: translate(-50%,-50%);
+}
+.audioControl-playPause.play{
+    background-position: 0% -200%;
+}
+.audioControl-playPause.pause{
+    background-position: -100% -200%;
+}
+.audioControl-next{
+    transform: translate(70%,-50%);
+    background-position: -200% -200%;
+}
+.audioControl-callList{
+    transform: translate(190%,-50%);
+    background-position: 300% 0%;
+}
+.audioControl-mediaListBox{
+    left:100%;
+    position: absolute;
+    bottom:0;
+    height:400px;
+    width:100%;
+    margin-left:2px;
+    background:#4448;
+}
+.audioControl-mediaList{
+    height:100%;
+    width:100%;
+    overflow-y:scroll;
+}
+.audioControl-mediaItem{
+    position:relative;
+    height:24px;
+    width:100%;
+}
+.audioControl-mediaItem.playing{
+    background-color:#2a2;
+}
+.audioControl-mediaItemIndex{
+    font-weight: bold;
+    color:#eee;
+}
+.playing .audioControl-mediaItemIndex{
+    color:#f00;
+}
+.audioControl-mediaItemLink{
+    height:100%;
+    position: absolute;
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    color:#eee;
+}
+.playing .audioControl-mediaItemLink{
+    color:#000;
+}
+.audioControl-mediaItemButton{
+    position:absolute;
+    display:block;
+    top:0;
+    right:0;
+    border:none;
+    height:24px;
+    width:24px;
+    background-image:url("../img/iconSprites.svg");
+    background-color:#0000;
+    background-size:1000% 1000%;
+    background-position:-500% -100%;
+    filter: contrast(0) brightness(0.5);
+}
+.audioControl-mediaItemButton:hover{
+    filter: contrast(0) brightness(2.5);
+}
+
+.audioControl-image{
+    position:absolute;
+    display:block;
+    width:144px;
+    height:144px;
+}
+
+.audioControl-volumeBar{
+    position: absolute;
+    top: 5%;
+    right: 0;
+    width: 3%;
+    height: 70%;
+    background: #444;
+}
+.audioControl-volumeBar::before,.audioControl-volumeBar::after {
+    content: "";
+    z-index:1;
+    display: block;
+    position: absolute;
+    top: 100%;
+    width: 24px;
+    right: 0;
+    height: 24px;
+}
+.audioControl-volumeBar::before{
+    background-color: #0f0;
+}
+.audioControl-volumeBar::after {
+    background-image: url(../img/iconSprites.svg);
+    background-size:1000% 1000%;
+    background-position:-500% -200%;
+}
+.ismuted .audioControl-volumeBar::after {
+    clip-path: polygon(0% 0%,0% 100% , 58% 100%, 58% 0%);
+}
+.audioControl-volumeBarPower{
+    position:absolute;
+    width:100%;
+    height:100%;
+    bottom:0;
+    left:0;
+    background:#f00;
+}
+.audioControl-volumeBarBtn{
+    position:absolute;
+    background:#fff;
+    right:0;
+    width:16px;
+    height:12px;
+    clip-path: polygon(100% 0%, 100% 100%, 30% 100%, 0% 50%, 30% 0%);
+}
+.audioControl-volumeBarCtrl{
+    position:absolute;
+    top:-8px;
+    width:16px;
+    height:120%;
+    right:0;
+}
+.audioControl-ctrlTimeBox{
+    display:none;
+    position:absolute;
+    bottom:6%;
+    background:#000;
+    font-size:0;
+    border:1px #fff solid;  
+    min-width: auto;
+    white-space: nowrap;
+    z-index:10;
+}
+.audioControl-playBar:hover+.audioControl-ctrlTimeBox{
+    display:block;
+}
+.audioControl-ctrlTimeBox::before{
+    content:"";
+    display:block;
+    position:absolute;
+    bottom:-5px;
+    left:-1px;
+    width:7px;
+    height:7px;
+    background:#000;
+    border-left:1px #fff solid;
+    border-bottom:2px #fff solid;
+    transform:matrix(1, -1, 0, 1, 0, 0);
+}
+.audioControl-ctrlTimeBox span{
+    background:#000;
+    font-size:12px;
+}
+.audioControl-ctrlTimeBox .mm::after{
+    content:":"
+}
+.audioControl-currentTime{
+    color:#0f0;
+}
+.audioControl-targetTime{
+    color:#ff0;
+}
+.audioControl-endTime{
+    color:#f00;
+}

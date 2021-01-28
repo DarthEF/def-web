@@ -6,6 +6,10 @@ function getExCtrl(exCtrl_callBack){
     getExCtrl.IndexNav;
     getExCtrl.AudioControl;
     if(!getExCtrl.i){
+        var cssTag=document.createElement("link");
+        cssTag.setAttribute("rel","stylesheet");
+        cssTag.setAttribute("href",rltToAbs("./EXCtrl.css"));
+        document.head.appendChild(cssTag);
         ++getExCtrl.i;
         var EXCtrl_BluePrintXml_request=new XMLHttpRequest();
         EXCtrl_BluePrintXml_request.open("get",rltToAbs("./EXCtrl.xml"));
@@ -379,6 +383,8 @@ function getExCtrl(exCtrl_callBack){
                     this.elements.audioTag.currentTime=val+this.op;
                 }
             });
+
+            getExCtrl.Image
             exCtrl_callBack({IndexNav:getExCtrl.IndexNav,AudioControl:getExCtrl.AudioControl});
         }
 

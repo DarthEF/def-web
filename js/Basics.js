@@ -614,6 +614,7 @@ function htmlToCode(str){
     return enStr;
 }
 /**
+ * 模版字符串
  * @param {String} _str  字符串
  * @param {Object} _data 数据
  * @returns {Object} {str:{String},hit:{Array<String>}}
