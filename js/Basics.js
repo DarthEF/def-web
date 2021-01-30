@@ -770,11 +770,11 @@ KeyNotbook.prototype={
 
 /**
  * 给element添加按键事件
- * @param {Document} _Element 
+ * @param {Document} _Element 添加事件的元素
  * @param {Boolean} _keepFlag 是否重复触发事件
- * @param {Number||Array} _keycode 
- * @param {Function} _event 
- * @param {Boolean} _type flase=>down;true=>up
+ * @param {Number||Array} _keycode 按键的 keycode 如果是组合键 需要输入数组
+ * @param {Function} _event 触发的事件
+ * @param {Boolean} _type false=>down;true=>up
  */
 function addKeyEvent(_Element,_keepFlag,_keycode,_event,_type){
     var thisKeyNotbook;
@@ -803,7 +803,7 @@ function addKeyEvent(_Element,_keepFlag,_keycode,_event,_type){
  * @param {Document} _Element 
  * @param {Number||Array} _keycode 
  * @param {Function} _event 
- * @param {} _type flase=>down;true=>up
+ * @param {} _type false=>down;true=>up
  */
 function removeKeyEvent(_Element,_keycode,_event,_type){
     if(_Element.keyNotbook){
