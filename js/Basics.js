@@ -616,12 +616,13 @@ function htmlToCode(str){
 /**
  * 模版字符串
  * @param {String} _str  字符串
- * @param {Object} _data 数据
+ * @param {Object} then this 指针
+ * @param {Array} argArray 实参
  * @returns {Object} {str:{String},hit:{Array<String>}}
  */
-function templateStringRender(str,data){
+function templateStringRender(str,then,argArray){
     
-    if(Object.keys(data).length){
+    if(Object.keys(then).length){
         var temp=[],tempstr="",hit=[];
         var q,p;// q是左
         var headFlag=0,footFlag=0;
@@ -641,7 +642,7 @@ function templateStringRender(str,data){
                     if(footFlag){
                         tempstr=str.slice(q,p);
                         oldL=temp.join("").length;
-                        temp.push((new Function("return "+tempstr)).call(data));
+                        temp.push((new Function(["tgt"],"return "+tempstr)).apply(then,argArray));
                         hit.push({expression:tempstr,value:temp[temp.length-1]});
                         q=p+1;
                         break;

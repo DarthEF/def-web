@@ -1,0 +1,15 @@
+<div class="homePage" ctrl-id="root" pa-resize="console.log(1);this.renderString()">
+    <div class="homePage-headlines" style="height:${tgt.offsetWidth*0.6}px"></div>
+</div>
+<ctrl_tab/>
+<div class="" ctrl-id="root">
+    
+</div>
+<ctrl_tab/>
+<div class="" ctrl-id="root">
+    
+</div>
+<ctrl_tab/>
+<div class="" ctrl-id="root">
+    
+</div>

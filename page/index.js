@@ -1,13 +1,18 @@
 var indexjsUrl=getCurrAbsPath();
+var pageType=location.hash.split("/")[1];
+
 var leftBox=document.getElementById("Left");
+var main={};
+var mainBox=document.getElementById("Main");
+
+var pageCtrl,exCtrl;
 
 var indexnav;
 var audioControl;
-getExCtrl(function(exCtrl){
-    var IndexNav=exCtrl.IndexNav;
-    var AudioControl=exCtrl.AudioControl;
-    // var indexnav;
-    indexnav=new IndexNav("leftIndex");
+function getEXCtrlCallback(ctrlList){
+    exCtrl=ctrlList;
+    getPageCtrl(getPageCtrlCallback,exCtrl);
+    indexnav=new exCtrl.IndexNav("leftIndex");
     indexnav.data={
         d1List:[
             {
@@ -35,10 +40,32 @@ getExCtrl(function(exCtrl){
     };
     indexnav.addend(leftBox);
     
-    audioControl=new AudioControl("leftBottom_audioControl");
+    audioControl=new exCtrl.AudioControl("leftBottom_audioControl");
     audioControl.addend(leftBox);
     audioControl.addItem(new DEF_MediaObj(rltToAbs("../media/audio/03 - REDLINE Title.flac",indexjsUrl),"REDLINE TITLE"));
     audioControl.loadCue(rltToAbs("../media/audio/银影侠ost.cue",indexjsUrl));
+}
 
-    
-});
+function getPageCtrlCallback(ctrlList){
+    pageCtrl=ctrlList;
+    renderPage(pageType);
+}
+/**
+ * 渲染界面
+ * 必须在控件加载完成后运行
+ * @param {String} pageType 界面的类型
+ */
+function renderPage(pageType){
+    switch(pageType){
+        case "bbs" :
+            
+        break;
+        case "home" :
+        default:
+            main.contentCtrl=new pageCtrl.home();
+            main.contentCtrl.addend(mainBox);
+            main.contentCtrl.renderString();
+        break;
+    }
+}
+getExCtrl(getEXCtrlCallback);
