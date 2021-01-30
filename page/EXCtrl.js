@@ -19,7 +19,7 @@ function getExCtrl(exCtrl_callBack){
             /**
              * 左侧的索引栏 
              */
-            getExCtrl.IndexNav=xmlToCtrl(BluePrintXmlList[0],{
+            getExCtrl.IndexNav=ExCtrl.xmlToCtrl(BluePrintXmlList[0],{
                 callback:function(){
                     // console.log(this);
                     this.elements[this.bluePrint.ves[0].ctrlID].onclick=function(e){
@@ -43,7 +43,7 @@ function getExCtrl(exCtrl_callBack){
             /**
              * 左侧的音乐播放控制器;
              */
-            getExCtrl.AudioControl=xmlToCtrl(BluePrintXmlList[1],{
+            getExCtrl.AudioControl=ExCtrl.xmlToCtrl(BluePrintXmlList[1],{
                 initialize:function(){
                     this.playType=0;
                     this.indexMap=[];

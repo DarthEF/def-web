@@ -40,7 +40,7 @@ function getEXCtrlCallback(ctrlList){
     };
     indexnav.addend(leftBox);
     
-    audioControl=new exCtrl.AudioControl("leftBottom_audioControl");
+    audioControl=new exCtrl.AudioControl();
     audioControl.addend(leftBox);
     audioControl.addItem(new DEF_MediaObj(rltToAbs("../media/audio/03 - REDLINE Title.flac",indexjsUrl),"REDLINE TITLE"));
     audioControl.loadCue(rltToAbs("../media/audio/银影侠ost.cue",indexjsUrl));

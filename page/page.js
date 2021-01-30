@@ -8,16 +8,16 @@ function getPageCtrl(exCtrl_callBack,_exCtrl){
 
         EXCtrl_BluePrintXml_request.onload=function(e){
             var BluePrintXmlList=this.response.split("<ctrl_tab/>");
-            getPageCtrl.home=xmlToCtrl(BluePrintXmlList[0],{
+            getPageCtrl.home=ExCtrl.xmlToCtrl(BluePrintXmlList[0],{
                 childCtrlType:_exCtrl
             });
-            getPageCtrl.select=xmlToCtrl(BluePrintXmlList[1],{
+            getPageCtrl.select=ExCtrl.xmlToCtrl(BluePrintXmlList[1],{
                 childCtrlType:_exCtrl
             });
-            getPageCtrl.bbsPage=xmlToCtrl(BluePrintXmlList[2],{
+            getPageCtrl.bbsPage=ExCtrl.xmlToCtrl(BluePrintXmlList[2],{
                 childCtrlType:_exCtrl
             });
-            getPageCtrl.blogPage=xmlToCtrl(BluePrintXmlList[3],{
+            getPageCtrl.blogPage=ExCtrl.xmlToCtrl(BluePrintXmlList[3],{
                 childCtrlType:_exCtrl
             });
             exCtrl_callBack({
