@@ -244,6 +244,7 @@ function getExCtrl(exCtrl_callBack){
                     if(this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)]){
                         this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].className="audioControl-mediaItem playing";
                     }
+                    this.data.mediaList[this.playingIndex].mark.reCount();
                 },
                 /**
                  * 切换播放暂停
@@ -368,6 +369,7 @@ function getExCtrl(exCtrl_callBack){
                     }else{
                         this.elements.playBarBtn.style.left=tp+"%";
                         this.elements.playBarLow.style.width=tp+"%";
+                        this.data.mediaList[this.playingIndex].mark.touchMarkByTime(this,tgtTime,03);
                     }
                 },
                 /**
@@ -408,8 +410,8 @@ class DEF_MediaObj{
 
         this.op=0;
         this.ed=0;
-        this.mark=[];
         this.duration=0;
+        this.mark=new DEF_MediaObjMarkList();
 
         this.urlList=[];
         if(src){
@@ -426,16 +428,37 @@ class DEF_MediaObj{
     getArtist(){
         return this.performer + "/" + this.songwriter;
     }
+    /**
+     * 克隆
+     */
+    clone(){
+        var rtn=new DEF_MediaObj();
+        Object.assign(rtn,this);
+        return rtn;
+    }
+    copy(){
+        var rtn=new DEF_MediaObj();
+        var i=this.urlList.length;
+        Object.assign(rtn,this);
+        rtn.urlList=new Array(i);
+        for(--i;i>=0;--i){
+            rtn.urlList[i]=this.urlList[i];
+        }
+        rtn.mark=new DEF_MediaObjMarkList();
+        for(i=0;i<this.mark.list;++i){
+            rtn.mark.list[i]=this.mark.list[i].copy();
+        }
+        return rtn;
+    }
 }
 /**
  * 获取当前轨道的长度
  * @param {Audio} audio 当前正在播放这个文件的 Audio 元素
  * @param {Function} _callback _callback({Number}Duration) 某些情况无法直接获取当前的长度，所以需要传入回调函数接收值
- * 2个重载 fnc(audio) 和 fnc(callback); 用 audio 的重载可以返回长度, 可以不用 callback
+ * 3个重载 fnc(audio) 和 fnc(callback); 用 audio 的重载可以返回长度, 可以不用 callback
  */
 DEF_MediaObj.prototype.getDuration=createOlFnc();
-DEF_MediaObj.prototype.getDuration.addOverload(
-    [Function],
+DEF_MediaObj.prototype.getDuration.addOverload([Function],
     function(_callback){
         var then=this;
         if(!this.ed){
@@ -463,8 +486,7 @@ DEF_MediaObj.prototype.getDuration.addOverload(
         }
     }
 );
-DEF_MediaObj.prototype.getDuration.addOverload(
-    [Audio],
+DEF_MediaObj.prototype.getDuration.addOverload([Audio],
     function(audio){
         if(!this.ed){
             var d;
@@ -479,8 +501,7 @@ DEF_MediaObj.prototype.getDuration.addOverload(
         return d;
     }
 );
-DEF_MediaObj.prototype.getDuration.addOverload(
-    [Audio,Function],
+DEF_MediaObj.prototype.getDuration.addOverload([Audio,Function],
     function(audio,_callback){
         var d=this.getDuration(audio);
         _callback(d);
@@ -488,20 +509,81 @@ DEF_MediaObj.prototype.getDuration.addOverload(
     }
 );
 /**
- * 
+ * 给媒体做标记的列表 因为浏览器的 updata 事件触发 大概每秒触发四次，所以会有误差
  */
-class DEF_MediaObjMack{
+class DEF_MediaObjMarkList{
+    /**
+     * DEF_MediaObjMark 的列表
+     * @param {Array<DEF_MediaObjMark>} DEF_MediaObjMarkArray DEF_MediaObjMark 的数组
+     */
+    constructor(DEF_MediaObjMarkArray){
+        this.list=DEF_MediaObjMarkArray||[];
+    }
+    /**
+     * 重置所有计数器
+     */
+    reCount(){
+        for(var i=this.list.length-1;i>=0;--i){
+            this.list[i].reCount();
+        }
+    }
+    /**
+     * 根据时刻触发标记, 如果有两个会被触发 将会触发靠后的
+     * @param {Exctrl} mediaCtrl 媒体控件
+     * @param {Number} time 时刻
+     * @param {Number} afterTolerance 向后容差 在容差内的时刻也会触发
+     */
+    touchMarkByTime(mediaCtrl,time,afterTolerance){
+        for(var i=this.list.length-1;i>=0;--i){
+            if((this.list[i].time<=time)&&(this.list[i].time+afterTolerance>=time)){
+                if(this.list[i].touch(mediaCtrl))return;
+            }
+        }
+    }
+}
+/**
+ * 给 DEF_MediaObj 的时间轴 做标记
+ * @param {String} command 遭遇标记指令的
+ * @param {Number} time 时刻
+ * @param {Number} maxTouch 最大触发次数
+ */
+class DEF_MediaObjMark{
+    /**
+     * @param {String} command 遭遇标记指令的
+     * @param {Number} time 时刻
+     * @param {Number} maxTouch 最大触发次数
+     */
     constructor(command,time,maxTouch){
         this.command=command;
-        this.time=time;
-        this.maxTouch=maxTouch;
+        this.time=time||0;
+        this.maxTouch=maxTouch||1;
+        this.count=this.maxTouch;
     }
-    ontouch(){
-        // var commandClip=
+    copy(){
+        var rtn=new DEF_MediaObjMark();
+        Object.assign(rtn,this);
+        return rtn;
+    }
+    /**
+     * 重置计数器
+     */
+    reCount(){
+        this.count=this.maxTouch;
+    }
+    /**
+     * 触发标记
+     * @param {ExCtrl} audioCtrl
+     */
+    touch(mediaCtrl){
+        if(!this.count)return false;
+        var action=this.commandList[this.command.split(' ')[0]];
+        if(action instanceof Function)action.call(this,mediaCtrl);
+        --this.count;
     }
     commandList={
-        go:function(){
-
+        go:function(mediaCtrl){
+            var tgtTime=parseFloat(this.command.split(' ')[1]);
+            mediaCtrl.setCurrentTime(tgtTime);
         }
     }
 }
