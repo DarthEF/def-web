@@ -752,7 +752,6 @@ KeyNotbook.prototype={
 
     /**抬起按键*/
     removeKey:function(e){
-        var flag=false;
         var downingKALength=this.downingKeyCodes.length;
         if(downingKALength)
         for(var i=downingKALength-1;i>=0;--i){
@@ -817,6 +816,65 @@ function removeKeyEvent(_Element,_keycode,_event,_type){
     }
 }
 
+/**
+ * 给element添加resize事件, 没有 e 事件参数
+ * @param {Element} _element 绑定的元素
+ * @param {Function} _listener 触发的函数
+ */
+function addResizeEvent(_element,_listener){            
+    if(_element.resizeMarkFlag){
+        element.resizeListener.push(_listener);
+    }
+    else{
+        _element.resizeListener=[_listener];
+        var mark1 =document.createElement("div"),
+            mark1C=document.createElement("div"),
+            mark2C=document.createElement("div");
+        var lowWidth=_element.offsetWidth||0;
+        var lowHeight=_element.offsetHeight||0;
+        var maxWidth=lowWidth*999,maxHeight=lowWidth*999;
+        mark1.style.cssText="position:absolute;top:0;left:0;width:100%;height:100%;z-index=-10000;overflow:hidden;visibility:hidden;";
+
+        mark1C.style.cssText="width:300%;height:300%;";
+        mark2C.style.cssText=`width:${maxWidth}px;height:${maxHeight}px;`;
+        
+        var mark2=mark1.cloneNode(false);
+        
+        mark1.appendChild(mark1C);
+        mark2.appendChild(mark2C);
+        _element.appendChild(mark1);
+        _element.appendChild(mark2);
+
+        mark1.scrollTop=maxHeight;
+        mark1.scrollLeft=maxWidth;
+
+        mark1.markBrother=mark2;
+        mark2.markBrother=mark1;
+
+        function m_resize(){
+            if(lowWidth!=_element.offsetWidth||lowHeight!=_element.offsetHeight){
+                // console.log(2);
+                lowWidth=_element.offsetWidth;
+                lowHeight=_element.offsetHeight;
+                for(var i=_element.resizeListener.length-1;i>=0;--i){
+                    _element.resizeListener[i].call(_element);
+                }
+                if(maxWidth<lowWidth||maxHeight<lowWidth)
+                maxWidth=lowWidth*100,maxHeight=lowWidth*100;
+                mark2C.style.cssText=`width:${maxWidth}px;height:${maxHeight}px;`;
+            }
+        }
+        function m_scroll(e){
+            m_resize();
+            this.markBrother.scrollTop=maxHeight;
+            this.markBrother.scrollLeft=maxWidth;
+        }
+        mark1.onscroll=mark2.onscroll=m_scroll;
+        _element.resizeMarkFlag=true;
+        _element.resizeMark1=mark1;
+        _element.resizeMark2=mark2;
+    }
+}
 /**
  * 点击站内链接调用的函数, 另链接不跳转而是成为锚点链接
  */
