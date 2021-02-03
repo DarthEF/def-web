@@ -830,10 +830,10 @@ function addResizeEvent(_element,_listener){
         var mark1 =document.createElement("div"),
             mark1C=document.createElement("div"),
             mark2C=document.createElement("div");
-        var lowWidth=_element.offsetWidth||0;
-        var lowHeight=_element.offsetHeight||0;
-        var maxWidth=lowWidth*999,maxHeight=lowWidth*999;
-        mark1.style.cssText="position:absolute;top:0;left:0;width:100%;height:100%;z-index=-10000;overflow:hidden;visibility:hidden;";
+        var lowWidth=_element.offsetWidth||1;
+        var lowHeight=_element.offsetHeight||1;
+        var maxWidth=lowWidth*9999,maxHeight=lowHeight*9999;
+        mark1.style.cssText="position:absolute;top:0;left:0;right:0;bottom:0;z-index=-10000;min-Width:1px;min-height:1px;overflow:hidden;visibility:hidden;";
 
         mark1C.style.cssText="width:300%;height:300%;";
         mark2C.style.cssText=`width:${maxWidth}px;height:${maxHeight}px;`;
@@ -847,6 +847,8 @@ function addResizeEvent(_element,_listener){
 
         mark1.scrollTop=maxHeight;
         mark1.scrollLeft=maxWidth;
+        mark2.scrollTop=maxHeight;
+        mark2.scrollLeft=maxWidth;
 
         mark1.markBrother=mark2;
         mark2.markBrother=mark1;
@@ -860,19 +862,37 @@ function addResizeEvent(_element,_listener){
                     _element.resizeListener[i].call(_element);
                 }
                 if(maxWidth<lowWidth||maxHeight<lowWidth)
-                maxWidth=lowWidth*100,maxHeight=lowWidth*100;
+                maxWidth=lowWidth*9999,maxHeight=lowWidth*9999;
                 mark2C.style.cssText=`width:${maxWidth}px;height:${maxHeight}px;`;
             }
         }
         function m_scroll(e){
             m_resize();
-            this.markBrother.scrollTop=maxHeight;
-            this.markBrother.scrollLeft=maxWidth;
+            mark1.scrollTop=maxHeight;
+            mark1.scrollLeft=maxWidth;
+            mark2.scrollTop=maxHeight;
+            mark2.scrollLeft=maxWidth;
         }
         mark1.onscroll=mark2.onscroll=m_scroll;
         _element.resizeMarkFlag=true;
         _element.resizeMark1=mark1;
         _element.resizeMark2=mark2;
+    }
+}
+/**
+ * 用于复位 addResizeEvent 
+ * 给使用过 addResizeEvent 的元素使用
+ */
+addResizeEvent.reResize=function(_element){
+    if(_element.resizeMarkFlag){
+        var lowWidth=_element.offsetWidth||1;
+        var lowHeight=_element.offsetHeight||1;
+        var maxWidth=lowWidth*999,maxHeight=lowHeight*999;
+
+        _element.resizeMark1.scrollTop=maxHeight;
+        _element.resizeMark1.scrollLeft=maxWidth;
+        _element.resizeMark2.scrollTop=maxHeight;
+        _element.resizeMark2.scrollLeft=maxWidth;
     }
 }
 /**

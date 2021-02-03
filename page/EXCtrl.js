@@ -8,11 +8,11 @@ function getExCtrl(exCtrl_callBack){
     if(!getExCtrl.i){
         var cssTag=document.createElement("link");
         cssTag.setAttribute("rel","stylesheet");
-        cssTag.setAttribute("href",rltToAbs("./EXCtrl.css"));
+        cssTag.setAttribute("href",rltToAbs("./EXCtrl.css",getExCtrl.url));
         document.head.appendChild(cssTag);
         ++getExCtrl.i;
         var EXCtrl_BluePrintXml_request=new XMLHttpRequest();
-        EXCtrl_BluePrintXml_request.open("get",rltToAbs("./EXCtrl.xml"));
+        EXCtrl_BluePrintXml_request.open("get",rltToAbs("./EXCtrl.xml",getExCtrl.url));
 
         EXCtrl_BluePrintXml_request.onload=function(e){
             var BluePrintXmlList=this.response.split("<ctrl_tab/>");
@@ -397,6 +397,10 @@ function getExCtrl(exCtrl_callBack){
     }
 }
 getExCtrl.i=0;
+getExCtrl.url=getCurrAbsPath();
+
+
+
 /** 
  * 给我的 audio 控制器 用的数据对象
  */
