@@ -1,9 +1,55 @@
 .homePage{
-    position:relative;
+    position:absolute;
+    top:0;
+    left:0;
     width:100%;
     height:auto;
 }
 
+.homePage-firstLine{
+    max-width:95%;
+    margin:24px auto;
+}
 .homePage-headlines{
-    background:#f00;
+    width:70%;
+    background:#0f0;
+}
+.homePage-headlinesMate{
+    position:absolute;
+    top:0;
+    width:28%;
+    height:100%;
+    background:#f0f;
+    right:0%;
+}
+/* home  second*/
+.homePage-secondLine{
+    position:relative; 
+    max-width:95%;
+    height:20vw;
+    margin:24px auto;
+}
+.homePage-hello{
+    position:absolute;
+    width:32%;
+    height:100%;
+    max-height:400px;
+    background:#ff0;
+    top:0;
+}
+.homePage-hello.hello1{
+    left:0;
+}
+.homePage-hello.hello2{
+    position:relative;
+    margin:0 auto;
+}
+.homePage-hello.hello3{
+    right:0;
+}
+@media (max-width:900px){
+    .homePage-headlines{
+        width:100%;
+        background:#f00;
+    }
 }

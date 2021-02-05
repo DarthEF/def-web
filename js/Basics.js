@@ -1,7 +1,10 @@
 /*!
  * Basics.js 应该在所有脚本之前载入
  */
-
+/**
+ * 当前运行环境 (可能是 window 或 worker)
+ */
+var thisEnvironment=this;
 
 /**
  * [judgeOs UA & 内核 判断]
@@ -31,8 +34,6 @@ function judgeOs() {
         isIE: isIE
     };
 }
-/*判断客户端的浏览器UA ed.  资料参考HTML5学堂*/
-
 
 //旧版本浏览器兼容Object.keys函数   form https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 if (!Object.keys) {
@@ -303,9 +304,6 @@ UnitBezier.prototype = {
     }
 }
 
-//以上是网上找的
-/*----------------------------------分割线-------------------------------------*/
-//以下是Darth_Eternalfaith 自己写的
 /** 阻止事件冒泡 */
 function stopPropagation(e){e.stopPropagation();}
 
@@ -1191,3 +1189,24 @@ function selectImg(_rootUrl,_nameList,_afertList,callBack){
 }
 
 // selectImg("./img/",["1","2","3","4","5"],[".jpg",".jpeg",".png",".gif"],function(e){console.log(e)});
+
+
+/**
+ * 请求 api
+ * @param {String} method 请求方式
+ * @param {String} url 请求地址
+ * @param {Function} callback 回调函数
+ * @param {any} body 加在 send 里的实参
+ */
+function requestAPI(method,url,callback,body){
+    var xmlHttp;
+    if(thisEnvironment.XMLHttpRequest){
+        xmlHttp=new XMLHttpRequest();
+    }
+    else{
+        xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    xmlHttp.open(method,url);
+    xmlHttp.onload=callback;
+    xmlHttp.send(body);
+}

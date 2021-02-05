@@ -26,21 +26,25 @@ function getPageCtrl(exCtrl_callBack,_exCtrl){
                 constructor(data){
                     super(data);
                 }
+                childCtrlType=_exCtrl;
             }
             class Select extends PageCtrlBase{
                 constructor(data){
                     super(data);
                 }
+                childCtrlType=_exCtrl;
             }
             class BBsPage extends PageCtrlBase{
                 constructor(data){
                     super(data);
                 }
+                childCtrlType=_exCtrl;
             }
             class BlogPage extends PageCtrlBase{
                 constructor(data){
                     super(data);
                 }
+                childCtrlType=_exCtrl;
             }
             PageHome.prototype.bluePrint=DEF_VirtualElementList.xmlToVE(BluePrintXmlList[0]);
             Select.prototype.bluePrint=DEF_VirtualElementList.xmlToVE(BluePrintXmlList[1]);
