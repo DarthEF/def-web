@@ -425,6 +425,7 @@ function getExCtrl(exCtrl_callBack){
                 }
             }
             ImgList.prototype.bluePrint=DEF_VirtualElementList.xmlToVE(BluePrintXmlList[2]);
+            
             getExCtrl.ImgList=ImgList;
             exCtrl_callBack(
                 {
