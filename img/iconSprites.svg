@@ -11,7 +11,7 @@
     </defs>
 
     <!-- 每个元素的分隔线 -->
-    <svg width="1000" height="1000" x="0" y="0"><rect width="1000" height="1000" fill="url(#grid)"></rect></svg>
+    <!-- <svg width="1000" height="1000" x="0" y="0"><rect width="1000" height="1000" fill="url(#grid)"></rect></svg> -->
     
     <style>
     *{

@@ -385,15 +385,63 @@ function getExCtrl(exCtrl_callBack){
                     this.elements.audioTag.currentTime=val+this.op;
                 }
             });
-
-            getExCtrl.Image
-            exCtrl_callBack({IndexNav:getExCtrl.IndexNav,AudioControl:getExCtrl.AudioControl});
+            /**
+             * 图片轮播?
+             */
+            class ImgList extends ExCtrl{
+                constructor(data){
+                    super(data);
+                    this.index=0;
+                }
+                /**
+                 * 步进 index 
+                 * @param {Number} _step 步长
+                 * @returns {Number} 返回新的 index
+                 */
+                indexStep(_step){
+                    var tgtIndex=_step+this.index;
+                    return this.setIndex(tgtIndex);
+                }
+                /**
+                 * 更改当前 index
+                 * @param {Number} _index
+                 */
+                setIndex(_index){
+                    var index=_index,
+                        maxI=this.data.list.length;
+                        
+                    if(index>=maxI){
+                        do{
+                            index=index-maxI;
+                        }while(index>=maxI)
+                    }else if(index<0){
+                        do{
+                            index=maxI+index;
+                        }while(index<0)
+                    }
+                    this.index=index;
+                    this.renderString();
+                    return this.index;
+                }
+            }
+            ImgList.prototype.bluePrint=DEF_VirtualElementList.xmlToVE(BluePrintXmlList[2]);
+            getExCtrl.ImgList=ImgList;
+            exCtrl_callBack(
+                {
+                    IndexNav:getExCtrl.IndexNav,
+                    AudioControl:getExCtrl.AudioControl,
+                    ImgList:getExCtrl.ImgList
+            });
         }
 
         EXCtrl_BluePrintXml_request.send();
     }
     else{
-        exCtrl_callBack({IndexNav:getExCtrl.IndexNav,AudioControl:getExCtrl.AudioControl});
+        exCtrl_callBack({
+                IndexNav:getExCtrl.IndexNav,
+                AudioControl:getExCtrl.AudioControl,
+                ImgList:getExCtrl.ImgList
+            });
     }
 }
 getExCtrl.i=0;
