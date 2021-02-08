@@ -97,3 +97,57 @@
     <div ctrl-id="last" class="imgList-last" pa-click="this.indexStep(-1)"></div>
     <div ctrl-id="next" class="imgList-next" pa-click="this.indexStep(1)"></div>
 </div>
+
+<ctrl_tab/>
+
+<div class="contentBox-root">
+    <div class="contentBox-imgBox" ctrl-if="this.typeset.img&&((this.l=this.typeset.img[0]*this.typeset.img[1])>0)">
+        <ul class="contentBox-imgList" ctrl-for="this.i=0,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
+            <li class="contentBox-imgItem">
+                <a href="${this.data.list[this.i].url}">
+                <div class="contentBox-imgItemBox">
+                    <img src="${this.data.list[this.i].imgurl}" />
+                    <div class="contentBox-imgItemTitle">
+                    ${this.data.list[this.i].title}
+                    </div>
+                </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="contentBox-imgTextBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.imgtext&&(this.l+=this.typeset.imgtext[0]*this.typeset.imgtext[1])>0)">
+        <ul class="contentBox-imgTextList" ctrl-for="this.i=this.ll,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
+            <li class="contentBox-imgTextItem">
+                <a href="${this.data.list[this.i].url}">
+                <div class="contentBox-imgTextItemBox">
+                    <img src="${this.data.list[this.i].imgurl}" />
+                    <div class="contentBox-imgTextItemTitle">
+                    ${this.data.list[this.i].title}
+                    </div>
+                </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="contentBox-textBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.text&&((this.l+=this.typeset.text[0]*this.typeset.text[1])>0))">
+        <ul class="contentBox-textList" ctrl-for="this.i=this.ll,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
+            <li class="contentBox-textItem">
+                <a href="${this.data.list[this.i].url}">
+                <div class="contentBox-textItemBox">
+                    <div class="contentBox-textItemTitle">
+                    ${this.data.list[this.i].title}
+                    </div>
+                </div>
+                </a>
+                <div class="contentBox-textItemDate" ctrl-if="this.data.list[this.i].date">
+                ${this.data.list[this.i].date}
+                </div>
+                <div class="contentBox-textItemHot" ctrl-if="this.data.list[this.i].hot">
+                ${this.data.list[this.i].hot}
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

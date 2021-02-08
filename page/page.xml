@@ -1,10 +1,10 @@
 <div class="homePage" ctrl-id="root" pa-resize="this.renderString()">
     <div class="homePage-firstLine">
-        <div class="homePage-headlines" style="height:${tgt.offsetWidth*0.4}px"  ctrl-child_ctrl="ImgList" ctrl-child_ctrl_datafnc="ExCtrl.getJsonData('get',rltToAbs('./testdata/headlinesAPI.json',location.origin+'/'),callback)" ></div>
+        <div class="homePage-headlines" style="height:${tgt.offsetWidth*0.4}px" ctrl-child_ctrl="ImgList" ctrl-child_ctrl_datafnc="ExCtrl.getJsonData('get',rltToAbs('./testdata/headlinesAPI.json',location.origin+'/'),callback)" ></div>
         <div class="homePage-headlinesMate"></div>
     </div>
     <div class="homePage-secondLine">
-        <div class="homePage-hello hello1"></div>
+        <div class="homePage-hello hello1"  ctrl-child_ctrl="ContentBox" ctrl-child_ctrl_datafnc="ExCtrl.getJsonData('get',rltToAbs('./testdata/contentData1.json',location.origin+'/'),callback)"></div>
         <div class="homePage-hello hello2"></div>
         <div class="homePage-hello hello3"></div>
     </div>

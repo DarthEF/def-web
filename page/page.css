@@ -52,4 +52,7 @@
         width:100%;
         background:#f00;
     }
+    .homePage-headlinesMate{
+        display:none;
+    }
 }
