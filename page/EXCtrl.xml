@@ -4,8 +4,8 @@
         <li class="indexNav-D1Item hiddenChile">
             <div class="indexNav-D1Content">
                 <a ctrl-id="d1" class="indexNav-D1Link" href="${this.data.d1List[this.i].url}" title="${this.data.d1List[this.i].title}">
-                    <div class="indexNav-iconBox">
-                        <i class="iconSpritesSvg iconSpritesSvg-${this.data.d1List[this.i]} indexNav-icon"></i>
+                    <div ca-callback="tgt.style.width=tgt.offsetHeight+'px';" class="indexNav-iconBox">
+                        <i class="iconSpritesSvg iconSpritesSvg-${this.data.d1List[this.i].title} indexNav-icon"></i>
                     </div>
                     ${this.data.d1List[this.i].text}
                 </a>
