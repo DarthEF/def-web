@@ -3,7 +3,10 @@
     <ul class="indexNav-D1List" ctrl-for="this.i=0;this.i<this.data.d1List.length;++this.i">
         <li class="indexNav-D1Item hiddenChile">
             <div class="indexNav-D1Content">
-                <a class="indexNav-D1Link" href="${this.data.d1List[this.i].url}" title="${this.data.d1List[this.i].title}">
+                <a ctrl-id="d1" class="indexNav-D1Link" href="${this.data.d1List[this.i].url}" title="${this.data.d1List[this.i].title}">
+                    <div class="indexNav-iconBox">
+                        <i class="iconSpritesSvg iconSpritesSvg-${this.data.d1List[this.i]} indexNav-icon"></i>
+                    </div>
                     ${this.data.d1List[this.i].text}
                 </a>
             </div>
@@ -101,6 +104,15 @@
 <ctrl_tab/>
 
 <div class="contentBox-root">
+    <div class="contentBox-titleBox">
+        <div class="contentBox-titleIconBox">
+            <i class="iconSpritesSvg iconSpritesSvg-${this.title} contentBox-titleIcon"></i>
+        </div>
+        <div class="contentBox-title">
+            ${this.data.title}
+        </div>
+    </div>
+
     <div class="contentBox-imgBox" ctrl-if="this.typeset.img&&((this.l=this.typeset.img[0]*this.typeset.img[1])>0)">
         <ul class="contentBox-imgList" ctrl-for="this.i=0,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
             <li class="contentBox-imgItem">
@@ -136,7 +148,7 @@
             <li class="contentBox-textItem">
                 <a href="${this.data.list[this.i].url}">
                 <div class="contentBox-textItemBox">
-                    <div class="contentBox-textItemTitle">
+                    <div class="contentBox-textItemTitle" ctrl-id="asd">
                     ${this.data.list[this.i].title}
                     </div>
                 </div>
