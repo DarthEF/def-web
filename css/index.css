@@ -62,3 +62,12 @@ html,body{
     color:#0000;
     display:inline-block;
 }
+.iconSpritesSvg-logo{
+    background-position: 0 0;
+}
+.iconSpritesSvg-bbs{
+    background-position: -100% 0;
+}
+.iconSpritesSvg-index{
+    background-position: -700% 0;
+}

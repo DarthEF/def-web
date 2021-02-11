@@ -896,15 +896,19 @@ addResizeEvent.reResize=function(_element){
 /**
  * 点击站内链接调用的函数, 另链接不跳转而是成为锚点链接
  */
-function linkClick(e){
+function linkClick(e,tgt){
     var _event=e||event;
-    if(this.host==window.location.host){
+    var tgt=tgt||this;
+    var tempStr;
+    if(tgt.host==window.location.host){
         // var hostchar=this.pathname.slice(this.pathname.indexOf('/')+1,this.pathname.slice(this.pathname.indexOf('/')+1).indexOf('/')+1);
         switch (_event.button){
             case 0:
-                window.location.href='#/'+this.href.substr(this.href.indexOf(this.host)+(this.host.length)+1);
-                if (_event&&_event.preventDefault)_event.preventDefault(); //阻止默认浏览器动作(W3C)
-                else window.event.returnValue = false; //IE中阻止函数器默认动作的方式
+                window.location.href='#/'+tgt.href.substr(tgt.href.indexOf(tgt.host)+(tgt.host.length)+1);
+                stopPE(e);
+                if(tempStr=tgt.getAttribute("title")){
+                    window.document.title=tempStr;
+                }
                 return false;
             break;
             case 1:
@@ -915,7 +919,20 @@ function linkClick(e){
             }
         }
 }
-
+/**
+ * 让站内链接失效 链接不跳转而是成为锚点链接
+ */
+function setupLinkClick(){
+    document.addEventListener("click",function(e){
+        var tgt=e.target;
+        while(tgt.tagName!="HTML"){
+            if(tgt.tagName=="A"){
+                linkClick(e,tgt);
+            }
+            tgt=tgt.parentElement;
+        }
+    })
+}
 /**
  * @param {Number} max 步进器的最大值
  * @param {Number} min 步进器的最小值

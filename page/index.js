@@ -1,3 +1,4 @@
+setupLinkClick();
 var indexjsUrl=getCurrAbsPath();
 var pageType=location.hash.split("/")[1];
 
@@ -19,11 +20,13 @@ function getEXCtrlCallback(ctrlList){
                 url:"./index",
                 text:"Index",
                 title:"Index",
+                icon:"index"
                 // child:[]
             },{
                 url:"./blog",
                 text:"blog",
                 title:"Darth's web log",
+                icon:"bbs",
                 child:[
                     {
                         url:"./blog/code",

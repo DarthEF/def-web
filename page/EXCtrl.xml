@@ -4,8 +4,8 @@
         <li class="indexNav-D1Item hiddenChile">
             <div class="indexNav-D1Content">
                 <a ctrl-id="d1" class="indexNav-D1Link" href="${this.data.d1List[this.i].url}" title="${this.data.d1List[this.i].title}">
-                    <div ca-callback="tgt.style.width=tgt.offsetHeight+'px';" class="indexNav-iconBox">
-                        <i class="iconSpritesSvg iconSpritesSvg-${this.data.d1List[this.i].title} indexNav-icon"></i>
+                    <div ca-callback="tgt.style.width=tgt.offsetHeight+'px'; tgt.style.padding=(0.2*tgt.offsetHeight)+'px';" class="indexNav-iconBox">
+                        <i class="iconSpritesSvg iconSpritesSvg-${this.data.d1List[this.i].icon} indexNav-icon"></i>
                     </div>
                     ${this.data.d1List[this.i].text}
                 </a>
@@ -105,8 +105,8 @@
 
 <div class="contentBox-root">
     <div class="contentBox-titleBox">
-        <div class="contentBox-titleIconBox">
-            <i class="iconSpritesSvg iconSpritesSvg-${this.title} contentBox-titleIcon"></i>
+        <div class="contentBox-titleIconBox" ca-callback="tgt.style.width=tgt.offsetHeight+'px'; tgt.style.padding=(0.1*tgt.offsetHeight)+'px';" >
+            <i class="iconSpritesSvg iconSpritesSvg-${this.data.icon} contentBox-titleIcon"></i>
         </div>
         <div class="contentBox-title">
             ${this.data.title}

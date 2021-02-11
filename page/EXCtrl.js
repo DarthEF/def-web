@@ -22,21 +22,6 @@ function getExCtrl(exCtrl_callBack){
             class IndexNav extends ExCtrl{
                 callback(){
                     // console.log(this);
-                    this.elements[this.bluePrint.ves[0].ctrlID].onclick=function(e){
-                        var evtgt=e.target;
-                        var tempStr;
-                        // console.log(evtgt)
-                        if(evtgt.tagName=="A"){
-                            tempStr=evtgt.href;
-                            if(tempStr.indexOf(window.location.origin)==0){
-                                stopEvent(e);
-                                window.location=window.location.origin+"#"+(tempStr.slice(window.location.origin.length));
-                                if(tempStr=evtgt.getAttribute("title")){
-                                    window.document.title=tempStr;
-                                }
-                            }
-                        }
-                    }
                 }
             }
             IndexNav.prototype.bluePrint=DEF_VirtualElementList.xmlToVE(BluePrintXmlList[0]);
