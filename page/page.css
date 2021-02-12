@@ -4,6 +4,7 @@
     left:0;
     width:100%;
     height:auto;
+    max-width:1440px;
 }
 
 .homePage-firstLine{
@@ -26,7 +27,7 @@
 .homePage-secondLine{
     position:relative; 
     max-width:95%;
-    height:20vw;
+    height:250px;
     margin:24px auto;
 }
 .homePage-hello{
@@ -34,7 +35,7 @@
     width:32%;
     height:100%;
     max-height:400px;
-    background:#ff0;
+    background:#252;
     top:0;
 }
 .homePage-hello.hello1{

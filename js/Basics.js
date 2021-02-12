@@ -906,9 +906,9 @@ function linkClick(e,tgt){
             case 0:
                 window.location.href='#/'+tgt.href.substr(tgt.href.indexOf(tgt.host)+(tgt.host.length)+1);
                 stopPE(e);
-                if(tempStr=tgt.getAttribute("title")){
-                    window.document.title=tempStr;
-                }
+                // if(tempStr=tgt.getAttribute("title")){
+                //     window.document.title=tempStr;
+                // }
                 return false;
             break;
             case 1:
@@ -928,6 +928,7 @@ function setupLinkClick(){
         while(tgt.tagName!="HTML"){
             if(tgt.tagName=="A"){
                 linkClick(e,tgt);
+                break;
             }
             tgt=tgt.parentElement;
         }

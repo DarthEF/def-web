@@ -27,7 +27,7 @@
 
 <ctrl_tab/>
 
-<div pakeydown[38]="this.changVolume(this.elements.audioTag.volume+0.05)" pakeydown[40]="this.changVolume(this.elements.audioTag.volume-0.05)" tabindex="1" class="audioControl" ctrl-id="root" pa-wheel="this.wheelHand(e)">
+<div ctrl-id="root" pakeydown[38]="this.changVolume(this.elements.audioTag.volume+0.05)" pakeydown[40]="this.changVolume(this.elements.audioTag.volume-0.05)" tabindex="1" class="audioControl" pa-wheel="this.wheelHand(e)">
     <audio ctrl="audioControl-audioTag" ctrl-id="audioTag" pa-timeupdate="this.renderCurrentTime()" pa-loadeddata="this.renderDuration()" pa-volumechange="this.changVolume(tgt.volume)"></audio>
     <div class="audioControl-CtrlBox">
         <div class="audioControl-visual">
@@ -56,11 +56,12 @@
             </div>
         </div>
         <div class="audioControl-buttons">
-            <div class="audioControl-button audioControl-playType order"  pa-click="this.setPlayType(this.playType+1);" ctrl-id="playType" title="order">playType</div>
-            <div class="audioControl-button audioControl-last"      pa-click="this.last()" ctrl-id="last">last</div>
-            <div class="audioControl-button audioControl-playPause play" pa-click="this.playPause()" ctrl-id="playPause">play or pause</div>
-            <div class="audioControl-button audioControl-next"      pa-click="this.next();" ctrl-id="next">next</div>
-            <div class="audioControl-button audioControl-callList"  pa-click="this.callList();" ctrl-id="callList">callList</div>
+            <div class="audioControl-button audioControl-playType iconSpritesSvg iconSpritesSvg-loop order" pa-click="this.setPlayType(this.playType+1);" ctrl-id="playType" title="order">playType</div>
+            <div class="audioControl-button audioControl-playType iconSpritesSvg iconSpritesSvg-download" ></div>
+            <div class="audioControl-button audioControl-last iconSpritesSvg iconSpritesSvg-last"      pa-click="this.last()" ctrl-id="last">last</div>
+            <div class="audioControl-button audioControl-playPause iconSpritesSvg iconSpritesSvg-play" pa-click="this.playPause();" ctrl-id="playPause">play or pause</div>
+            <div class="audioControl-button audioControl-next iconSpritesSvg iconSpritesSvg-next"      pa-click="this.next();" ctrl-id="next">next</div>
+            <div class="audioControl-button audioControl-callList iconSpritesSvg iconSpritesSvg-index"  pa-click="this.callList();" ctrl-id="callList">callList</div>
         </div>
         <div class="audioControl-mediaListBox" ctrl-id="mediaListBox" style="visibility:${this.data.mediaListBoxVis?'visible':'hidden'}; display:${this.data.mediaListBoxVis?'block':'none'};">
             <ul ctrl-id="mediaList" class="audioControl-mediaList" ctrl-for="this.i=0;this.i<this.data.mediaList.length;this.i++">
@@ -69,7 +70,7 @@
                     <a class="audioControl-mediaItemLink" pa-click="stopPE(e);this.setPlayingIndex(${this.i});" title="${this.data.mediaList[this.i].title}" href="#">
                         ${this.data.mediaList[this.i].title}
                     </a>
-                    <button class="audioControl-mediaItemButton hidderText" pa-click="this.removeItem(${this.i})">remove</button>
+                    <button class="audioControl-mediaItemButton iconSpritesSvg iconSpritesSvg-multiply hidderText" pa-click="this.removeItem(${this.i})">remove</button>
                 </li>
             </ul>
         </div>
@@ -146,18 +147,15 @@
     <div class="contentBox-textBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.text&&((this.l+=this.typeset.text[0]*this.typeset.text[1])>0))">
         <ul class="contentBox-textList" ctrl-for="this.i=this.ll,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
             <li class="contentBox-textItem">
-                <a href="${this.data.list[this.i].url}">
+                <a class="contentBox-textItemLink" href="${this.data.list[this.i].url}">
                 <div class="contentBox-textItemBox">
                     <div class="contentBox-textItemTitle" ctrl-id="asd">
                     ${this.data.list[this.i].title}
                     </div>
                 </div>
                 </a>
-                <div class="contentBox-textItemDate" ctrl-if="this.data.list[this.i].date">
-                ${this.data.list[this.i].date}
-                </div>
-                <div class="contentBox-textItemHot" ctrl-if="this.data.list[this.i].hot">
-                ${this.data.list[this.i].hot}
+                <div class="contentBox-textItemAddsText" ctrl-if="this.data.list[this.i].addsText">
+                ${this.data.list[this.i].addsText}
                 </div>
             </li>
         </ul>

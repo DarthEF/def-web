@@ -82,7 +82,7 @@
             <rect x="20" y="10" width="20" height="80" />
             <rect x="60" y="10" width="20" height="80" />
         </symbol>
-        <symbol id="last">
+        <symbol id="next">
         <!-- 下一个的图标 -->
             <svg x="0" y="50" viewBox="0 50 150 150">
                 <use href="#play"></use>
@@ -432,7 +432,7 @@
             <!-- B2 -->
             <svg x="100" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#pause"></use></svg>
             <!-- C2 -->
-            <svg x="200" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#last"></use></svg>
+            <svg x="200" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#next"></use></svg>
             <!-- D2 -->
             <svg x="300" y="200" viewBox="0 0 100 100" width="100" height="100"><use href="#loop"></use></svg>
             <!-- E2 -->

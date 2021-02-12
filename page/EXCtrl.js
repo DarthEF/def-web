@@ -89,7 +89,7 @@ function getExCtrl(exCtrl_callBack){
                 setPlayType(_type){
                     this.playType=_type%this.playTypes.length;
                     this.elements.playType.setAttribute("title",this.playTypes[this.playType]);
-                    this.elements.playType.className="audioControl-button audioControl-playType "+this.playTypes[this.playType];
+                    this.elements.playType.className="audioControl-button audioControl-playType iconSpritesSvg iconSpritesSvg-"+(this.playType<=1?"loop":"random")+" "+this.playTypes[this.playType];
                     this.reIndexMap();
                     return this.indexMap;
                 }
@@ -242,21 +242,38 @@ function getExCtrl(exCtrl_callBack){
                     this.paused=!this.paused;
                     if(!this.paused){
                         a.play();
-                        b.classList.add("pause");
-                        b.classList.remove("play");
+                        b.classList.add("iconSpritesSvg-pause");
+                        b.classList.remove("iconSpritesSvg-play");
                     }
                     else{
                         a.pause();
-                        b.classList.add("play");
-                        b.classList.remove("pause");
+                        b.classList.add("iconSpritesSvg-play");
+                        b.classList.remove("iconSpritesSvg-pause");
                     }
                 }
                 /**
                  * 打开/关闭 列表
                  */
                 callList(){
+                    var then=this;
                     this.data.mediaListBoxVis=!this.data.mediaListBoxVis;
-                    // console.log(this.data.mediaListBoxVis,this.elements["mediaListBox"])
+                    function qCloseCallList(e){
+                        var tgt=e.target;
+                        var flag=true;
+                        while(tgt.tagName!="HTML"){
+                            if(tgt==then.elements.root){
+                                flag=false;
+                                break;
+                            }
+                            tgt=tgt.parentElement;
+                        }
+                        if(flag){
+                            then.data.mediaListBoxVis=!then.data.mediaListBoxVis;
+                            then.renderString();
+                            this.removeEventListener("mousedown",qCloseCallList);
+                        }
+                    }
+                    document.addEventListener("mousedown",qCloseCallList);
                     this.renderString();
                 }
                 
