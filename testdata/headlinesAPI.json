@@ -3,22 +3,22 @@
         {
             "title":"asd1",
             "imgurl":"http://127.0.0.1/img/logo.svg",
-            "url":"http://127.0.0.1/#/blog/123/"
+            "url":"http://127.0.0.1/blog/123/"
         },
         {
             "title":"asd2",
             "imgurl":"http://127.0.0.1/img/logo.svg",
-            "url":"http://127.0.0.1/#/blog/123/"
+            "url":"http://127.0.0.1/blog/123/"
         },
         {
             "title":"asd3",
             "imgurl":"http://127.0.0.1/img/logo.svg",
-            "url":"http://127.0.0.1/#/blog/123/"
+            "url":"http://127.0.0.1/blog/123/"
         },
         {
             "title":"asd4",
             "imgurl":"http://127.0.0.1/img/logo.svg",
-            "url":"http://127.0.0.1/#/blog/123/"
+            "url":"http://127.0.0.1/blog/123/"
         }
     ]
 }

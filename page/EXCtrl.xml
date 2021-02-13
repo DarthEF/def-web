@@ -56,10 +56,10 @@
             </div>
         </div>
         <div class="audioControl-buttons">
-            <div class="audioControl-button audioControl-playType iconSpritesSvg iconSpritesSvg-loop order" pa-click="this.setPlayType(this.playType+1);" ctrl-id="playType" title="order">playType</div>
+            <div class="audioControl-button audioControl-playType iconSpritesSvg iconSpritesSvg-${(this.playType<=1?'loop':'random')} ${this.playTypes[this.playType]}" pa-click="this.setPlayType(this.playType+1);" ctrl-id="playType" title="order">playType</div>
             <div class="audioControl-button audioControl-playType iconSpritesSvg iconSpritesSvg-download" ></div>
             <div class="audioControl-button audioControl-last iconSpritesSvg iconSpritesSvg-last"      pa-click="this.last()" ctrl-id="last">last</div>
-            <div class="audioControl-button audioControl-playPause iconSpritesSvg iconSpritesSvg-play" pa-click="this.playPause();" ctrl-id="playPause">play or pause</div>
+            <div class="audioControl-button audioControl-playPause iconSpritesSvg iconSpritesSvg-${this.paused?'play':'pause'}" pa-click="this.playPause();" ctrl-id="playPause">play or pause</div>
             <div class="audioControl-button audioControl-next iconSpritesSvg iconSpritesSvg-next"      pa-click="this.next();" ctrl-id="next">next</div>
             <div class="audioControl-button audioControl-callList iconSpritesSvg iconSpritesSvg-index"  pa-click="this.callList();" ctrl-id="callList">callList</div>
         </div>

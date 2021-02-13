@@ -89,7 +89,7 @@ function getExCtrl(exCtrl_callBack){
                 setPlayType(_type){
                     this.playType=_type%this.playTypes.length;
                     this.elements.playType.setAttribute("title",this.playTypes[this.playType]);
-                    this.elements.playType.className="audioControl-button audioControl-playType iconSpritesSvg iconSpritesSvg-"+(this.playType<=1?"loop":"random")+" "+this.playTypes[this.playType];
+                    this.renderString();
                     this.reIndexMap();
                     return this.indexMap;
                 }
@@ -202,6 +202,18 @@ function getExCtrl(exCtrl_callBack){
                     this.mapIndex=_index;
                     this.setPlayingIndex(this.indexMap[_index]);
                 }
+                /**
+                 * 渲染当前播放的index
+                 */
+                renderPlayingIndex(lowIndex){
+                    var lowIndex=lowIndex+1;
+                    if(this.elements["mediaItem-EX_for-mediaList-C"+lowIndex]){
+                        this.elements["mediaItem-EX_for-mediaList-C"+lowIndex].className="audioControl-mediaItem";
+                    }
+                    if(this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)]){
+                        this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].className="audioControl-mediaItem playing";
+                    }
+                }
                 /** 
                  * 跳转到一个播放列表项
                  * @param {Number} _index 列表项的下标
@@ -223,14 +235,9 @@ function getExCtrl(exCtrl_callBack){
                         this.elements.audioTag.currentTime=this.data.mediaList[_index].op;
                         this.renderDuration(_index);
                     }
-
-                    if(this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)]){
-                        this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].className="audioControl-mediaItem";
-                    }
+                    var lowIndex=this.playingIndex;
                     this.playingIndex=parseInt(_index);
-                    if(this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)]){
-                        this.elements["mediaItem-EX_for-mediaList-C"+(this.playingIndex+1)].className="audioControl-mediaItem playing";
-                    }
+                    this.renderPlayingIndex(lowIndex);
                     this.data.mediaList[this.playingIndex].mark.reCount();
                 }
                 /**
@@ -242,14 +249,11 @@ function getExCtrl(exCtrl_callBack){
                     this.paused=!this.paused;
                     if(!this.paused){
                         a.play();
-                        b.classList.add("iconSpritesSvg-pause");
-                        b.classList.remove("iconSpritesSvg-play");
                     }
                     else{
                         a.pause();
-                        b.classList.add("iconSpritesSvg-play");
-                        b.classList.remove("iconSpritesSvg-pause");
                     }
+                    this.renderString();
                 }
                 /**
                  * 打开/关闭 列表
