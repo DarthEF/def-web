@@ -606,3 +606,12 @@
     height:100%;
     color:#dd0a;
 }
+
+.contentBox-imgTextList{
+    height:100%;
+    display:flex;
+    flex-wrap: wrap;
+}
+.contentBox-imgTextItem{
+    height:
+}

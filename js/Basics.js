@@ -949,18 +949,30 @@ Stepper.prototype={
     toString:function(){
         return this.i;
     },
+    /**
+     * 设置当前值
+     * @param {Number} _i 目标
+     */
     set:function(_i){
         this.i=_i;
         this.overflowHanding();
     },
+    /**
+     * 让步进器步进
+     * @param {Number} _l 步长
+     * @returns {Number} 返回步进后的值
+     */
     next:function(_l){
-        var temp,l=_l===undefined?1:_l;
+        var l=_l===undefined?1:_l;
         this.i+=l;
         
         this.overflowHanding();
 
         return this.i;
     },
+    /**
+     * 让步进器的溢出值回到范围内
+     */
     overflowHanding:function(){
         if(this.max==this.min) return this.i;
         var temp;
@@ -968,14 +980,14 @@ Stepper.prototype={
             do{
                 temp=this.i-this.min;
                 this.i=this.max;
-                this.i+=temp;
+                this.i+=temp+1;
             }while(this.i<this.min);
         }
         else if(this.i>this.max){
             do{
                 temp=this.i-this.max;
                 this.i=this.min;
-                this.i+=temp;
+                this.i+=temp-1;
             }while(this.i>this.max);
         }
         return this.i;

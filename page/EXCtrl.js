@@ -438,32 +438,68 @@ function getExCtrl(exCtrl_callBack){
             ImgList.prototype.bluePrint=DEF_VirtualElementList.xmlToVE(BluePrintXmlList[2]);
             getExCtrl.Class.ImgList=ImgList;
 
+            /**
+             * 内容容器
+             */
             class ContentBox extends ExCtrl{
                 constructor(data,typeset){
                     super(data);
                     this.index=0;
-                    
-                    if(typeset){
-                        this.typeset=typeset;
+                    this.typeset={
+                        img:[0,0],
+                        imgtext:[0,0],
+                        text:[0,0]
                     }
-                    else if(this.data.typeset){
-                        this.typeset=this.data.typeset;
+                    this.typesetSize={
+                        img:[0,0],
+                        imgtext:[0,0],
+                        text:[0,0]
                     }
+                    // 0垂直; 1水平
+                    this.boxTypeset=new Stepper(1,0,0);
+                    if(this.data.boxTypeset){
+                        this.boxTypeset.set(parseInt(this.data.boxTypeset));
+                    }
+                    this.setTypeset(typeset||this.data.typeset);
                 }
                 initialize(pnode,typeset){
-                    if(this.typeset) return;
-                    this.typeset={};
+                    if(typeset)this.setTypeset(typeset)
+                }
+                /**
+                 * 设置 typeset
+                 */
+                setTypeset(typeset){
+                    // 设置 typeset
                     if(typeset){
-                        this.typeset=typeset;
-                    }
-                    else if(this.data.typeset){
-                        this.typeset=this.data.typeset;
+                        this.typeset={
+                            img:[0,0],
+                            imgtext:[0,0],
+                            text:[0,0]
+                        }
+                        Object.assign(this.typeset,typeset);
+                        
                     }
                     else{
                         this.typeset={
-                            img:[4,2]
+                            img:[2,4],
+                            imgtext:[0,0],
+                            text:[0,0]
                         }
                     }
+                    // 刷新 typesetSize
+                    var imgSize=[1,4],imgtextSize=[3,4],textSize=[2,1];
+                    var j=this.boxTypeset.i,
+                        mj;
+                    mj=this.typeset.img[j]*imgSize[j]+this.typeset.imgtext[j]*imgtextSize[j]+this.typeset.text[j]*textSize[j];
+                    
+                    this.typesetSize.img[j]=imgSize[j]/mj*100*this.typeset.img[j];
+                    this.typesetSize.imgtext[j]=imgtextSize[j]/mj*100*this.typeset.imgtext[j];
+                    this.typesetSize.text[j]=textSize[j]/mj*100*this.typeset.text[j];
+                    j=this.boxTypeset.next(1);
+                    for(var i in this.typeset){
+                        this.typesetSize[i][j]=100;
+                    }
+                    this.renderString();
                 }
             }
             ContentBox.prototype.bluePrint=DEF_VirtualElementList.xmlToVE(BluePrintXmlList[3]);

@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    <div class="contentBox-imgBox" ctrl-if="this.typeset.img&&((this.l=this.typeset.img[0]*this.typeset.img[1])>0)">
+    <div style="width:${this.typesetSize.img[0]}%;height:${this.typesetSize.img[1]}%;" class="contentBox-imgBox" ctrl-if="this.typeset.img&&((this.l=this.typeset.img[0]*this.typeset.img[1])>0)">
         <ul class="contentBox-imgList" ctrl-for="this.i=0,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
             <li class="contentBox-imgItem">
                 <a href="${this.data.list[this.i].url}">
@@ -129,12 +129,12 @@
         </ul>
     </div>
 
-    <div class="contentBox-imgTextBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.imgtext&&(this.l+=this.typeset.imgtext[0]*this.typeset.imgtext[1])>0)">
+    <div style="width:${this.typesetSize.imgtext[0]}%;height:${this.typesetSize.imgtext[1]}%;" class="contentBox-imgTextBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.imgtext&&(this.l+=this.typeset.imgtext[0]*this.typeset.imgtext[1])>0)">
         <ul class="contentBox-imgTextList" ctrl-for="this.i=this.ll,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
-            <li class="contentBox-imgTextItem">
+            <li class="contentBox-imgTextItem" style="width:${100/this.typeset.imgtext[0]}%;height:${100/this.typeset.imgtext[1]}%">
                 <a href="${this.data.list[this.i].url}">
                 <div class="contentBox-imgTextItemBox">
-                    <img src="${this.data.list[this.i].imgurl}" />
+                    <img src="${this.data.list[this.i].imgurl}"/>
                     <div class="contentBox-imgTextItemTitle">
                     ${this.data.list[this.i].title}
                     </div>
@@ -144,9 +144,9 @@
         </ul>
     </div>
     
-    <div class="contentBox-textBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.text&&((this.l+=this.typeset.text[0]*this.typeset.text[1])>0))">
+    <div style="width:${this.typesetSize.text[0]}%;height:${this.typesetSize.text[1]}%;" class="contentBox-textBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.text&&((this.l+=this.typeset.text[0]*this.typeset.text[1])>0))">
         <ul ctrl-id="textlist" class="contentBox-textList" ctrl-for="this.i=this.ll,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
-            <li class="contentBox-textItem" style="width:${100/this.data.typeset.text[0]}%;">
+            <li class="contentBox-textItem" style="width:${100/this.typeset.text[0]}%;">
                 <a class="contentBox-textItemLink" href="${this.data.list[this.i].url}">
                 <div class="contentBox-textItemBox">
                     <div class="contentBox-textItemTitle" style="padding-right:${0.6*(this.data.list[this.i].addsText?this.data.list[this.i].addsText.length:0)}em">

@@ -1,5 +1,7 @@
 {
+    "boxTypeset":1,
     "typeset":{
+        "imgtext":[1,10],
         "text":[1,10]
     },
     "icon":"index",
