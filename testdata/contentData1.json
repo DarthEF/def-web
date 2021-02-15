@@ -16,7 +16,8 @@
         {
             "title":"asd1",
             "imgurl":"http://127.0.0.1/img/logo.svg",
-            "url":"./blog/321/"
+            "url":"./blog/321/",
+            "addsText":"asdfhuihu"
         },
         {
             "title":"asd2",

@@ -570,14 +570,19 @@
 }
 
 
-
+.contentBox-textList{
+    padding-right:8px;
+    height:auto;
+    display:flex;
+    flex-wrap: wrap;
+}
 .contentBox-textItem{
-    padding-left:12px;
+    padding-left:24px;
 }
 .contentBox-textItem::before{
     content:">";
     position:absolute;
-    left:0;
+    left:8px;
 }
 .contentBox-textItemLink{
     color:#000;
@@ -589,15 +594,15 @@
 
 .contentBox-textItemTitle{
     height: 100%;
-    width: 83%;
+    width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 .contentBox-textItemAddsText{
     position:absolute;
-    right:18px;
+    right:0;
     top:0;
     height:100%;
-    color:#000a;
+    color:#dd0a;
 }
