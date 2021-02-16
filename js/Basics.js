@@ -614,13 +614,13 @@ function htmlToCode(str){
 /**
  * 模版字符串
  * @param {String} _str  字符串
- * @param {Object} then this 指针
+ * @param {Object} that this 指针
  * @param {Array} argArray 实参
  * @returns {Object} {str:{String},hit:{Array<String>}}
  */
-function templateStringRender(str,then,argArray){
+function templateStringRender(str,that,argArray){
     
-    if(Object.keys(then).length){
+    if(Object.keys(that).length){
         var temp=[],tempstr="",hit=[];
         var q,p;// q是左
         var headFlag=0,footFlag=0;
@@ -640,7 +640,7 @@ function templateStringRender(str,then,argArray){
                     if(footFlag){
                         tempstr=str.slice(q,p);
                         oldL=temp.join("").length;
-                        temp.push((new Function(["tgt"],"return "+tempstr)).apply(then,argArray));
+                        temp.push((new Function(["tgt"],"return "+tempstr)).apply(that,argArray));
                         hit.push({expression:tempstr,value:temp[temp.length-1]});
                         q=p+1;
                         break;
@@ -1122,7 +1122,7 @@ function loadCue(str){
     var p=0,q=0,isQuotes=false;
     var tempStr;
     var rtn=new DEF_CUEOBJ();
-    var then=rtn;
+    var that=rtn;
     var CommandList=[];
     for(;p<str.length;++p){
         if(str[p]!=' '){
@@ -1153,12 +1153,12 @@ function loadCue(str){
                     CommandList.push(tempStr);
 
                     if(CommandList[0].toLowerCase()=="track"){
-                        then=new DEF_CUEOBJTrack(rtn.file,rtn,rtn.track.length);
-                        rtn.track.push(then);
+                        that=new DEF_CUEOBJTrack(rtn.file,rtn,rtn.track.length);
+                        rtn.track.push(that);
                     }
                     else{
-                        if(then.setCommand[CommandList[0].toLowerCase()]){
-                            then.setCommand[CommandList[0].toLowerCase()].call(then,CommandList);
+                        if(that.setCommand[CommandList[0].toLowerCase()]){
+                            that.setCommand[CommandList[0].toLowerCase()].call(that,CommandList);
                         }
                         else{
                             // 不支持这个指令

@@ -223,7 +223,7 @@ function getExCtrl(exCtrl_callBack){
                     if(this.data.mediaList.length<=_index) return;
                     // this.elements["audioTag"].src=this.data.mediaList[_index].url;
                     // this.elements["audioTag"].src="";
-                    var tempHTML=[],then=this;
+                    var tempHTML=[],that=this;
                     if((!this.data.mediaList[this.playingIndex])||(this.data.mediaList[_index].urlList!=this.data.mediaList[this.playingIndex].urlList)){
                         for(var i=this.data.mediaList[_index].urlList.length-1;i>=0;--i){
                             tempHTML.push("<source src=\""+this.data.mediaList[_index].urlList[i]+"\"/>")
@@ -259,21 +259,21 @@ function getExCtrl(exCtrl_callBack){
                  * 打开/关闭 列表
                  */
                 callList(){
-                    var then=this;
+                    var that=this;
                     this.data.mediaListBoxVis=!this.data.mediaListBoxVis;
                     function qCloseCallList(e){
                         var tgt=e.target;
                         var flag=true;
                         while(tgt.tagName!="HTML"){
-                            if(tgt==then.elements.root){
+                            if(tgt==that.elements.root){
                                 flag=false;
                                 break;
                             }
                             tgt=tgt.parentElement;
                         }
                         if(flag){
-                            then.data.mediaListBoxVis=!then.data.mediaListBoxVis;
-                            then.renderString();
+                            that.data.mediaListBoxVis=!that.data.mediaListBoxVis;
+                            that.renderString();
                             this.removeEventListener("mousedown",qCloseCallList);
                         }
                     }
@@ -299,16 +299,16 @@ function getExCtrl(exCtrl_callBack){
                  */
                 loadCue(url){
                     var eee,dd, d=new XMLHttpRequest();
-                    var then=this;
+                    var that=this;
                     d.open("get",url);
                     d.send();
                     d.onload=function(){
                         eee=loadCue(d.responseText);
                         // console.log(eee);
                         dd=cueObjToMediaObj(eee,url);
-                        then.data.mediaList=then.data.mediaList.concat(dd);
-                        then.reRender();
-                        then.reIndexMap(then.playTypes[then.playType]);
+                        that.data.mediaList=that.data.mediaList.concat(dd);
+                        that.reRender();
+                        that.reIndexMap(that.playTypes[that.playType]);
                     }
                 }
 
@@ -583,7 +583,7 @@ class DEF_MediaObj{
 DEF_MediaObj.prototype.getDuration=createOlFnc();
 DEF_MediaObj.prototype.getDuration.addOverload([Function],
     function(_callback){
-        var then=this;
+        var that=this;
         if(!this.ed){
             var tempAudio=new Audio(),tempHTML=[];
             for(var i=this.urlList.length;i>=0;--i){
@@ -597,7 +597,7 @@ DEF_MediaObj.prototype.getDuration.addOverload([Function],
                 }
             }else{
                 tempAudio.abort=function(e){
-                    var d=this.duration-then.op;
+                    var d=this.duration-that.op;
                     _callBack(d);
                 }
             }

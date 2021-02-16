@@ -104,60 +104,85 @@
 
 <ctrl_tab/>
 
-<div class="contentBox-root">
-    <div class="contentBox-titleBox">
-        <div class="contentBox-titleIconBox" ca-callback="tgt.style.width=tgt.offsetHeight+'px'; tgt.style.padding=(0.1*tgt.offsetHeight)+'px';" >
-            <i class="iconSpritesSvg iconSpritesSvg-${this.data.icon} contentBox-titleIcon"></i>
-        </div>
+<div class="contentBox-root" ctrl-id="root">
+    <div class="contentBox-titleBox" ctrl-id="titleBox">
         <div class="contentBox-title">
             ${this.data.title}
         </div>
+        <div class="contentBox-titleIconBox" ca-callback="tgt.style.width=tgt.offsetHeight+'px'; tgt.style.padding=(0.1*tgt.offsetHeight)+'px';" >
+            <i class="iconSpritesSvg iconSpritesSvg-${this.data.icon} contentBox-titleIcon"></i>
+        </div>
     </div>
 
-    <div style="width:${this.typesetSize.img[0]}%;height:${this.typesetSize.img[1]}%;" class="contentBox-imgBox" ctrl-if="this.typeset.img&&((this.l=this.typeset.img[0]*this.typeset.img[1])>0)">
-        <ul class="contentBox-imgList" ctrl-for="this.i=0,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
-            <li class="contentBox-imgItem">
-                <a href="${this.data.list[this.i].url}">
-                <div class="contentBox-imgItemBox">
-                    <img src="${this.data.list[this.i].imgurl}" />
-                    <div class="contentBox-imgItemTitle">
-                    ${this.data.list[this.i].title}
+    <div ctrl-id="main" ca-callback="tgt.style.height=(this.elements.root.offsetHeight-this.elements.titleBox.offsetHeight)+'px';" pa-resize="(tgt.style.height=this.elements.root.offsetHeight-this.elements.titleBox.offsetHeight)+'px';">
+        <div style="width:${this.typesetSize.img[0]}%;height:${this.typesetSize.img[1]}%;" class="contentBox-imgBox" ctrl-if="this.typeset.img&&((this.l=this.typeset.img[0]*this.typeset.img[1])>0)">
+            <ul class="contentBox-imgList" ctrl-for="this.i=0,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
+                <li class="contentBox-imgItem">
+                    <a href="${this.data.list[this.i].url}">
+                    <div class="contentBox-imgItemBox">
+                        <img src="${this.data.list[this.i].imgurl}" />
+                        <div class="contentBox-imgItemTitle">
+                        ${this.data.list[this.i].title}
+                        </div>
                     </div>
-                </div>
-                </a>
-            </li>
-        </ul>
-    </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-    <div style="width:${this.typesetSize.imgtext[0]}%;height:${this.typesetSize.imgtext[1]}%;" class="contentBox-imgTextBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.imgtext&&(this.l+=this.typeset.imgtext[0]*this.typeset.imgtext[1])>0)">
-        <ul class="contentBox-imgTextList" ctrl-for="this.i=this.ll,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
-            <li class="contentBox-imgTextItem" style="width:${100/this.typeset.imgtext[0]}%;height:${100/this.typeset.imgtext[1]}%">
-                <a href="${this.data.list[this.i].url}">
-                <div class="contentBox-imgTextItemBox">
-                    <img src="${this.data.list[this.i].imgurl}"/>
-                    <div class="contentBox-imgTextItemTitle">
-                    ${this.data.list[this.i].title}
+        <div style="width:${this.typesetSize.imgtext[0]}%;height:${this.typesetSize.imgtext[1]}%;" class="contentBox-imgTextBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.imgtext&&(this.l+=this.typeset.imgtext[0]*this.typeset.imgtext[1])>0)">
+            <ul class="contentBox-imgTextList" ctrl-for="this.i=this.ll,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
+                <li class="contentBox-imgTextItem" style="width:${100/this.typeset.imgtext[0]}%;height:${100/this.typeset.imgtext[1]}%">
+                    <a href="${this.data.list[this.i].url}">
+                    <div class="contentBox-imgTextItemBox">
+                        <img src="${this.data.list[this.i].imgurl}"/>
+                        <div class="contentBox-imgTextItemTitle">
+                        ${this.data.list[this.i].title}
+                        </div>
                     </div>
-                </div>
-                </a>
-            </li>
-        </ul>
-    </div>
-    
-    <div style="width:${this.typesetSize.text[0]}%;height:${this.typesetSize.text[1]}%;" class="contentBox-textBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.text&&((this.l+=this.typeset.text[0]*this.typeset.text[1])>0))">
-        <ul ctrl-id="textlist" class="contentBox-textList" ctrl-for="this.i=this.ll,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
-            <li class="contentBox-textItem" style="width:${100/this.typeset.text[0]}%;">
-                <a class="contentBox-textItemLink" href="${this.data.list[this.i].url}">
-                <div class="contentBox-textItemBox">
-                    <div class="contentBox-textItemTitle" style="padding-right:${0.6*(this.data.list[this.i].addsText?this.data.list[this.i].addsText.length:0)}em">
-                    ${this.data.list[this.i].title}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div style="width:${this.typesetSize.text[0]}%;height:${this.typesetSize.text[1]}%;" class="contentBox-textBox" ctrl-if="((this.ll=this.l=this.l?this.l:0)<this.data.list.length)&&(this.typeset.text&&((this.l+=this.typeset.text[0]*this.typeset.text[1])>0))">
+            <ul ctrl-id="textlist" class="contentBox-textList" ctrl-for="this.i=this.ll,this.l=this.l>this.data.list.length?this.data.list.length:this.l;this.i<this.l;++this.i">
+                <li class="contentBox-textItem" style="width:${100/this.typeset.text[0]}%;">
+                    <a class="contentBox-textItemLink" href="${this.data.list[this.i].url}">
+                    <div class="contentBox-textItemBox">
+                        <div class="contentBox-textItemTitle" style="padding-right:${0.6*(this.data.list[this.i].addsText?this.data.list[this.i].addsText.length:0)}em">
+                        ${this.data.list[this.i].title}
+                        </div>
                     </div>
-                </div>
-                </a>
-                <div ctrl-id="textlistAddsText" class="contentBox-textItemAddsText" ctrl-if="this.data.list[this.i].addsText">
-                ${this.data.list[this.i].addsText}
-                </div>
-            </li>
-        </ul>
+                    </a>
+                    <div ctrl-id="textlistAddsText" class="contentBox-textItemAddsText" ctrl-if="this.data.list[this.i].addsText">
+                    ${this.data.list[this.i].addsText}
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
+</div>
+
+<ctrl_tab/>
+
+<div class="test">
+<div class="test1">asd</div>
+<div class="test2">qwe</div>
+<div class="test3">zxc</div>
+123123asdasd
+<style>
+.test{
+    background:#f00f;
+}
+.test1{
+    background:#0f0f;
+}
+.test2{
+    background:#00ff;
+}
+.test3{
+    background:#f0ff;
+}
+</style>
 </div>

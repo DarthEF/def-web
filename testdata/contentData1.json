@@ -1,8 +1,7 @@
 {
     "boxTypeset":1,
     "typeset":{
-        "imgtext":[1,10],
-        "text":[1,10]
+        "text":[1,12]
     },
     "icon":"index",
     "titleClass":"iconSpritesSvg",
@@ -28,6 +27,11 @@
         },
         {
             "title":"asd3",
+            "imgurl":"http://127.0.0.1/img/logo.svg",
+            "url":"./blog/123/"
+        },
+        {
+            "title":"asd4",
             "imgurl":"http://127.0.0.1/img/logo.svg",
             "url":"./blog/123/"
         },

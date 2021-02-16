@@ -4,9 +4,13 @@
         <div class="homePage-headlinesMate"></div>
     </div>
     <div class="homePage-secondLine">
-        <div class="homePage-hello hello1"  ctrl-child_ctrl="ContentBox" ctrl-child_ctrl_datafnc="ExCtrl.getJsonData('get',rltToAbs('./testdata/contentData1.json',location.origin+'/'),callback)"></div>
+        <div class="homePage-hello hello1" ctrl-child_ctrl="ContentBox" ctrl-child_ctrl_datafnc="ExCtrl.getJsonData('get',rltToAbs('./testdata/contentData1.json',location.origin+'/'),callback)"></div>
         <div class="homePage-hello hello2"></div>
         <div class="homePage-hello hello3"></div>
+    </div>
+    <div class="homePage-thirdLine">
+        <div class="homePage-push"  ctrl-child_ctrl="ContentBox" ctrl-child_ctrl_datafnc="ExCtrl.getJsonData('get',rltToAbs('./testdata/contentData2.json',location.origin+'/'),callback)">
+        </div>
     </div>
 </div>
 <ctrl_tab/>
