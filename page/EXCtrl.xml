@@ -166,6 +166,26 @@
 
 <ctrl_tab/>
 
+<style>
+.test{
+    background:#f00f;
+}
+.test1{
+    background:#0f0f;
+}
+.test2{
+    background:#00ff;
+}
+.test3{
+    background:#f0ff;
+}
+@media(max-width:666px){
+    .test{
+        background:#ff0f;
+        color:rgb(${window.innerWidth},0,0);
+    }
+}
+</style>
 <div class="test">
 <div class="test1">asd</div>
 <div class="test2">qwe</div>
