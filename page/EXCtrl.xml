@@ -171,18 +171,4 @@
 <div class="test2">qwe</div>
 <div class="test3">zxc</div>
 123123asdasd
-<style>
-.test{
-    background:#f00f;
-}
-.test1{
-    background:#0f0f;
-}
-.test2{
-    background:#00ff;
-}
-.test3{
-    background:#f0ff;
-}
-</style>
 </div>

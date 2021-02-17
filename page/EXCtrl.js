@@ -504,6 +504,10 @@ function getExCtrl(exCtrl_callBack){
             }
             ContentBox.prototype.bluePrint=DEF_VirtualElementList.xmlToVE(BluePrintXmlList[3]);
             getExCtrl.Class.ContentBox=ContentBox;
+            class CTest extends ExCtrl{
+            }
+            CTest.prototype.bluePrint=DEF_VirtualElementList.xmlToVE(BluePrintXmlList[4]);
+            getExCtrl.Class.CTest=CTest;
 
             exCtrl_callBack(getExCtrl.Class);
         }

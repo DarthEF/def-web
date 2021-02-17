@@ -9,7 +9,7 @@
         <div class="homePage-hello hello3"></div>
     </div>
     <div class="homePage-thirdLine">
-        <div class="homePage-push"  ctrl-child_ctrl="ContentBox" ctrl-child_ctrl_datafnc="ExCtrl.getJsonData('get',rltToAbs('./testdata/contentData2.json',location.origin+'/'),callback)">
+        <div class="homePage-push"  ctrl-child_ctrl="CTest" ctrl-child_ctrl_datafnc="ExCtrl.getJsonData('get',rltToAbs('./testdata/contentData2.json',location.origin+'/'),callback)">
         </div>
     </div>
 </div>
