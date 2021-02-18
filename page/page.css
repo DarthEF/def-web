@@ -13,14 +13,14 @@
 }
 .homePage-headlines{
     width:70%;
-    background:#0f0;
+    background-color:#0f0;
 }
 .homePage-headlinesMate{
     position:absolute;
     top:0;
     width:28%;
     height:100%;
-    background:#f0f;
+    background-color:#f0f;
     right:0%;
 }
 /* home  second*/
@@ -35,7 +35,7 @@
     width:32%;
     height:100%;
     max-height:400px;
-    background:#252;
+    background-color:#252;
     top:0;
 }
 .homePage-hello.hello1{
@@ -47,6 +47,16 @@
 }
 .homePage-hello.hello3{
     right:0;
+}
+.homePage-thirdLine{
+    height:28vw;
+    max-width: 95%;
+    margin: 24px auto;
+}
+.homePage-push{
+    width:100%;
+    height:100%;
+    background-color:#252;
 }
 @media (max-width:900px){
     .homePage-headlines{

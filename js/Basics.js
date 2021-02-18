@@ -819,7 +819,7 @@ function removeKeyEvent(_Element,_keycode,_event,_type){
  * @param {Element} _element 绑定的元素
  * @param {Function} _listener 触发的函数
  */
-function addResizeEvent(_element,_listener){            
+function addResizeEvent(_element,_listener){   
     if(_element.resizeMarkFlag){
         element.resizeListener.push(_listener);
     }
