@@ -27,7 +27,7 @@
 
 <ctrl_tab/>
 
-<div ctrl-id="root" pakeydown[38]="this.changVolume(this.elements.audioTag.volume+0.05)" pakeydown[40]="this.changVolume(this.elements.audioTag.volume-0.05)" tabindex="1" class="audioControl" pa-wheel="this.wheelHand(e)">
+<div ctrl-id="root" pakeydown[38]="stopPE(e);this.changVolume(this.elements.audioTag.volume+0.05)" pakeydown[40]="stopPE(e);this.changVolume(this.elements.audioTag.volume-0.05)" tabindex="1" class="audioControl" pa-wheel="stopPE(e);this.wheelHand(e)">
     <audio ctrl="audioControl-audioTag" ctrl-id="audioTag" pa-timeupdate="this.renderCurrentTime()" pa-loadeddata="this.renderDuration()" pa-volumechange="this.changVolume(tgt.volume)"></audio>
     <div class="audioControl-CtrlBox">
         <div class="audioControl-visual">

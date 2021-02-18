@@ -51,6 +51,7 @@
 .homePage-thirdLine{
     height:28vw;
     max-width: 95%;
+    max-height: 440px;
     margin: 24px auto;
 }
 .homePage-push{

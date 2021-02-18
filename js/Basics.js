@@ -899,20 +899,24 @@ addResizeEvent.reResize=function(_element){
 function linkClick(e,tgt){
     var _event=e||event;
     var tgt=tgt||this;
+    var linkTarget=tgt.getAttribute("target");
     var tempStr;
     if(tgt.host==window.location.host){
         // var hostchar=this.pathname.slice(this.pathname.indexOf('/')+1,this.pathname.slice(this.pathname.indexOf('/')+1).indexOf('/')+1);
         switch (_event.button){
             case 0:
-                window.location.href='#/'+tgt.href.substr(tgt.href.indexOf(tgt.host)+(tgt.host.length)+1);
-                stopPE(e);
-                // if(tempStr=tgt.getAttribute("title")){
-                //     window.document.title=tempStr;
-                // }
-                return false;
+                if(!linkTarget||linkTarget=='_self'){
+
+                    window.location.href='#/'+tgt.href.substr(tgt.href.indexOf(tgt.host)+(tgt.host.length)+1);
+                    stopPE(e);
+                    // if(tempStr=tgt.getAttribute("title")){
+                        //     window.document.title=tempStr;
+                        // }
+                        return false;
+                }
             break;
             case 1:
-                window.open(this.getAttribute('href'));
+                // window.open(this.getAttribute('href'));
             break;
             default:
                 break;
